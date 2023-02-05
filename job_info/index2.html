@@ -37,6 +37,8 @@
     </div>
     
         <script type="text/javascript">
+    var jobdatalist = "./data/Convert Control M xml to CA7 Bat list.txt";
+    
     function RunExe(index){
       switch(index) {
       case "SearchJobName": SearchJobName(); break;
@@ -77,9 +79,23 @@
       sPackageNameList = "";
       sFileOutgoingList = "";
     
-        document.getElementById('textarea').value += sTextJobName+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
+        var txtFile = new XMLHttpRequest();
+//txtFile.open("GET", "http://my.remote.url/myremotefile.txt", true);
+        txtFile.open("GET", "./data/Convert Control M xml to CA7 Bat list.txt", true);
+txtFile.onreadystatechange = function() {
+  if (txtFile.readyState === 4) {  // Makes sure the document is ready to parse.
+    if (txtFile.status === 200) {  // Makes sure it's found the file.
+      allText = txtFile.responseText;
+      lines = txtFile.responseText.split("\n"); // Will separate each line into an array
+    }
+  }
+}
+txtFile.send(null);
+        //document.getElementById('textarea').value += sTextJobName+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
+        document.getElementById('textarea').value += lines(1)+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
     }
 
+            
             
         function main() {
       //
