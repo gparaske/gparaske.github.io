@@ -6,7 +6,7 @@
     th, td {padding: 10px;}
     </style></head><body>
     <div style="background-color:lightblue;color:darkgrey;padding:1px;text-align:center;background-image: url('css/pexels-photo-355423.jpeg');background-size: cover;background-position: center;">
-    <img src='css/logo.png' alt='logo'><h4>JOB INFO v4</h4></div>
+    <img src='css/logo.png' alt='logo'><h4>JOB INFO v5</h4></div>
     <input id="openFileDialog" type="file" name="name" style="display: none;" />
     
     <button class="collapsible">JOB DETAILS</button><div class="content">
@@ -38,6 +38,7 @@
     
         <script type="text/javascript">
     var jobdatalist = "./data/Convert Control M xml to CA7 Bat list.txt";
+    var lines;
     
     function RunExe(index){
       switch(index) {
@@ -79,20 +80,20 @@
       sPackageNameList = "";
       sFileOutgoingList = "";
     
-        var txtFile = new XMLHttpRequest();
-//txtFile.open("GET", "http://my.remote.url/myremotefile.txt", true);
-        txtFile.open("GET", "./data/Convert Control M xml to CA7 Bat list.txt", true);
-txtFile.onreadystatechange = function() {
-  if (txtFile.readyState === 4) {  // Makes sure the document is ready to parse.
-    if (txtFile.status === 200) {  // Makes sure it's found the file.
-      allText = txtFile.responseText;
-      lines = txtFile.responseText.split("\n"); // Will separate each line into an array
-    }
-  }
-}
-txtFile.send(null);
-        //document.getElementById('textarea').value += sTextJobName+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
-        document.getElementById('textarea').value += lines[1]+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
+      var txtFile = new XMLHttpRequest();
+      //txtFile.open("GET", "http://my.remote.url/myremotefile.txt", true);
+      txtFile.open("GET", "./data/Convert Control M xml to CA7 Bat list.txt", true);
+      txtFile.onreadystatechange = function() {
+          if (txtFile.readyState === 4) {  // Makes sure the document is ready to parse.
+            if (txtFile.status === 200) {  // Makes sure it's found the file.
+                allText = txtFile.responseText;
+                lines = txtFile.responseText.split("\n"); // Will separate each line into an array
+            }
+          }
+      }
+      txtFile.send(null);
+      //document.getElementById('textarea').value += sTextJobName+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
+      document.getElementById('textarea').value += lines[1]+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
     }
 
             
