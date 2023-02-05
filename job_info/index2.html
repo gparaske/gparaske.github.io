@@ -36,8 +36,34 @@
     <p></p>
     </div>
     
+        <script type="text/javascript">
         
+        function main() {
+      //
+      //
+      // 
+      //
+      //
+      var coll = document.getElementsByClassName("collapsible"); var k;
+      for (k = 0; k < coll.length; k++) {
+        coll[k].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") {
+        content.style.display = "none";
+        } else {
+        content.style.display = "block";
+        }
+          }
+        );
+      }
     
+    }
+    
+    main();
+    
+    
+        </script>
     <div style='background-color:lightblue;color:white;padding:1px;text-align:right;font-weight:bold'>
     <p>ACTIONS <button onclick='a98.click()'><a id='a98' hidden=true href='C:\Users\e38536\Documents\Misc\vbscript\Reminder.vbs'></a>Reminder</button>
                <button onclick='a99.click()'><a id='a99' hidden=true href='C:\html\Options.html'></a>Options</button></p></div>
