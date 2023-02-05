@@ -9,7 +9,7 @@
         <p></p>
         <p><h4>EDW</h4></p>
         <p></p>
-        <p><h4>JOB INFO v23</h4></p>
+        <p><h4>JOB INFO v0.24</h4></p>
     </div>
     
     <button class="collapsible">JOB DETAILS</button><div class="content">
@@ -75,12 +75,14 @@
                 //allText = txtFile.responseText;
                 lines = txtFile.responseText.split("\n"); // Will separate each line into an array
                 var sResult = "";
+                var j = 0;
                 for (i = 0; i < lines.length; i++) {
                     if (lines[i]!="") {
                         if (lines[i].substring(0, sTextJobName.length)==sTextJobName) {
                             if(sResult==""){sResult = lines[i];}
                             document.getElementById('textarea').value += lines[i]+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
-                            //break;
+                            j++;
+                            if(j>49) {break;}
                         }
                     }
                 }
@@ -118,6 +120,7 @@
                 //allText = txtFile.responseText;
                 lines = txtFile.responseText.split("\n"); // Will separate each line into an array
                 var sResult = "";
+                var j = 0;
                 for (i = 0; i < lines.length; i++) {
                     if (lines[i]!="") {
                         var sLine = lines[i].toUpperCase();
@@ -125,7 +128,8 @@
                         if (aLine[1].indexOf(sTextPackage)>=0) {
                             if(sResult==""){sResult = lines[i];}
                             document.getElementById('textarea').value += lines[i]+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
-                            //break;
+                            j++;
+                            if(j>49) {break;}
                         }
                     }
                 }
@@ -163,6 +167,7 @@
                 //allText = txtFile.responseText;
                 lines = txtFile.responseText.split("\n"); // Will separate each line into an array
                 var sResult = "";
+                var j = 0;
                 for (i = 0; i < lines.length; i++) {
                     if (lines[i]!="") {
                         var sLine = lines[i].toUpperCase();
@@ -170,7 +175,8 @@
                         if (aLine[2].indexOf(sTextBatFile)>=0) {
                             if(sResult==""){sResult = lines[i];}
                             document.getElementById('textarea').value += lines[i]+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
-                            //break;
+                            j++;
+                            if(j>49) {break;}
                         }
                     }
                 }
