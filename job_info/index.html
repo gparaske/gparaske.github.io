@@ -9,7 +9,7 @@
         <p></p>
         <p><h4>EDW</h4></p>
         <p></p>
-        <p><h4>JOB INFO v0.31</h4></p>
+        <p><h4>JOB INFO v0.33</h4></p>
     </div>
     
     <button class="collapsible">JOB DETAILS</button><div class="content">
@@ -212,7 +212,8 @@
       textInputFile.value = sTextInputFile;
       
       var txtFile = new XMLHttpRequest();
-      txtFile.open("GET", flatfilelist, true);
+      //txtFile.open("GET", flatfilelist, true);
+      txtFile.open("GET", flatfilelist, false);
       txtFile.onreadystatechange = function() {
           if (txtFile.readyState === 4) {  // Makes sure the document is ready to parse.
             if (txtFile.status === 200) {  // Makes sure it's found the file.
