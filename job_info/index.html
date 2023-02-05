@@ -6,7 +6,7 @@
     th, td {padding: 10px;}
     </style></head><body>
     <div style="background-color:lightblue;color:darkgrey;padding:1px;text-align:center;background-image: url('css/pexels-photo-355423.jpeg');background-size: cover;background-position: center;">
-    <img src='css/logo.png' alt='logo'><h4>JOB INFO v17</h4></div>
+    <img src='css/logo.png' alt='logo'><h4>JOB INFO v18</h4></div>
     <input id="openFileDialog" type="file" name="name" style="display: none;" />
     
     <button class="collapsible">JOB DETAILS</button><div class="content">
@@ -29,6 +29,15 @@
         <script type="text/javascript">
     var jobdatalist = "./data/Convert Control M xml to CA7 Bat list.txt";
     var lines;
+            
+    var textJobName = document.getElementById('textJobName');
+    var textPackage = document.getElementById('textPackage');
+    var textBatFile = document.getElementById('textBatFile');
+    var textInputFile = document.getElementById('textInputFile');
+    var textErrorJobName = document.getElementById('errorJobName');
+    var textErrorPackage = document.getElementById('errorPackage');
+    var textErrorBatFile = document.getElementById('errorBatFile');
+    var textErrorInputFile = document.getElementById('errorInputFile');
     
     function RunExe(index){
       switch(index) {
@@ -38,7 +47,19 @@
       }
     }
             
+    function ClearTextBoxes(){
+      textPackage.value = "";
+      textBatFile.value = "";
+      textInputFile.value = "";
+      textErrorJobName.innerHTML = "";
+      textErrorPackage.innerHTML = "";
+      textErrorBatFile.innerHTML = "";
+      textErrorInputFile.innerHTML = "";
+      document.getElementById('textarea').value = "";
+    }
+            
     function SearchJobName(){
+        /*
       var textJobName = document.getElementById('textJobName');
       var sTextJobName = textJobName.value;
       sTextJobName = sTextJobName.toUpperCase();
@@ -59,12 +80,12 @@
       textErrorBatFile.innerHTML = "";
       var textErrorInputFile = document.getElementById('errorInputFile');
       textErrorInputFile.innerHTML = "";
+      */
+      var sTextJobName = textJobName.value;
+      sTextJobName = sTextJobName.toUpperCase();
+      ClearTextBoxes();
+      textJobName.value = sTextJobName;
       
-      sFileNameFrom = "";
-      sFileNameCopy = "";
-      sPackageNameList = "";
-      sFileOutgoingList = "";
-    
       var txtFile = new XMLHttpRequest();
       txtFile.open("GET", jobdatalist, true);
       txtFile.onreadystatechange = function() {
@@ -82,7 +103,7 @@
                     }
                 }
                 if (sResult=="") {
-                    textErrorPackage.innerHTML = "Not Found";
+                    textErrorJobName.innerHTML = "Not Found";
                 } else {
                     var aResult = sResult.split(";");
                     if (aResult[0].length!=0) {
@@ -108,6 +129,57 @@
       }
       txtFile.send(null);
     }
+            
+    function SearchPackage(){
+      var sTextPackage = textPackage.value;
+      sTextPackage = sTextJobName.toUpperCase();
+      ClearTextBoxes();
+      textPackage.value = sTextPackage;
+      
+      var txtFile = new XMLHttpRequest();
+      txtFile.open("GET", jobdatalist, true);
+      txtFile.onreadystatechange = function() {
+          if (txtFile.readyState === 4) {  // Makes sure the document is ready to parse.
+            if (txtFile.status === 200) {  // Makes sure it's found the file.
+                //allText = txtFile.responseText;
+                lines = txtFile.responseText.split("\n"); // Will separate each line into an array
+                var sResult = "";
+                for (i = 0; i < lines.length; i++) {
+                    if (lines[i]!="") {
+                        if (lines[i].substring(0, sTextJobName.length)==sTextJobName) {
+                            sResult = lines[i];
+                            break;
+                        }
+                    }
+                }
+                if (sResult=="") {
+                    textErrorJobName.innerHTML = "Not Found";
+                } else {
+                    var aResult = sResult.split(";");
+                    if (aResult[0].length!=0) {
+                        textJobName.value = aResult[0];
+                    }
+                    if (aResult[1].length!=0) {
+                        textPackage.value = aResult[1];
+                    }
+                    if (aResult[2].length!=0) {
+                        textBatFile.value = aResult[2];
+                    }
+                    if (aResult[3].length!=0) {
+                        textBatFile.value = aResult[2];
+                        //  S000013845 WINSCHED EDW EDWPDF0E OUTPUT.LOG
+                        //readTextFile("file:///C:/your/path/to/file.txt");
+                        //readTextFile("file://///S000013845/WINSCHED/EDW/EDWPDF0E/OUTPUT.LOG");
+                    }
+                    //document.getElementById('textarea').value += sTextJobName+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
+                    document.getElementById('textarea').value += sResult+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
+                }
+            }
+          }
+      }
+      txtFile.send(null);
+    }
+            
             
     function OpenBatFileFolder(){
       var textErrorBatFile = document.getElementById('errorBatFile');
