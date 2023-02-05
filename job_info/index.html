@@ -35,18 +35,7 @@
       case "SearchJobName": SearchJobName(); break;
       case "SearchPackage": SearchPackage(); break;
       case "SearchBatFile": SearchBatFile(); break;
-      case "OpenPackage": OpenPackage(); break;
-      case "OpenPackageFolder": OpenPackageFolder(); break;
-      case "CopyPackage": CopyPackage(); break;
-      case "OpenBatFile": OpenBatFile(); break;
-      case "OpenBatFileFolder": OpenBatFileFolder(); break;
-      case "CopyBatFile": CopyBatFile(); break;
       }
-    }
-            
-    function CopyBatFile() {
-        var textBatFile = document.getElementById('textBatFile');
-        window.clipboardData.setData ("Text", textBatFile.value);
     }
             
     function SearchJobName(){
