@@ -218,8 +218,8 @@
           if (txtFile.readyState === 4) {  // Makes sure the document is ready to parse.
             if (txtFile.status === 200) {  // Makes sure it's found the file.
                 lines = txtFile.responseText.split("\n"); // Will separate each line into an array
-                var k = lines.length;
-                document.getElementById('textarea').value += k.toString();+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
+                //var k = lines.length;
+                //document.getElementById('textarea').value += k.toString();+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
                 var sResult = "";
                 var j = 0;
                 for (i = 0; i < lines.length; i++) {
