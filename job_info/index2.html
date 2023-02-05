@@ -37,7 +37,50 @@
     </div>
     
         <script type="text/javascript">
-        
+    function RunExe(index){
+      switch(index) {
+      case "SearchJobName": SearchJobName(); break;
+      case "SearchPackage": SearchPackage(); break;
+      case "SearchBatFile": SearchBatFile(); break;
+      case "OpenPackage": OpenPackage(); break;
+      case "OpenPackageFolder": OpenPackageFolder(); break;
+      case "CopyPackage": CopyPackage(); break;
+      case "OpenBatFile": OpenBatFile(); break;
+      case "OpenBatFileFolder": OpenBatFileFolder(); break;
+      case "CopyBatFile": CopyBatFile(); break;
+      }
+    }
+    function SearchJobName(){
+      var textJobName = document.getElementById('textJobName');
+      var sTextJobName = textJobName.value;
+      sTextJobName = sTextJobName.toUpperCase();
+      textJobName.value = sTextJobName;
+      var textPackage = document.getElementById('textPackage');
+      textPackage.value = "";
+      var textBatFile = document.getElementById('textBatFile');
+      textBatFile.value = "";
+      document.getElementById('textarea').value = "";
+      var textInputFile = document.getElementById('textInputFile');
+      textInputFile.value = "";
+      
+      var textErrorJobName = document.getElementById('errorJobName');
+      textErrorJobName.innerHTML = "";
+      var textErrorPackage = document.getElementById('errorPackage');
+      textErrorPackage.innerHTML = "";
+      var textErrorBatFile = document.getElementById('errorBatFile');
+      textErrorBatFile.innerHTML = "";
+      var textErrorInputFile = document.getElementById('errorInputFile');
+      textErrorInputFile.innerHTML = "";
+      
+      sFileNameFrom = "";
+      sFileNameCopy = "";
+      sPackageNameList = "";
+      sFileOutgoingList = "";
+    
+        document.getElementById('textarea').value += sTextJobName+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
+    }
+
+            
         function main() {
       //
       //
