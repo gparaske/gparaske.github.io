@@ -9,7 +9,7 @@
         <p></p>
         <p><h4>EDW</h4></p>
         <p></p>
-        <p><h4>JOB INFO v0.28</h4></p>
+        <p><h4>JOB INFO v0.29</h4></p>
     </div>
     
     <button class="collapsible">JOB DETAILS</button><div class="content">
@@ -18,7 +18,7 @@
     <tr><td width="10%" align="left">Job Name:</td><td width="30%" align="left"><input id="textJobName" type="text" value="EDWPDF0E" style="width: 100%;text-align:left"></input></td><td width="5%" align="left"><button onclick='RunExe("SearchJobName"); return false;'>Search</button></td><td width="40%" align="left" style="color:red" id="errorJobName"></td></tr>
     <tr><td width="10%" align="left">Package:</td><td width="30%" align="left"><input id="textPackage" type="text" value="" style="width: 100%;text-align:left"></input></td><td width="5%" align="left"><button onclick='RunExe("SearchPackage"); return false;'>Search</button></td><td width="40%" align="left" style="color:red" id="errorPackage"></td></tr>
     <tr><td width="10%" align="left">Bat File:</td><td width="30%" align="left"><input id="textBatFile" type="text" value="" style="width: 100%;text-align:left"></input></td><td width="5%" align="left"><button onclick='RunExe("SearchBatFile"); return false;'>Search</button></td><td width="40%" align="left" style="color:red" id="errorBatFile"></td></tr>
-    <tr><td width="10%" align="left">Input File:</td><td width="30%" align="left"><input id="textInputFile" type="text" style="width: 100%;text-align:left"></input></td><td width="5%" align="left"><button hidden=true onclick='RunExe("CheckIncident"); return false;'>Search</button></td><td width="40%" align="left" style="color:red" id="errorInputFile"></td></tr>
+    <tr><td width="10%" align="left">Input File:</td><td width="30%" align="left"><input id="textInputFile" type="text" style="width: 100%;text-align:left"></input></td><td width="5%" align="left"><button onclick='RunExe("SearchInputFile"); return false;'>Search</button></td><td width="40%" align="left" style="color:red" id="errorInputFile"></td></tr>
     </table>
     <p></p>
     </div>
@@ -48,6 +48,7 @@
       case "SearchJobName": SearchJobName(); break;
       case "SearchPackage": SearchPackage(); break;
       case "SearchBatFile": SearchBatFile(); break;
+      case "SearchInputFile": SearchInputFile(); break;
       }
     }
             
@@ -197,6 +198,49 @@
                         textBatFile.value = aResult[2];
                     }
                     searchFlatFile(textBatFile.value, flatfilelist);
+                }
+            }
+          }
+      }
+      txtFile.send(null);
+    }
+    
+    function SearchInputFile() {
+      var sTextInputFile = textInputFile.value;
+      sTextInputFile = sTextInputFile.toUpperCase();
+      ClearTextBoxes();
+      textInputFile.value = sTextInputFile;
+      
+      var txtFile = new XMLHttpRequest();
+      txtFile.open("GET", flatfilelist, true);
+      txtFile.onreadystatechange = function() {
+          if (txtFile.readyState === 4) {  // Makes sure the document is ready to parse.
+            if (txtFile.status === 200) {  // Makes sure it's found the file.
+                lines = txtFile.responseText.split("\n"); // Will separate each line into an array
+                var sResult = "";
+                var j = 0;
+                for (i = 0; i < lines.length; i++) {
+                    if (lines[i]!="") {
+                        var sLine = lines[i].toUpperCase();
+                        var aLine = sLine.split(";");
+                        if (aLine[2].indexOf(sTextInputFile)>=0) {
+                            if(sResult==""){sResult = lines[i];}
+                            document.getElementById('textarea').value += lines[i]+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
+                            j++;
+                            if(j>49) {break;}
+                        }
+                    }
+                }
+                if (sResult=="") {
+                    errorInputFile.innerHTML = "Not Found";
+                } else {
+                    var aResult = sResult.split(";");
+                    if (aResult[0].length!=0) {
+                        textBatFile.value = aResult[0];
+                    }
+                    if (aResult[2].length!=0) {
+                        textInputFile.value = aResult[2];
+                    }
                 }
             }
           }
