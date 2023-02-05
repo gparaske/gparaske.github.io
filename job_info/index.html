@@ -6,7 +6,7 @@
     th, td {padding: 10px;}
     </style></head><body>
     <div style="background-color:lightblue;color:darkgrey;padding:1px;text-align:center;background-image: url('css/pexels-photo-355423.jpeg');background-size: cover;background-position: center;">
-    <img src='css/logo.png' alt='logo'><h4>JOB INFO v18</h4></div>
+    <img src='css/logo.png' alt='logo'><h4>JOB INFO v19</h4></div>
     <input id="openFileDialog" type="file" name="name" style="display: none;" />
     
     <button class="collapsible">JOB DETAILS</button><div class="content">
@@ -59,28 +59,6 @@
     }
             
     function SearchJobName(){
-        /*
-      var textJobName = document.getElementById('textJobName');
-      var sTextJobName = textJobName.value;
-      sTextJobName = sTextJobName.toUpperCase();
-      textJobName.value = sTextJobName;
-      var textPackage = document.getElementById('textPackage');
-      textPackage.value = "";
-      var textBatFile = document.getElementById('textBatFile');
-      textBatFile.value = "";
-      document.getElementById('textarea').value = "";
-      var textInputFile = document.getElementById('textInputFile');
-      textInputFile.value = "";
-      
-      var textErrorJobName = document.getElementById('errorJobName');
-      textErrorJobName.innerHTML = "";
-      var textErrorPackage = document.getElementById('errorPackage');
-      textErrorPackage.innerHTML = "";
-      var textErrorBatFile = document.getElementById('errorBatFile');
-      textErrorBatFile.innerHTML = "";
-      var textErrorInputFile = document.getElementById('errorInputFile');
-      textErrorInputFile.innerHTML = "";
-      */
       var sTextJobName = textJobName.value;
       sTextJobName = sTextJobName.toUpperCase();
       ClearTextBoxes();
@@ -117,11 +95,7 @@
                     }
                     if (aResult[3].length!=0) {
                         textBatFile.value = aResult[2];
-                        //  S000013845 WINSCHED EDW EDWPDF0E OUTPUT.LOG
-                        //readTextFile("file:///C:/your/path/to/file.txt");
-                        //readTextFile("file://///S000013845/WINSCHED/EDW/EDWPDF0E/OUTPUT.LOG");
                     }
-                    //document.getElementById('textarea').value += sTextJobName+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
                     document.getElementById('textarea').value += sResult+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
                 }
             }
@@ -146,14 +120,16 @@
                 var sResult = "";
                 for (i = 0; i < lines.length; i++) {
                     if (lines[i]!="") {
-                        if (lines[i].substring(0, sTextJobName.length)==sTextJobName) {
+                        var sLine = lines[i].toUpperCase();
+                        var aLine = sLine.split(";");
+                        if (aLine[1].indexOf(sTextPackage)>=0) {
                             sResult = lines[i];
                             break;
                         }
                     }
                 }
                 if (sResult=="") {
-                    textErrorJobName.innerHTML = "Not Found";
+                    textErrorPackage.innerHTML = "Not Found";
                 } else {
                     var aResult = sResult.split(";");
                     if (aResult[0].length!=0) {
@@ -167,11 +143,7 @@
                     }
                     if (aResult[3].length!=0) {
                         textBatFile.value = aResult[2];
-                        //  S000013845 WINSCHED EDW EDWPDF0E OUTPUT.LOG
-                        //readTextFile("file:///C:/your/path/to/file.txt");
-                        //readTextFile("file://///S000013845/WINSCHED/EDW/EDWPDF0E/OUTPUT.LOG");
                     }
-                    //document.getElementById('textarea').value += sTextJobName+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
                     document.getElementById('textarea').value += sResult+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
                 }
             }
