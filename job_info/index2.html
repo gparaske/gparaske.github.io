@@ -6,7 +6,7 @@
     th, td {padding: 10px;}
     </style></head><body>
     <div style="background-color:lightblue;color:darkgrey;padding:1px;text-align:center;background-image: url('css/pexels-photo-355423.jpeg');background-size: cover;background-position: center;">
-    <img src='css/logo.png' alt='logo'><h4>JOB INFO v13</h4></div>
+    <img src='css/logo.png' alt='logo'><h4>JOB INFO v14</h4></div>
     <input id="openFileDialog" type="file" name="name" style="display: none;" />
     
     <button class="collapsible">JOB DETAILS</button><div class="content">
@@ -113,7 +113,7 @@
                         textBatFile.value = aResult[2];
                         //  S000013845 WINSCHED EDW EDWPDF0E OUTPUT.LOG
                         //readTextFile("file:///C:/your/path/to/file.txt");
-                        readTextFile("file://///S000013845/WINSCHED/EDW/EDWPDF0E/OUTPUT.LOG");
+                        //readTextFile("file://///S000013845/WINSCHED/EDW/EDWPDF0E/OUTPUT.LOG");
                     }
                     //document.getElementById('textarea').value += sTextJobName+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
                     document.getElementById('textarea').value += sResult+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
@@ -123,7 +123,25 @@
       }
       txtFile.send(null);
     }
-
+            
+    function OpenBatFileFolder(){
+      var textErrorBatFile = document.getElementById('errorBatFile');
+      textErrorBatFile.innerHTML = "";
+      var textBatFile = document.getElementById('textBatFile');
+      if(textBatFile.value!=''){
+        var rawFile = new XMLHttpRequest();
+        rawFile.open("GET", GetFolderName(textBatFile.value), true);
+        //shell.run(GetFolderName(textBatFile.value),1,true);
+      } else {
+        textErrorBatFile.innerHTML = "BatFile is empty";
+      }
+    }
+            
+    function GetFolderName(sFileName){
+      var lastChar = strReverse(sFileName).indexOf("\\");
+      return sFileName.substr(0, sFileName.length - lastChar);
+    }
+            
     function readTextFile(file) {
         var rawFile = new XMLHttpRequest();
         //rawFile.open("GET", file, false);
@@ -141,30 +159,18 @@
         rawFile.send(null);
     }            
             
-        function main() {
-      //
-      //
-      // 
-      //
-      //
-      var coll = document.getElementsByClassName("collapsible"); var k;
-      for (k = 0; k < coll.length; k++) {
-        coll[k].addEventListener("click", function() {
-        this.classList.toggle("active");
-        var content = this.nextElementSibling;
-        if (content.style.display === "block") {
-        content.style.display = "none";
-        } else {
-        content.style.display = "block";
-        }
-          }
-        );
-      }
-    
+    function main() {
+        var coll = document.getElementsByClassName("collapsible"); var k;
+        for (k = 0; k < coll.length; k++) {
+            coll[k].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {content.style.display = "none";} else {content.style.display = "block";}
+            });
+        }    
     }
     
     main();
-    
     
         </script>
     <div style='background-color:lightblue;color:white;padding:1px;text-align:right;font-weight:bold'>
