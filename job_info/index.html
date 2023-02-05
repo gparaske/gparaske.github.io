@@ -5,8 +5,8 @@
     th {background-color:lightblue;color:white;border-collapse: collapse;}
     th, td {padding: 10px;}
     </style></head><body>
-    <div style="background-color:lightblue;color:darkgrey;padding:1px;text-align:center;background-image: url('css/pexels-photo-355423.jpeg');background-size: cover;background-position: center;">
-    <img src='css/logo.png' alt='logo'><h4>JOB INFO v20</h4></div>
+    <div style="background-color:lightblue;color:darkgrey;padding:1px;text-align:center;background-image: url('./css/pexels-photo-355423.jpeg');background-size: cover;background-position: center;">
+    <img src='./css/logo.png' alt='logo'><h4>JOB INFO v21</h4></div>
     <input id="openFileDialog" type="file" name="name" style="display: none;" />
     
     <button class="collapsible">JOB DETAILS</button><div class="content">
@@ -75,8 +75,9 @@
                 for (i = 0; i < lines.length; i++) {
                     if (lines[i]!="") {
                         if (lines[i].substring(0, sTextJobName.length)==sTextJobName) {
-                            sResult = lines[i];
-                            break;
+                            if(sResult==""){sResult = lines[i];}
+                            document.getElementById('textarea').value += lines[i]+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
+                            //break;
                         }
                     }
                 }
@@ -93,10 +94,6 @@
                     if (aResult[2].length!=0) {
                         textBatFile.value = aResult[2];
                     }
-                    if (aResult[3].length!=0) {
-                        textBatFile.value = aResult[2];
-                    }
-                    document.getElementById('textarea').value += sResult+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
                 }
             }
           }
@@ -123,8 +120,9 @@
                         var sLine = lines[i].toUpperCase();
                         var aLine = sLine.split(";");
                         if (aLine[1].indexOf(sTextPackage)>=0) {
-                            sResult = lines[i];
-                            break;
+                            if(sResult==""){sResult = lines[i];}
+                            document.getElementById('textarea').value += lines[i]+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
+                            //break;
                         }
                     }
                 }
@@ -141,10 +139,6 @@
                     if (aResult[2].length!=0) {
                         textBatFile.value = aResult[2];
                     }
-                    if (aResult[3].length!=0) {
-                        textBatFile.value = aResult[2];
-                    }
-                    document.getElementById('textarea').value += sResult+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
                 }
             }
           }
@@ -152,6 +146,50 @@
       txtFile.send(null);
     }
             
+    function SearchBatFile(){
+      var sTextBatFile = textBatFile.value;
+      sTextBatFile = sTextBatFile.toUpperCase();
+      ClearTextBoxes();
+      textBatFile.value = sTextBatFile;
+      
+      var txtFile = new XMLHttpRequest();
+      txtFile.open("GET", jobdatalist, true);
+      txtFile.onreadystatechange = function() {
+          if (txtFile.readyState === 4) {  // Makes sure the document is ready to parse.
+            if (txtFile.status === 200) {  // Makes sure it's found the file.
+                //allText = txtFile.responseText;
+                lines = txtFile.responseText.split("\n"); // Will separate each line into an array
+                var sResult = "";
+                for (i = 0; i < lines.length; i++) {
+                    if (lines[i]!="") {
+                        var sLine = lines[i].toUpperCase();
+                        var aLine = sLine.split(";");
+                        if (aLine[2].indexOf(sTextBatFile)>=0) {
+                            if(sResult==""){sResult = lines[i];}
+                            document.getElementById('textarea').value += lines[i]+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
+                            //break;
+                        }
+                    }
+                }
+                if (sResult=="") {
+                    textErrorBatFile.innerHTML = "Not Found";
+                } else {
+                    var aResult = sResult.split(";");
+                    if (aResult[0].length!=0) {
+                        textJobName.value = aResult[0];
+                    }
+                    if (aResult[1].length!=0) {
+                        textPackage.value = aResult[1];
+                    }
+                    if (aResult[2].length!=0) {
+                        textBatFile.value = aResult[2];
+                    }
+                }
+            }
+          }
+      }
+      txtFile.send(null);
+    }
             
     function OpenBatFileFolder(){
       var textErrorBatFile = document.getElementById('errorBatFile');
