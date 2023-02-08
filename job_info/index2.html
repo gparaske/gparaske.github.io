@@ -6,96 +6,140 @@
     th, td {padding: 10px;}
     </style></head><body>
     <div style="background-color:lightblue;color:darkgrey;padding:1px;text-align:center;background-image: url('css/pexels-photo-355423.jpeg');background-size: cover;background-position: center;">
-    <img src='css/logo.png' alt='logo'><h4>JOB INFO v17</h4></div>
-    <input id="openFileDialog" type="file" name="name" style="display: none;" />
+        <p></p>
+        <p><h4>EDW</h4></p>
+        <p></p>
+        <p><h4>JOB INFO v0.35</h4></p>
+    </div>
     
     <button class="collapsible">JOB DETAILS</button><div class="content">
     <p></p>
     <table id="tbl_job" style="width: 100%;text-align:left" align="left" valign:"top">
-    <tr><td width="10%" align="left">Job Name:</td><td width="30%" align="left"><input id="textJobName" type="text" value="EDWPDF0E" style="width: 100%;text-align:left"></input></td><td width="5%" align="left"><button onclick='RunExe("SearchJobName"); return false;'>Search</button></td><td width="5%" align="left"></td><td width="5%" align="left"></td><td width="5%" align="left"></td><td width="40%" align="left" style="color:red" id="errorJobName"></td></tr>
-    <tr><td width="10%" align="left">Package:</td><td width="30%" align="left"><input id="textPackage" type="text" value="" style="width: 100%;text-align:left"></input></td><td width="5%" align="left"><button onclick='RunExe("SearchPackage"); return false;'>Search</button></td><td width="5%" align="left"><button onclick='RunExe("OpenPackage"); return false;'>Open</button></td><td width="5%" align="left"><button onclick='RunExe("OpenPackageFolder"); return false;'>Folder</button></td><td width="5%" align="left"><button onclick='RunExe("CopyPackage"); return false;'>Copy</button></td><td width="40%" align="left" style="color:red" id="errorPackage"></td></tr>
-    <tr><td width="10%" align="left">Bat File:</td><td width="30%" align="left"><input id="textBatFile" type="text" value="" style="width: 100%;text-align:left"></input></td><td width="5%" align="left"><button onclick='RunExe("SearchBatFile"); return false;'>Search</button></td><td width="5%" align="left"><button onclick='RunExe("OpenBatFile"); return false;'>Open</button></td><td width="5%" align="left"><button onclick='RunExe("OpenBatFileFolder"); return false;'>Folder</button></td><td width="5%" align="left"><button onclick='RunExe("CopyBatFile"); return false;'>Copy</button></td><td width="40%" align="left" style="color:red" id="errorBatFile"></td></tr>
-    <tr><td width="10%" align="left">Input File:</td><td width="30%" align="left"><input id="textInputFile" type="text" style="width: 100%;text-align:left"></input></td><td width="5%" align="left"><button hidden=true onclick='RunExe("CheckIncident"); return false;'>Search</button></td><td width="5%" align="left"></td><td width="5%" align="left"></td><td width="5%" align="left"></td><td width="40%" align="left" style="color:red" id="errorInputFile"></td></tr>
-    <tr><td width="10%" align="left"></td><td width="30%" align="left"></td><td width="5%" align="left"><button onclick='RunExe("FileSubmit"); return false;'>Submit</button></td><td width="5%" align="left"></td><td width="5%" align="left"></td><td width="5%" align="left"></td><td width="40%" align="left" style="color:red"></td></tr>
+    <tr><td width="10%" align="left">Job Name:</td><td width="30%" align="left"><input id="textJobName" type="text" value="" style="width: 100%;text-align:left"></input></td><td width="5%" align="left"><button onclick='RunExe("SearchJobName"); return false;'>Search</button></td><td width="40%" align="left" style="color:red" id="errorJobName"></td></tr>
+    <tr><td width="10%" align="left">Package:</td><td width="30%" align="left"><input id="textPackage" type="text" value="" style="width: 100%;text-align:left"></input></td><td width="5%" align="left"><button onclick='RunExe("SearchPackage"); return false;'>Search</button></td><td width="40%" align="left" style="color:red" id="errorPackage"></td></tr>
+    <tr><td width="10%" align="left">Bat File:</td><td width="30%" align="left"><input id="textBatFile" type="text" value="" style="width: 100%;text-align:left"></input></td><td width="5%" align="left"><button onclick='RunExe("SearchBatFile"); return false;'>Search</button></td><td width="40%" align="left" style="color:red" id="errorBatFile"></td></tr>
+    <tr><td width="10%" align="left">Input File:</td><td width="30%" align="left"><input id="textInputFile" type="text" style="width: 100%;text-align:left"></input></td><td width="5%" align="left"><button onclick='RunExe("SearchInputFile"); return false;'>Search</button></td><td width="40%" align="left" style="color:red" id="errorInputFile"></td></tr>
+    <tr><td width="10%" align="left">Output File:</td><td width="30%" align="left"><input id="textOutputFile" type="text" style="width: 100%;text-align:left"></input></td><td width="5%" align="left"><button onclick='RunExe("SearchOutputFile"); return false;'>Search</button></td><td width="40%" align="left" style="color:red" id="errorOutputFile"></td></tr>
     </table>
     <p></p>
     </div>
     
-    <button class="collapsible">SEND MAIL</button><div class="content">
-    <p></p>
-    <table id="tbl_job" style="width: 100%;text-align:left" align="left" valign:"top">
-    <tr><td width="10%" align="left">Incident:</td><td width="30%" align="left"><input id="textIncident" type="text" style="width: 100%;text-align:left"></input></td><td width="5%" align="left"><button hidden=true onclick='RunExe("CheckIncident"); return false;'>Search</button></td><td width="55%" align="left" style="color:red" id="errorIncident"></td></tr>
-    <tr><td width="10%" align="left"></td><td width="30%" align="left"></td><td width="5%" align="left"><button onclick='RunExe("FileSubmit"); return false;'>Submit</button></td><td width="55%" align="left" style="color:red"></td></tr>
-    </table>
-    <p></p>
-    </div>
-    
-    <button class="collapsible">OUTPUT LOG</button><div class="content">
+    <button class="collapsible">LOG</button><div class="content">
     <p></p>
     <textarea id="textarea" name="textarea" style="width: 100%;text-align:left" align="center" valign:"top" rows="14" cols="150"></textarea>
     <p></p>
     </div>
     
-<Custom-Item>Custom Item</Custom-Item>
-<Custom-Item2>Custom Item2</Custom-Item2>
-
         <script type="text/javascript">
     var jobdatalist = "./data/Convert Control M xml to CA7 Bat list.txt";
+    var flatfilelist = "./data/Full FlatFileName S000013845.csv";
     var lines;
+            
+    var textJobName = document.getElementById('textJobName');
+    var textPackage = document.getElementById('textPackage');
+    var textBatFile = document.getElementById('textBatFile');
+    var textInputFile = document.getElementById('textInputFile');
+    var textOutputFile = document.getElementById('textOutputFile');
+    var textErrorJobName = document.getElementById('errorJobName');
+    var textErrorPackage = document.getElementById('errorPackage');
+    var textErrorBatFile = document.getElementById('errorBatFile');
+    var textErrorInputFile = document.getElementById('errorInputFile');
+    var textErrorOutputFile = document.getElementById('errorOutputFile');
     
     function RunExe(index){
       switch(index) {
       case "SearchJobName": SearchJobName(); break;
       case "SearchPackage": SearchPackage(); break;
       case "SearchBatFile": SearchBatFile(); break;
-      case "OpenPackage": OpenPackage(); break;
-      case "OpenPackageFolder": OpenPackageFolder(); break;
-      case "CopyPackage": CopyPackage(); break;
-      case "OpenBatFile": OpenBatFile(); break;
-      case "OpenBatFileFolder": OpenBatFileFolder(); break;
-      case "CopyBatFile": CopyBatFile(); break;
+      case "SearchInputFile": SearchInputFile(); break;
+      case "SearchOutputFile": SearchOutputFile(); break;
       }
     }
+            
+    function ClearTextBoxes(){
+      textJobName.value = "";
+      textPackage.value = "";
+      textBatFile.value = "";
+      textInputFile.value = "";
+      textOutputFile.value = "";
+      textErrorJobName.innerHTML = "";
+      textErrorPackage.innerHTML = "";
+      textErrorBatFile.innerHTML = "";
+      textErrorInputFile.innerHTML = "";
+      textErrorOutputFile.innerHTML = "";
+      document.getElementById('textarea').value = "";
+    }
+            
     function SearchJobName(){
-      var textJobName = document.getElementById('textJobName');
       var sTextJobName = textJobName.value;
       sTextJobName = sTextJobName.toUpperCase();
+      ClearTextBoxes();
       textJobName.value = sTextJobName;
-      var textPackage = document.getElementById('textPackage');
-      textPackage.value = "";
-      var textBatFile = document.getElementById('textBatFile');
-      textBatFile.value = "";
-      document.getElementById('textarea').value = "";
-      var textInputFile = document.getElementById('textInputFile');
-      textInputFile.value = "";
       
-      var textErrorJobName = document.getElementById('errorJobName');
-      textErrorJobName.innerHTML = "";
-      var textErrorPackage = document.getElementById('errorPackage');
-      textErrorPackage.innerHTML = "";
-      var textErrorBatFile = document.getElementById('errorBatFile');
-      textErrorBatFile.innerHTML = "";
-      var textErrorInputFile = document.getElementById('errorInputFile');
-      textErrorInputFile.innerHTML = "";
-      
-      sFileNameFrom = "";
-      sFileNameCopy = "";
-      sPackageNameList = "";
-      sFileOutgoingList = "";
-    
       var txtFile = new XMLHttpRequest();
-      txtFile.open("GET", jobdatalist, true);
+      txtFile.open("GET", jobdatalist, false);
       txtFile.onreadystatechange = function() {
           if (txtFile.readyState === 4) {  // Makes sure the document is ready to parse.
             if (txtFile.status === 200) {  // Makes sure it's found the file.
                 //allText = txtFile.responseText;
                 lines = txtFile.responseText.split("\n"); // Will separate each line into an array
                 var sResult = "";
+                var j = 0;
                 for (i = 0; i < lines.length; i++) {
                     if (lines[i]!="") {
                         if (lines[i].substring(0, sTextJobName.length)==sTextJobName) {
-                            sResult = lines[i];
-                            break;
+                            if(sResult==""){sResult = lines[i];}
+                            document.getElementById('textarea').value += lines[i]+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
+                            j++;
+                            if(j>49) {break;}
+                        }
+                    }
+                }
+                if (sResult=="") {
+                    textErrorJobName.innerHTML = "Not Found";
+                } else {
+                    var aResult = sResult.split(";");
+                    if (aResult[0].length!=0) {
+                        textJobName.value = aResult[0];
+                    }
+                    if (aResult[1].length!=0) {
+                        textPackage.value = aResult[1];
+                    }
+                    if (aResult[2].length!=0) {
+                        textBatFile.value = aResult[2];
+                    }
+                    searchFlatFile(textBatFile.value, flatfilelist);
+                }
+            }
+          }
+      }
+      txtFile.send(null);
+    }
+            
+    function SearchPackage(){
+      var sTextPackage = textPackage.value;
+      sTextPackage = sTextPackage.toUpperCase();
+      ClearTextBoxes();
+      textPackage.value = sTextPackage;
+      
+      var txtFile = new XMLHttpRequest();
+      txtFile.open("GET", jobdatalist, false);
+      txtFile.onreadystatechange = function() {
+          if (txtFile.readyState === 4) {  // Makes sure the document is ready to parse.
+            if (txtFile.status === 200) {  // Makes sure it's found the file.
+                //allText = txtFile.responseText;
+                lines = txtFile.responseText.split("\n"); // Will separate each line into an array
+                var sResult = "";
+                var j = 0;
+                for (i = 0; i < lines.length; i++) {
+                    if (lines[i]!="") {
+                        var sLine = lines[i].toUpperCase();
+                        var aLine = sLine.split(";");
+                        if (aLine[1].indexOf(sTextPackage)>=0) {
+                            if(sResult==""){sResult = lines[i];}
+                            document.getElementById('textarea').value += lines[i]+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
+                            j++;
+                            if(j>49) {break;}
                         }
                     }
                 }
@@ -112,19 +156,190 @@
                     if (aResult[2].length!=0) {
                         textBatFile.value = aResult[2];
                     }
-                    if (aResult[3].length!=0) {
-                        textBatFile.value = aResult[2];
-                        //  S000013845 WINSCHED EDW EDWPDF0E OUTPUT.LOG
-                        //readTextFile("file:///C:/your/path/to/file.txt");
-                        //readTextFile("file://///S000013845/WINSCHED/EDW/EDWPDF0E/OUTPUT.LOG");
-                    }
-                    //document.getElementById('textarea').value += sTextJobName+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
-                    document.getElementById('textarea').value += sResult+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
+                    searchFlatFile(textBatFile.value, flatfilelist);
                 }
             }
           }
       }
       txtFile.send(null);
+    }
+            
+    function SearchBatFile(){
+      var sTextBatFile = textBatFile.value;
+      sTextBatFile = sTextBatFile.toUpperCase();
+      ClearTextBoxes();
+      textBatFile.value = sTextBatFile;
+      
+      var txtFile = new XMLHttpRequest();
+      txtFile.open("GET", jobdatalist, false);
+      txtFile.onreadystatechange = function() {
+          if (txtFile.readyState === 4) {  // Makes sure the document is ready to parse.
+            if (txtFile.status === 200) {  // Makes sure it's found the file.
+                //allText = txtFile.responseText;
+                lines = txtFile.responseText.split("\n"); // Will separate each line into an array
+                var sResult = "";
+                var j = 0;
+                for (i = 0; i < lines.length; i++) {
+                    if (lines[i]!="") {
+                        var sLine = lines[i].toUpperCase();
+                        var aLine = sLine.split(";");
+                        if (aLine[2].indexOf(sTextBatFile)>=0) {
+                            if(sResult==""){sResult = lines[i];}
+                            document.getElementById('textarea').value += lines[i]+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
+                            j++;
+                            if(j>49) {break;}
+                        }
+                    }
+                }
+                if (sResult=="") {
+                    textErrorBatFile.innerHTML = "Not Found";
+                } else {
+                    var aResult = sResult.split(";");
+                    if (aResult[0].length!=0) {
+                        textJobName.value = aResult[0];
+                    }
+                    if (aResult[1].length!=0) {
+                        textPackage.value = aResult[1];
+                    }
+                    if (aResult[2].length!=0) {
+                        textBatFile.value = aResult[2];
+                    }
+                    searchFlatFile(textBatFile.value, flatfilelist);
+                }
+            }
+          }
+      }
+      txtFile.send(null);
+    }
+    
+    function SearchInputFile() {
+      var sTextInputFile = textInputFile.value;
+      sTextInputFile = sTextInputFile.toUpperCase();
+      ClearTextBoxes();
+      textInputFile.value = sTextInputFile;
+      
+      var txtFile = new XMLHttpRequest();
+      //txtFile.open("GET", flatfilelist, true);
+      txtFile.open("GET", flatfilelist, false);
+      txtFile.onreadystatechange = function() {
+          if (txtFile.readyState === 4) {  // Makes sure the document is ready to parse.
+            if (txtFile.status === 200) {  // Makes sure it's found the file.
+                lines = txtFile.responseText.split("\n"); // Will separate each line into an array
+                //var k = lines.length;
+                //document.getElementById('textarea').value += k.toString();+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
+                var sResult = "";
+                var j = 0;
+                for (i = 0; i < lines.length; i++) {
+                    if (lines[i]!="") {
+                        var sLine = lines[i].toUpperCase();
+                        var aLine = sLine.split(";");
+                        if (aLine[2].indexOf(sTextInputFile)>=0) {
+                            if(sResult==""){sResult = lines[i];}
+                            document.getElementById('textarea').value += lines[i]+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
+                            j++;
+                            if(j>49) {break;}
+                        }
+                    }
+                }
+                if (sResult=="") {
+                    errorInputFile.innerHTML = "Not Found";
+                } else {
+                    var aResult = sResult.split(";");
+                    if (aResult[0].length!=0) {
+                        textBatFile.value = aResult[0];
+                    }
+                    if (aResult[2].length!=0) {
+                        textInputFile.value = aResult[2];
+                    }
+                    if (aResult[3].length!=0) {
+                        textOutputFile.value = aResult[3];
+                    }
+                }
+            }
+          }
+      }
+      txtFile.send(null);
+    }
+
+    function SearchOutputFile() {
+      var sTextOutputFile = textInputFile.value;
+      sTextOutputFile = sTextOutputFile.toUpperCase();
+      ClearTextBoxes();
+      textOutputFile.value = sTextOutputFile;
+      
+      var txtFile = new XMLHttpRequest();
+      //txtFile.open("GET", flatfilelist, true);
+      txtFile.open("GET", flatfilelist, false);
+      txtFile.onreadystatechange = function() {
+          if (txtFile.readyState === 4) {  // Makes sure the document is ready to parse.
+            if (txtFile.status === 200) {  // Makes sure it's found the file.
+                lines = txtFile.responseText.split("\n"); // Will separate each line into an array
+                //var k = lines.length;
+                //document.getElementById('textarea').value += k.toString();+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
+                var sResult = "";
+                var j = 0;
+                for (i = 0; i < lines.length; i++) {
+                    if (lines[i]!="") {
+                        var sLine = lines[i].toUpperCase();
+                        var aLine = sLine.split(";");
+                        if (aLine[3].indexOf(sTextOutputFile)>=0) {
+                            if(sResult==""){sResult = lines[i];}
+                            document.getElementById('textarea').value += lines[i]+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
+                            j++;
+                            if(j>49) {break;}
+                        }
+                    }
+                }
+                if (sResult=="") {
+                    errorOutputFile.innerHTML = "Not Found";
+                } else {
+                    var aResult = sResult.split(";");
+                    if (aResult[0].length!=0) {
+                        textBatFile.value = aResult[0];
+                    }
+                    if (aResult[2].length!=0) {
+                        textInputFile.value = aResult[2];
+                    }
+                    if (aResult[3].length!=0) {
+                        textOutputFile.value = aResult[3];
+                    }
+                }
+            }
+          }
+      }
+      txtFile.send(null);
+    }
+            
+    function searchFlatFile(sBatFile, file) {
+        sBatFile = sBatFile.toUpperCase();
+        var rawFile = new XMLHttpRequest();
+        rawFile.open("GET", file, false);
+        rawFile.onreadystatechange = function () {
+            if(rawFile.readyState === 4) {
+                if(rawFile.status === 200 || rawFile.status == 0) {
+                    lines = rawFile.responseText.split("\n"); // Will separate each line into an array
+                    var sResult = "";
+                    var j = 0;
+                    for (i = 0; i < lines.length; i++) {
+                        if (lines[i]!="") {
+                            var sLine = lines[i].toUpperCase();
+                            if (sLine.substring(0, sBatFile.length)==sBatFile) {
+                                if(sResult==""){
+                                    sResult = lines[i];
+                                    var aResult = sResult.split(";");
+                                    textInputFile.value = aResult[2];
+                                    textOutputFile.value = aResult[3];
+                                }
+                                document.getElementById('textarea').value += lines[i]+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
+                                j++;
+                                if(j>49) {break;}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        rawFile.send(null);
     }
             
     function OpenBatFileFolder(){
@@ -147,8 +362,8 @@
             
     function readTextFile(file) {
         var rawFile = new XMLHttpRequest();
-        //rawFile.open("GET", file, false);
-        rawFile.open("GET", file, true);
+        rawFile.open("GET", file, false);
+        //rawFile.open("GET", file, true);
         rawFile.onreadystatechange = function () {
             if(rawFile.readyState === 4) {
                 if(rawFile.status === 200 || rawFile.status == 0) {
@@ -160,7 +375,7 @@
             }
         }
         rawFile.send(null);
-    }            
+    }
             
     function strReverse(str) {
         var strNew="";
@@ -184,9 +399,10 @@
     main();
     
         </script>
+
     <div style='background-color:lightblue;color:white;padding:1px;text-align:right;font-weight:bold'>
-    <p>ACTIONS <button onclick='a98.click()'><a id='a98' hidden=true href='C:\Users\e38536\Documents\Misc\vbscript\Reminder.vbs'></a>Reminder</button>
-               <button onclick='a99.click()'><a id='a99' hidden=true href='C:\html\Options.html'></a>Options</button></p></div>
+    <p></p>
+    </div>
     
     
         </body>
