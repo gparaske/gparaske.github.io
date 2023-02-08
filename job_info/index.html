@@ -6,10 +6,9 @@
     th, td {padding: 10px;}
     </style></head><body>
     <div style="background-color:lightblue;color:darkgrey;padding:1px;text-align:center;background-image: url('css/pexels-photo-355423.jpeg');background-size: cover;background-position: center;">
-        <p></p>
         <p><h4>EDW</h4></p>
         <p></p>
-        <p><h4>JOB INFO v0.35</h4></p>
+        <p><h4>JOB INFO v0.36</h4></p>
     </div>
     
     <button class="collapsible">JOB DETAILS</button><div class="content">
@@ -19,6 +18,7 @@
     <tr><td width="10%" align="left">Package:</td><td width="30%" align="left"><input id="textPackage" type="text" value="" style="width: 100%;text-align:left"></input></td><td width="5%" align="left"><button onclick='RunExe("SearchPackage"); return false;'>Search</button></td><td width="40%" align="left" style="color:red" id="errorPackage"></td></tr>
     <tr><td width="10%" align="left">Bat File:</td><td width="30%" align="left"><input id="textBatFile" type="text" value="" style="width: 100%;text-align:left"></input></td><td width="5%" align="left"><button onclick='RunExe("SearchBatFile"); return false;'>Search</button></td><td width="40%" align="left" style="color:red" id="errorBatFile"></td></tr>
     <tr><td width="10%" align="left">Input File:</td><td width="30%" align="left"><input id="textInputFile" type="text" style="width: 100%;text-align:left"></input></td><td width="5%" align="left"><button onclick='RunExe("SearchInputFile"); return false;'>Search</button></td><td width="40%" align="left" style="color:red" id="errorInputFile"></td></tr>
+    <tr><td width="10%" align="left">Output File:</td><td width="30%" align="left"><input id="textOutputFile" type="text" style="width: 100%;text-align:left"></input></td><td width="5%" align="left"><button onclick='RunExe("SearchOutputFile"); return false;'>Search</button></td><td width="40%" align="left" style="color:red" id="errorOutputFile"></td></tr>
     </table>
     <p></p>
     </div>
@@ -38,10 +38,12 @@
     var textPackage = document.getElementById('textPackage');
     var textBatFile = document.getElementById('textBatFile');
     var textInputFile = document.getElementById('textInputFile');
+    var textOutputFile = document.getElementById('textOutputFile');
     var textErrorJobName = document.getElementById('errorJobName');
     var textErrorPackage = document.getElementById('errorPackage');
     var textErrorBatFile = document.getElementById('errorBatFile');
     var textErrorInputFile = document.getElementById('errorInputFile');
+    var textErrorOutputFile = document.getElementById('errorOutputFile');
     
     function RunExe(index){
       switch(index) {
@@ -49,6 +51,7 @@
       case "SearchPackage": SearchPackage(); break;
       case "SearchBatFile": SearchBatFile(); break;
       case "SearchInputFile": SearchInputFile(); break;
+      case "SearchOutputFile": SearchOutputFile(); break;
       }
     }
             
@@ -57,10 +60,12 @@
       textPackage.value = "";
       textBatFile.value = "";
       textInputFile.value = "";
+      textOutputFile.value = "";
       textErrorJobName.innerHTML = "";
       textErrorPackage.innerHTML = "";
       textErrorBatFile.innerHTML = "";
       textErrorInputFile.innerHTML = "";
+      textErrorOutputFile.innerHTML = "";
       document.getElementById('textarea').value = "";
     }
             
@@ -245,6 +250,58 @@
                     if (aResult[2].length!=0) {
                         textInputFile.value = aResult[2];
                     }
+                    if (aResult[3].length!=0) {
+                        textOutputFile.value = aResult[3];
+                    }
+                }
+            }
+          }
+      }
+      txtFile.send(null);
+    }
+
+    function SearchOutputFile() {
+      var sTextOutputFile = textOutputFile.value;
+      sTextOutputFile = sTextOutputFile.toUpperCase();
+      ClearTextBoxes();
+      textOutputFile.value = sTextOutputFile;
+      
+      var txtFile = new XMLHttpRequest();
+      //txtFile.open("GET", flatfilelist, true);
+      txtFile.open("GET", flatfilelist, false);
+      txtFile.onreadystatechange = function() {
+          if (txtFile.readyState === 4) {  // Makes sure the document is ready to parse.
+            if (txtFile.status === 200) {  // Makes sure it's found the file.
+                lines = txtFile.responseText.split("\n"); // Will separate each line into an array
+                //var k = lines.length;
+                //document.getElementById('textarea').value += k.toString();+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
+                var sResult = "";
+                var j = 0;
+                for (i = 0; i < lines.length; i++) {
+                    if (lines[i]!="") {
+                        var sLine = lines[i].toUpperCase();
+                        var aLine = sLine.split(";");
+                        if (aLine[3].indexOf(sTextOutputFile)>=0) {
+                            if(sResult==""){sResult = lines[i];}
+                            document.getElementById('textarea').value += lines[i]+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
+                            j++;
+                            if(j>49) {break;}
+                        }
+                    }
+                }
+                if (sResult=="") {
+                    errorOutputFile.innerHTML = "Not Found";
+                } else {
+                    var aResult = sResult.split(";");
+                    if (aResult[0].length!=0) {
+                        textBatFile.value = aResult[0];
+                    }
+                    if (aResult[2].length!=0) {
+                        textInputFile.value = aResult[2];
+                    }
+                    if (aResult[3].length!=0) {
+                        textOutputFile.value = aResult[3];
+                    }
                 }
             }
           }
@@ -270,6 +327,7 @@
                                     sResult = lines[i];
                                     var aResult = sResult.split(";");
                                     textInputFile.value = aResult[2];
+                                    textOutputFile.value = aResult[3];
                                 }
                                 document.getElementById('textarea').value += lines[i]+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
                                 j++;
