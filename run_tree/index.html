@@ -8,17 +8,14 @@
     <div style="background-color:lightblue;color:darkgrey;padding:1px;text-align:center;background-image: url('../job_info/css/pexels-photo-355423.jpeg');background-size: cover;background-position: center;">
         <p><h4>EDW</h4></p>
         <p></p>
-        <p><h4>RUN TREE v0.2</h4></p>
+        <p><h4>RUN TREE v0.3</h4></p>
     </div>
     
     <button class="collapsible">JOB DETAILS</button><div class="content">
     <p></p>
     <table id="tbl_job" style="width: 100%;text-align:left" align="left" valign:"top">
-    <tr><td width="10%" align="left">Job Name:</td><td width="30%" align="left"><input id="textJobName" type="text" value="" style="width: 100%;text-align:left"></input></td><td width="5%" align="left"><button onclick='RunExe("SearchJobName"); return false;'>Search</button></td><td width="40%" align="left" style="color:red" id="errorJobName"></td></tr>
-    <tr><td width="10%" align="left">Package:</td><td width="30%" align="left"><input id="textPackage" type="text" value="" style="width: 100%;text-align:left"></input></td><td width="5%" align="left"><button onclick='RunExe("SearchPackage"); return false;'>Search</button></td><td width="40%" align="left" style="color:red" id="errorPackage"></td></tr>
-    <tr><td width="10%" align="left">Bat File:</td><td width="30%" align="left"><input id="textBatFile" type="text" value="" style="width: 100%;text-align:left"></input></td><td width="5%" align="left"><button onclick='RunExe("SearchBatFile"); return false;'>Search</button></td><td width="40%" align="left" style="color:red" id="errorBatFile"></td></tr>
-    <tr><td width="10%" align="left">Input File:</td><td width="30%" align="left"><input id="textInputFile" type="text" style="width: 100%;text-align:left"></input></td><td width="5%" align="left"><button onclick='RunExe("SearchInputFile"); return false;'>Search</button></td><td width="40%" align="left" style="color:red" id="errorInputFile"></td></tr>
-    <tr><td width="10%" align="left">Output File:</td><td width="30%" align="left"><input id="textOutputFile" type="text" style="width: 100%;text-align:left"></input></td><td width="5%" align="left"><button onclick='RunExe("SearchOutputFile"); return false;'>Search</button></td><td width="40%" align="left" style="color:red" id="errorOutputFile"></td></tr>
+    <tr><td width="10%" align="left">Name:</td><td width="30%" align="left"><input id="textUserName" type="text" value="" style="width: 100%;text-align:left"></input></td><td width="5%" align="left"></td><td width="40%" align="left" style="color:red" id="errorUserName"></td></tr>
+    <tr><td width="10%" align="left">Reason:</td><td width="30%" align="left"><input id="textReason" type="text" value="" style="width: 100%;text-align:left"></input></td><td width="5%" align="left"><button onclick='RunExe("Submit"); return false;'>Submit</button></td><td width="40%" align="left" style="color:red" id="errorReason"></td></tr>
     </table>
     <p></p>
     </div>
@@ -34,46 +31,30 @@
     var flatfilelist = "./data/Full FlatFileName S000013845.csv";
     var lines;
             
-    var textJobName = document.getElementById('textJobName');
-    var textPackage = document.getElementById('textPackage');
-    var textBatFile = document.getElementById('textBatFile');
-    var textInputFile = document.getElementById('textInputFile');
-    var textOutputFile = document.getElementById('textOutputFile');
-    var textErrorJobName = document.getElementById('errorJobName');
-    var textErrorPackage = document.getElementById('errorPackage');
-    var textErrorBatFile = document.getElementById('errorBatFile');
-    var textErrorInputFile = document.getElementById('errorInputFile');
-    var textErrorOutputFile = document.getElementById('errorOutputFile');
+    var textUserName = document.getElementById('textUserName');
+    var textReason = document.getElementById('textReason');
+    var textErrorUserName = document.getElementById('errorUserName');
+    var textErrorReason = document.getElementById('errorReason');
     
     function RunExe(index){
       switch(index) {
-      case "SearchJobName": SearchJobName(); break;
-      case "SearchPackage": SearchPackage(); break;
-      case "SearchBatFile": SearchBatFile(); break;
-      case "SearchInputFile": SearchInputFile(); break;
-      case "SearchOutputFile": SearchOutputFile(); break;
+      case "Submit": Submit(); break;
       }
     }
             
     function ClearTextBoxes(){
-      textJobName.value = "";
-      textPackage.value = "";
-      textBatFile.value = "";
-      textInputFile.value = "";
-      textOutputFile.value = "";
-      textErrorJobName.innerHTML = "";
-      textErrorPackage.innerHTML = "";
-      textErrorBatFile.innerHTML = "";
-      textErrorInputFile.innerHTML = "";
-      textErrorOutputFile.innerHTML = "";
+      textUserName.value = "";
+      textReason.value = "";
+      textErrorUserName.innerHTML = "";
+      textErrorReason.innerHTML = "";
       document.getElementById('textarea').value = "";
     }
             
-    function SearchJobName(){
-      var sTextJobName = textJobName.value;
-      sTextJobName = sTextJobName.toUpperCase();
+    function Submit(){
+      var sTextUserName = textUserName.value;
+      sTextUserName = sTextUserName.toUpperCase();
       ClearTextBoxes();
-      textJobName.value = sTextJobName;
+      textUserName.value = sTextUserName;
       
       var txtFile = new XMLHttpRequest();
       txtFile.open("GET", jobdatalist, false);
