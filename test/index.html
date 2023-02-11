@@ -21,7 +21,7 @@ limitations under the License.
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.42</p>
+    <p>Drive API Quickstart v0.43</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -66,7 +66,7 @@ limitations under the License.
        * Callback after api.js is loaded.
        */
       function gapiLoaded() {
-            gapi.load('auth');//todo: to xreiazomai ayt;o?
+            //gapi.load('auth');//todo: to xreiazomai ayt;o?
             gapi.load('picker');
         gapi.load('client', initializeGapiClient);
       }
@@ -209,7 +209,7 @@ limitations under the License.
                 .enableFeature(google.picker.Feature.NAV_HIDDEN)
                 .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
                 .setAppId(projectNumber)
-                .setOAuthToken(oauthToken)
+                .setOAuthToken(gapi.auth.getToken().access_token)//oauthToken)
                 .addView(view)
                 .addView(new google.picker.DocsUploadView())
                 .setDeveloperKey(API_KEY)
@@ -218,6 +218,7 @@ limitations under the License.
             picker.setVisible(true);
 
             function pickerCallback(data) {
+                console.log('pickerCallback(data)');
                 if (data.action == google.picker.Action.PICKED) {
                     const fileId = data.docs[0].id;
                     console.log('Picked. FileId: ' + fileId);
