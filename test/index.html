@@ -21,7 +21,7 @@ limitations under the License.
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.59</p>
+    <p>Drive API Quickstart v0.60</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -73,7 +73,12 @@ limitations under the License.
 
         
       function handleUpdateClick() {
-	 const {google} = require('googleapis');
+	      
+//	      const OAuth2Client = google.auth.OAuth2();
+//		const { OAuth2Client } = require('google-auth-library');
+//const { google } = require('googleapis');
+
+	 const { google } = require('googleapis');
 	 //const google = new GoogleApis();
          const oauth2Client = new google.auth.OAuth2(
 	     CLIENT_ID,
