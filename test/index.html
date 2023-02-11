@@ -21,7 +21,7 @@ limitations under the License.
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.60</p>
+    <p>Drive API Quickstart v0.61</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -47,7 +47,7 @@ limitations under the License.
       //const {google} = require('googleapis');
       
         
-      const API_KEY = 'AIzaSyBDkRSDsnwp_9N-3B286Kk6o5Es1aPGB30';
+      const API_KEY = 'AIzaSyBbPwEkJBUlQU_OAmvRRLvxdQu15874Kxk';
 
       // Discovery doc URL for APIs used by the quickstart
       const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest';
@@ -78,15 +78,15 @@ limitations under the License.
 //		const { OAuth2Client } = require('google-auth-library');
 //const { google } = require('googleapis');
 
-	 const { google } = require('googleapis');
+	 //const { google } = require('googleapis');
 	 //const google = new GoogleApis();
-         const oauth2Client = new google.auth.OAuth2(
-	     CLIENT_ID,
-	     CLIENT_SECRET,
-	     REDIRECT_URI
-         );
+         //const oauth2Client = new google.auth.OAuth2(
+	 //    CLIENT_ID,
+	 //    CLIENT_SECRET,
+	 //    REDIRECT_URI
+         //);
 
-         oauth2Client.setCredentials({refresh_token: REFRESH_TOKEN});
+         //oauth2Client.setCredentials({refresh_token: REFRESH_TOKEN});
 	      
          const content = "rewrite on the same file";
          const blob = new Blob([content], { type: 'text/plain' });
@@ -130,13 +130,13 @@ limitations under the License.
        * discovery doc to initialize the API.
        */
       async function initializeGapiClient() {
-	handleUpdateClick();
-        //await gapi.client.init({
-        //  apiKey: API_KEY,
-        //  discoveryDocs: [DISCOVERY_DOC],
-        //});
-        //gapiInited = true;
-        //maybeEnableButtons();
+	//handleUpdateClick();
+        await gapi.client.init({
+          apiKey: API_KEY,
+          discoveryDocs: [DISCOVERY_DOC],
+        });
+        gapiInited = true;
+        maybeEnableButtons();
       }
 
       /**
@@ -230,7 +230,7 @@ limitations under the License.
         //upload(blob, "shared.txt", "text/plain", "1_FjxArQbw0_yJqOvaxVOvaoa59evo-j9"); // Creates github.txt in the folder (github (1).txt, etc, if exists)
           
         //createPicker();
-        update(blob, "1WwyPloRrq08bXw-rRIGg_cwOWkXh8AzJ", "text/plain", "1_FjxArQbw0_yJqOvaxVOvaoa59evo-j9");
+        //update(blob, "1WwyPloRrq08bXw-rRIGg_cwOWkXh8AzJ", "text/plain", "1_FjxArQbw0_yJqOvaxVOvaoa59evo-j9");
         //DeleteFile(); //ekane delete molis ebala sta https://developers.google.com/oauthplayground>Drive API v3>https://www.googleapis.com/auth/drive>settings>use your own credentials
         //getfile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8", "test.txt");
           
