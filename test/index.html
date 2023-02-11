@@ -21,7 +21,7 @@ limitations under the License.
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.33</p>
+    <p>Drive API Quickstart v0.35</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -162,8 +162,8 @@ limitations under the License.
           
         const content = "hello world";
         const blob = new Blob([content], { type: 'text/plain' });
-        upload(blob, "github.txt", "text/plain", "1_FjxArQbw0_yJqOvaxVOvaoa59evo-j9"); // Creates file in folder
-          
+        //upload(blob, "github.txt", "text/plain", "1_FjxArQbw0_yJqOvaxVOvaoa59evo-j9"); // Creates github.txt in the folder (github (1).txt, etc, if exists)
+        //update(blob, )
         //getfile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8", "test.txt");
           
           
@@ -192,13 +192,32 @@ limitations under the License.
       }
         
         
+ async function update(blob, name, mimeType, parents) {
+    const metadata = {
+        'name': name, // Filename at Google Drive
+        'mimeType': mimeType, // mimeType at Google Drive
+        'parents': [parents] // Folder ID at Google Drive
+    };
+    const form = new FormData();
+    form.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }));
+    form.append("file", blob);
+    //return fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&supportsAllDrives=true", {
+    return fetch("https://www.googleapis.com/upload/drive/v3/files/${id}?uploadType=media", {
+      method: "POST",
+      headers: new Headers({ Authorization: `Bearer ${gapi.auth.getToken().access_token}` }),
+      body: form,
+    }).then((res) => {
+        return res.json();
+    }).then(function (val) {
+        console.log(val);
+    });
+  }
  async function upload(blob, name, mimeType, parents) {
     const metadata = {
         'name': name, // Filename at Google Drive
         'mimeType': mimeType, // mimeType at Google Drive
         'parents': [parents] // Folder ID at Google Drive
     };
-     
     const form = new FormData();
     form.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }));
     form.append("file", blob);
