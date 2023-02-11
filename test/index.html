@@ -21,7 +21,7 @@ limitations under the License.
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.7</p>
+    <p>Drive API Quickstart v0.8</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -157,14 +157,14 @@ limitations under the License.
             'Files:\n');
         document.getElementById('content').innerText = output;
           
-                
+                getfile("0BwwA4oUTeiV1UVNwOHItT0xfa2M", "test.txt");
 //      tring fileId = "0BwwA4oUTeiV1UVNwOHItT0xfa2M";
 //OutputStream outputStream = new ByteArrayOutputStream();
 //driveService.files().get(fileId)
 //        .executeMediaAndDownloadTo(outputStream);
           
-          var buffer = Java.array('byte', downloadFile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8"));
-          document.getElementById('content').innerText += buffer;
+//          var buffer = Java.array('byte', downloadFile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8"));
+//          document.getElementById('content').innerText += buffer;
 //var bobj = new ByteArrayOutputStream();
 //bobj = downloadFile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8");
 //ByteArrayOutputStream bobj = new downloadFile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8");
@@ -182,42 +182,25 @@ limitations under the License.
           
       }
         
-  /**
-   * Download a Document file in PDF format.
-   *
-   * @param realFileId file ID of any workspace document format file.
-   * @return byte array stream if successful, {@code null} otherwise.
-   * @throws IOException if service account credentials file not found.
-   */
-  public static ByteArrayOutputStream downloadFile(String realFileId) throws IOException {
-        /* Load pre-authorized user credentials from the environment.
-           TODO(developer) - See https://developers.google.com/identity for
-          guides on implementing OAuth2 for your application.*/
-    GoogleCredentials credentials = GoogleCredentials.getApplicationDefault()
-        .createScoped(Arrays.asList(DriveScopes.DRIVE_FILE));
-    HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(
-        credentials);
-
-    // Build a new authorized API client service.
-    Drive service = new Drive.Builder(new NetHttpTransport(),
-        GsonFactory.getDefaultInstance(),
-        requestInitializer)
-        .setApplicationName("Drive samples")
-        .build();
-
-    try {
-      OutputStream outputStream = new ByteArrayOutputStream();
-
-      service.files().get(realFileId)
-          .executeMediaAndDownloadTo(outputStream);
-
-      return (ByteArrayOutputStream) outputStream;
-    } catch (GoogleJsonResponseException e) {
-      // TODO(developer) - handle error appropriately
-      System.err.println("Unable to move file: " + e.getDetails());
-      throw e;
-    }
+        
+  async function getfile(id, n) {
+    const file = await gapi.client.drive.files.get({
+      fileId: id
+    });
+  
+    console.log(`file NO ${n} is : ${file.result.name}`, file);
   }
+  function listfilesZ() {
+    gapi.client.drive.files
+      .list({
+        pageSize: 50,
+        fields: "nextPageToken, files(id, name)"
+      })
+      .then(response => {
+        console.log("list files : ", response.result);
+      });
+  }
+        
     </script>
     <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
     <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
