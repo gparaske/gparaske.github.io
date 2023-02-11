@@ -21,7 +21,7 @@ limitations under the License.
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.51</p>
+    <p>Drive API Quickstart v0.52</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -192,10 +192,10 @@ limitations under the License.
           
         const content = "rewrite on the same file";
         const blob = new Blob([content], { type: 'text/plain' });
-        upload(blob, "shared.txt", "text/plain", "1_FjxArQbw0_yJqOvaxVOvaoa59evo-j9"); // Creates github.txt in the folder (github (1).txt, etc, if exists)
+        //upload(blob, "shared.txt", "text/plain", "1_FjxArQbw0_yJqOvaxVOvaoa59evo-j9"); // Creates github.txt in the folder (github (1).txt, etc, if exists)
           
         //createPicker();
-        //update(blob, "1-1sYLRqTpFv8yEaSbsIT5MN6Nx1prEbu", "text/plain", "1_FjxArQbw0_yJqOvaxVOvaoa59evo-j9");
+        update(blob, "1WwyPloRrq08bXw-rRIGg_cwOWkXh8AzJ", "text/plain", "1_FjxArQbw0_yJqOvaxVOvaoa59evo-j9");
         //DeleteFile(); //ekane delete molis ebala sta https://developers.google.com/oauthplayground>Drive API v3>https://www.googleapis.com/auth/drive>settings>use your own credentials
         //getfile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8", "test.txt");
           
