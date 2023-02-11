@@ -21,7 +21,7 @@ limitations under the License.
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.39</p>
+    <p>Drive API Quickstart v0.40</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -48,6 +48,13 @@ limitations under the License.
       //const SCOPES = 'https://www.googleapis.com/auth/drive.metadata.readonly'; //this is only for read access
       const SCOPES = "https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.profile ";
 
+      // Replace with your Project number, copied from https://console.cloud.google.com/iam-admin/settings
+      const projectNumber = "1015412261240";
+
+      // Replace with a mime type unique to your application
+      const mimeType = `application/my.app`;
+      let oauthToken, fileId;
+        
       let tokenClient;
       let gapiInited = false;
       let gisInited = false;
@@ -163,6 +170,8 @@ limitations under the License.
         const content = "rewrite on the same file";
         const blob = new Blob([content], { type: 'text/plain' });
         //upload(blob, "github.txt", "text/plain", "1_FjxArQbw0_yJqOvaxVOvaoa59evo-j9"); // Creates github.txt in the folder (github (1).txt, etc, if exists)
+          
+        createPicker();
         update(blob, "1-1sYLRqTpFv8yEaSbsIT5MN6Nx1prEbu", "text/plain", "1_FjxArQbw0_yJqOvaxVOvaoa59evo-j9")
         //getfile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8", "test.txt");
           
@@ -191,6 +200,30 @@ limitations under the License.
           
       }
         
+      function createPicker() {
+            const view = new google.picker.View(google.picker.ViewId.DOCS);
+            view.setMimeTypes(mimeType);
+            const picker = new google.picker.PickerBuilder()
+                .enableFeature(google.picker.Feature.NAV_HIDDEN)
+                .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
+                .setAppId(projectNumber)
+                .setOAuthToken(oauthToken)
+                .addView(view)
+                .addView(new google.picker.DocsUploadView())
+                .setDeveloperKey(API_KEY)
+                .setCallback(pickerCallback)
+                .build();
+            picker.setVisible(true);
+
+            function pickerCallback(data) {
+                if (data.action == google.picker.Action.PICKED) {
+                    const fileId = data.docs[0].id;
+                    console.log('Picked. FileId: ' + fileId);
+                    get(fileId);
+                }
+            }
+      }
+        
       async function update_orig(fileId) {
             const url = 'https://www.googleapis.com/upload/drive/v3/files/' + fileId + '?uploadType=media';
             fetch(url, {
@@ -215,6 +248,7 @@ limitations under the License.
     const form = new FormData();
     form.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }));
     form.append("file", blob);
+     
     //return fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&supportsAllDrives=true", {
     //return fetch("https://www.googleapis.com/upload/drive/v3/files/${id}?uploadType=media", {
     return fetch('https://www.googleapis.com/upload/drive/v3/files/' + name + '?uploadType=media', {
