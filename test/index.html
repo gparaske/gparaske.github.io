@@ -21,7 +21,7 @@ limitations under the License.
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.6</p>
+    <p>Drive API Quickstart v0.7</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -163,17 +163,19 @@ limitations under the License.
 //driveService.files().get(fileId)
 //        .executeMediaAndDownloadTo(outputStream);
           
-var bobj = new ByteArrayOutputStream();
-bobj = downloadFile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8");
+          var buffer = Java.array('byte', downloadFile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8"));
+          document.getElementById('content').innerText += buffer;
+//var bobj = new ByteArrayOutputStream();
+//bobj = downloadFile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8");
 //ByteArrayOutputStream bobj = new downloadFile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8");
 //while( bobj.size()!= 15 )
 //{
 //    bobj.write("happy".getBytes());
 //}
-var byt [] = bobj.toByteArray();
-for(int i = 0; i<byt.length; i++) {
-    document.getElementById('content').innerText += (char)byt[i];
-}
+//var byt [] = bobj.toByteArray();
+//for(int i = 0; i<byt.length; i++) {
+//    document.getElementById('content').innerText += (char)byt[i];
+//}
           
           
           
