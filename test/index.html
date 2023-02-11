@@ -21,7 +21,7 @@ limitations under the License.
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.43</p>
+    <p>Drive API Quickstart v0.44</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -66,11 +66,31 @@ limitations under the License.
        * Callback after api.js is loaded.
        */
       function gapiLoaded() {
-            //gapi.load('auth');//todo: to xreiazomai ayt;o?
+            gapi.load('auth');//todo: to xreiazomai ayt;o?
             gapi.load('picker');
         gapi.load('client', initializeGapiClient);
+          authorize();
       }
 
+        function authorize() {
+            gapi.auth.authorize({
+                client_id: clientId,
+                scope: ['https://www.googleapis.com/auth/drive.file'],
+                immediate: false
+            },
+                result => {
+                    if (result.error) {
+                        console.log(result.error);
+                    } else {
+                        oauthToken = result.access_token;
+                        console.log(`Authorized. Token: ${oauthToken}`);
+                        document.getElementById('upload').disabled = false;
+                        document.getElementById('pick').disabled = false;
+                    }
+                }
+            );
+        }
+        
       /**
        * Callback after the API client is loaded. Loads the
        * discovery doc to initialize the API.
@@ -128,6 +148,7 @@ limitations under the License.
           tokenClient.requestAccessToken({prompt: ''});
         }
       }
+        
 
       /**
        *  Sign out the user upon button click.
@@ -209,7 +230,7 @@ limitations under the License.
                 .enableFeature(google.picker.Feature.NAV_HIDDEN)
                 .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
                 .setAppId(projectNumber)
-                .setOAuthToken(gapi.auth.getToken().access_token)//oauthToken)
+                .setOAuthToken(oauthToken)//gapi.auth.getToken().access_token)//
                 .addView(view)
                 .addView(new google.picker.DocsUploadView())
                 .setDeveloperKey(API_KEY)
