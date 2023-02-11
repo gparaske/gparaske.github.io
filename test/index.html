@@ -21,11 +21,12 @@ limitations under the License.
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.52</p>
+    <p>Drive API Quickstart v0.53</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
     <button id="signout_button" onclick="handleSignoutClick()">Sign Out</button>
+    <button id="update_button" onclick="handleUpdateClick()">Update</button>
     <input type="file" name="testfile" id="test" multiple>
       
     <pre id="content" style="white-space: pre-wrap;"></pre>
@@ -38,7 +39,20 @@ limitations under the License.
       /* exported handleSignoutClick */
 
       // TODO(developer): Set to client ID and API key from the Developer Console
-      const CLIENT_ID = '1015412261240-bulk7mskr7vh3mb0c7ss4n1544atmeei.apps.googleusercontent.com';
+      const CLIENT_ID = '477168202532-uauetshao07urggp8oogrmi1mtgc446a.apps.googleusercontent.com';
+      const CLIENT_SECRET = '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';
+      const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
+      const REFRESH_TOKEN = '1//04jZoty9qy4qgCgYIARAAGAQSNwF-L9IrIvyP-nYn-wxhqjl-a4BftikCF3bb1IrwPF2k5nFVnhH8hGpG3-_xysM_BA9HlWT6a04';
+        
+      const { google } = require('googleapis');
+
+      const oauth2Client = new google.auth.OAuth2(
+	     CLIENT_ID,
+	     CLIENT_SECRET,
+	     REDIRECT_URI
+      );
+      oauth2Client.setCredentials({refresh_token: REFRESH_TOKEN})
+        
       const API_KEY = 'AIzaSyBDkRSDsnwp_9N-3B286Kk6o5Es1aPGB30';
 
       // Discovery doc URL for APIs used by the quickstart
@@ -63,6 +77,11 @@ limitations under the License.
       document.getElementById('authorize_button').style.visibility = 'hidden';
       document.getElementById('signout_button').style.visibility = 'hidden';
 
+        
+      function handleUpdateClick() {
+      }
+        
+        
       /**
        * Callback after api.js is loaded.
        */
