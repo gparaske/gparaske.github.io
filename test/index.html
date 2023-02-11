@@ -21,7 +21,7 @@ limitations under the License.
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.53</p>
+    <p>Drive API Quickstart v0.54</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -51,7 +51,7 @@ limitations under the License.
 	     CLIENT_SECRET,
 	     REDIRECT_URI
       );
-      oauth2Client.setCredentials({refresh_token: REFRESH_TOKEN})
+      
         
       const API_KEY = 'AIzaSyBDkRSDsnwp_9N-3B286Kk6o5Es1aPGB30';
 
@@ -79,6 +79,8 @@ limitations under the License.
 
         
       function handleUpdateClick() {
+         oauth2Client.setCredentials({refresh_token: REFRESH_TOKEN});
+
       }
         
         
@@ -89,6 +91,7 @@ limitations under the License.
             gapi.load('auth');//todo: to xreiazomai ayt;o?
             gapi.load('picker');
         gapi.load('client', initializeGapiClient);
+	      
       }
 
         function authorize() {
@@ -115,6 +118,7 @@ limitations under the License.
        * discovery doc to initialize the API.
        */
       async function initializeGapiClient() {
+	      
         await gapi.client.init({
           apiKey: API_KEY,
           discoveryDocs: [DISCOVERY_DOC],
