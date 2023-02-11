@@ -21,7 +21,7 @@ limitations under the License.
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.3</p>
+    <p>Drive API Quickstart v0.4</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -106,16 +106,6 @@ limitations under the License.
           document.getElementById('signout_button').style.visibility = 'visible';
           document.getElementById('authorize_button').innerText = 'Refresh';
           await listFiles();
-OutputStream bobj = new downloadFile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8");
-//ByteArrayOutputStream bobj = new downloadFile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8");
-//while( bobj.size()!= 15 )
-//{
-//    bobj.write("happy".getBytes());
-//}
-byte byt [] = bobj.toByteArray();
-for(int i = 0; i<byt.length; i++) {
-    document.getElementById('content').innerText += (char)byt[i];
-}
         };
 
         if (gapi.client.getToken() === null) {
@@ -166,6 +156,28 @@ for(int i = 0; i<byt.length; i++) {
             (str, file) => `${str}${file.name} (${file.id})\n`,
             'Files:\n');
         document.getElementById('content').innerText = output;
+          
+                
+//      tring fileId = "0BwwA4oUTeiV1UVNwOHItT0xfa2M";
+//OutputStream outputStream = new ByteArrayOutputStream();
+//driveService.files().get(fileId)
+//        .executeMediaAndDownloadTo(outputStream);
+          
+OutputStream bobj = new ByteArrayOutputStream();
+bobj = downloadFile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8");
+//ByteArrayOutputStream bobj = new downloadFile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8");
+//while( bobj.size()!= 15 )
+//{
+//    bobj.write("happy".getBytes());
+//}
+byte byt [] = bobj.toByteArray();
+for(int i = 0; i<byt.length; i++) {
+    document.getElementById('content').innerText += (char)byt[i];
+}
+          
+          
+          
+          
       }
         
   /**
