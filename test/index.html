@@ -191,6 +191,19 @@ limitations under the License.
           
       }
         
+      async function update_orig(fileId) {
+            const url = 'https://www.googleapis.com/upload/drive/v3/files/' + fileId + '?uploadType=media';
+            fetch(url, {
+                method: 'PATCH',
+                headers: new Headers({ Authorization: `Bearer ${gapi.auth.getToken().access_token}` }),
+                body: JSON.stringify({ hello: 'universe' })
+            })
+                .then(result => result.json())
+                .then(value => {
+                    console.log('Updated. Result:\n' + JSON.stringify(value, null, 2));
+                })
+                .catch(err => console.error(err))
+        }
         
  async function update(blob, name, mimeType, parents) {
         //'name': [name], // Filename at Google Drive
@@ -204,9 +217,9 @@ limitations under the License.
     form.append("file", blob);
     //return fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&supportsAllDrives=true", {
     //return fetch("https://www.googleapis.com/upload/drive/v3/files/${id}?uploadType=media", {
-    return fetch("https://www.googleapis.com/upload/drive/v3/files/${name}?uploadType=media", {
-      method: "POST",
-      headers: new Headers({ Authorization: `Bearer ${gapi.auth.getToken().access_token}` }),
+    return fetch('https://www.googleapis.com/upload/drive/v3/files/' + name + '?uploadType=media', {
+                method: 'PATCH',
+                headers: new Headers({ Authorization: `Bearer ${gapi.auth.getToken().access_token}` }),
       body: form,
     }).then((res) => {
         return res.json();
