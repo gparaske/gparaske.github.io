@@ -21,7 +21,7 @@ limitations under the License.
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.10</p>
+    <p>Drive API Quickstart v0.11</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -156,8 +156,16 @@ limitations under the License.
             (str, file) => `${str}${file.name} (${file.id})\n`,
             'Files:\n');
         document.getElementById('content').innerText = output;
+        
           
-                getfile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8", "test.txt");
+        const content = "this is some content";
+        const blob = new Blob([content], { type: 'text/plain' });
+        upload(blob, "test2.txt", "string", "root");
+          
+          
+        getfile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8", "test.txt");
+          
+          
 //      tring fileId = "0BwwA4oUTeiV1UVNwOHItT0xfa2M";
 //OutputStream outputStream = new ByteArrayOutputStream();
 //driveService.files().get(fileId)
@@ -182,6 +190,18 @@ limitations under the License.
           
       }
         
+        
+ async upload(blob, name, mimeType, parents = ["root"]) {
+    const metadata = { name, mimeType, parents };
+    const form = new FormData();
+    form.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }));
+    form.append("file", blob);
+    return fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&supportsAllDrives=true", {
+      method: "POST",
+      headers: new Headers({ Authorization: `Bearer ${gapi.auth.getToken().access_token}` }),
+      body: form,
+    });
+  }
         
   async function getfile(id, n) {
     const file = await gapi.client.drive.files.get({
