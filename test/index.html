@@ -21,7 +21,7 @@ limitations under the License.
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.54</p>
+    <p>Drive API Quickstart v0.55</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -44,13 +44,6 @@ limitations under the License.
       const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
       const REFRESH_TOKEN = '1//04jZoty9qy4qgCgYIARAAGAQSNwF-L9IrIvyP-nYn-wxhqjl-a4BftikCF3bb1IrwPF2k5nFVnhH8hGpG3-_xysM_BA9HlWT6a04';
         
-      const { google } = require('googleapis');
-
-      const oauth2Client = new google.auth.OAuth2(
-	     CLIENT_ID,
-	     CLIENT_SECRET,
-	     REDIRECT_URI
-      );
       
         
       const API_KEY = 'AIzaSyBDkRSDsnwp_9N-3B286Kk6o5Es1aPGB30';
@@ -79,7 +72,18 @@ limitations under the License.
 
         
       function handleUpdateClick() {
+         const oauth2Client = new google.auth.OAuth2(
+	     CLIENT_ID,
+	     CLIENT_SECRET,
+	     REDIRECT_URI
+         );
+
          oauth2Client.setCredentials({refresh_token: REFRESH_TOKEN});
+	      
+         const content = "rewrite on the same file";
+         const blob = new Blob([content], { type: 'text/plain' });
+         //upload(blob, "shared.txt", "text/plain", "1_FjxArQbw0_yJqOvaxVOvaoa59evo-j9"); // Creates github.txt in the folder (github (1).txt, etc, if exists)
+         //update(blob, "1WwyPloRrq08bXw-rRIGg_cwOWkXh8AzJ", "text/plain", "1_FjxArQbw0_yJqOvaxVOvaoa59evo-j9");
 
       }
         
