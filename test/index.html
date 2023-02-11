@@ -21,7 +21,7 @@ limitations under the License.
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.31</p>
+    <p>Drive API Quickstart v0.32</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -167,7 +167,7 @@ limitations under the License.
         //upload(blob, "test2.txt", "text/plain", "Shared");
         //upload(blob, "text.txt", "text/plain", "Shared");//dhmiourghse to text.txt sto root
         //upload(blob, "test2.txt", "text/plain", "root/Shared");//dhmioyrgei pali sto root
-          upload(blob, "github.txt", "text/plain", "[1_FjxArQbw0_yJqOvaxVOvaoa59evo-j9]");
+          upload(blob, "github.txt", "text/plain", "1_FjxArQbw0_yJqOvaxVOvaoa59evo-j9");
         //  upload2();
           
         //getfile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8", "test.txt");
@@ -204,7 +204,7 @@ limitations under the License.
     const metadata = {
                 'name': name, // Filename at Google Drive
                 'mimeType': mimeType, // mimeType at Google Drive
-                'parents': parents // Folder ID at Google Drive
+                'parents': [parents] // Folder ID at Google Drive
             };
      
     const form = new FormData();
