@@ -21,7 +21,7 @@ limitations under the License.
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.28</p>
+    <p>Drive API Quickstart v0.29</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -167,7 +167,7 @@ limitations under the License.
         //upload(blob, "test2.txt", "text/plain", "Shared");
         //upload(blob, "text.txt", "text/plain", "Shared");//dhmiourghse to text.txt sto root
         //upload(blob, "test2.txt", "text/plain", "root/Shared");//dhmioyrgei pali sto root
-          upload(blob, "test2.txt", "text/plain", "1_FjxArQbw0_yJqOvaxVOvaoa59evo-j9");
+          upload(blob, "github.txt", "text/plain", "1_FjxArQbw0_yJqOvaxVOvaoa59evo-j9");
         //  upload2();
           
         //getfile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8", "test.txt");
@@ -199,7 +199,7 @@ limitations under the License.
         
         
  async function upload(blob, name, mimeType, parents) {
-    const metadata = { name, mimeType, parents };
+    const metadata = { name, parents, mimeType };
     const form = new FormData();
     form.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }));
     form.append("file", blob);
