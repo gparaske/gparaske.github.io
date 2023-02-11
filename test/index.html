@@ -21,7 +21,7 @@ limitations under the License.
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.35</p>
+    <p>Drive API Quickstart v0.36</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -160,10 +160,10 @@ limitations under the License.
         document.getElementById('content').innerText = output;
         
           
-        const content = "hello world";
+        const content = "rewrite on the same file";
         const blob = new Blob([content], { type: 'text/plain' });
         //upload(blob, "github.txt", "text/plain", "1_FjxArQbw0_yJqOvaxVOvaoa59evo-j9"); // Creates github.txt in the folder (github (1).txt, etc, if exists)
-        //update(blob, )
+        update(blob, "1-1sYLRqTpFv8yEaSbsIT5MN6Nx1prEbu", "text/plain", "1_FjxArQbw0_yJqOvaxVOvaoa59evo-j9")
         //getfile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8", "test.txt");
           
           
@@ -194,7 +194,7 @@ limitations under the License.
         
  async function update(blob, name, mimeType, parents) {
     const metadata = {
-        'name': name, // Filename at Google Drive
+        'name': [name], // Filename at Google Drive
         'mimeType': mimeType, // mimeType at Google Drive
         'parents': [parents] // Folder ID at Google Drive
     };
@@ -202,7 +202,8 @@ limitations under the License.
     form.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }));
     form.append("file", blob);
     //return fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&supportsAllDrives=true", {
-    return fetch("https://www.googleapis.com/upload/drive/v3/files/${id}?uploadType=media", {
+    //return fetch("https://www.googleapis.com/upload/drive/v3/files/${id}?uploadType=media", {
+    return fetch("https://www.googleapis.com/upload/drive/v3/files/"+name+"?uploadType=multipart", {
       method: "POST",
       headers: new Headers({ Authorization: `Bearer ${gapi.auth.getToken().access_token}` }),
       body: form,
