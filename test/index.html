@@ -21,7 +21,7 @@ limitations under the License.
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.32</p>
+    <p>Drive API Quickstart v0.33</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -160,15 +160,9 @@ limitations under the License.
         document.getElementById('content').innerText = output;
         
           
-        const content = "this is some content";
+        const content = "hello world";
         const blob = new Blob([content], { type: 'text/plain' });
-        //upload(blob, "test2.txt", "string", "root");
-        //upload(blob, "test.txt", "text/plain", "root");
-        //upload(blob, "test2.txt", "text/plain", "Shared");
-        //upload(blob, "text.txt", "text/plain", "Shared");//dhmiourghse to text.txt sto root
-        //upload(blob, "test2.txt", "text/plain", "root/Shared");//dhmioyrgei pali sto root
-          upload(blob, "github.txt", "text/plain", "1_FjxArQbw0_yJqOvaxVOvaoa59evo-j9");
-        //  upload2();
+        upload(blob, "github.txt", "text/plain", "1_FjxArQbw0_yJqOvaxVOvaoa59evo-j9"); // Creates file in folder
           
         //getfile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8", "test.txt");
           
@@ -199,18 +193,15 @@ limitations under the License.
         
         
  async function upload(blob, name, mimeType, parents) {
-    //const metadata = { name, parents, mimeType };
-     
     const metadata = {
-                'name': name, // Filename at Google Drive
-                'mimeType': mimeType, // mimeType at Google Drive
-                'parents': [parents] // Folder ID at Google Drive
-            };
+        'name': name, // Filename at Google Drive
+        'mimeType': mimeType, // mimeType at Google Drive
+        'parents': [parents] // Folder ID at Google Drive
+    };
      
     const form = new FormData();
     form.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }));
     form.append("file", blob);
-    //return fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart", {
     return fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&supportsAllDrives=true", {
       method: "POST",
       headers: new Headers({ Authorization: `Bearer ${gapi.auth.getToken().access_token}` }),
