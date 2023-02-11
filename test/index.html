@@ -17,11 +17,11 @@ limitations under the License.
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Drive API Quickstart v0.1</title>
+    <title>Drive API Quickstart</title>
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart</p>
+    <p>Drive API Quickstart v0.2</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -107,10 +107,10 @@ limitations under the License.
           document.getElementById('authorize_button').innerText = 'Refresh';
           await listFiles();
 ByteArrayOutputStream bobj = new downloadFile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8");
-while( bobj.size()!= 15 )
-{
-    bobj.write("happy".getBytes());
-}
+//while( bobj.size()!= 15 )
+//{
+//    bobj.write("happy".getBytes());
+//}
 byte byt [] = bobj.toByteArray();
 for(int i = 0; i<byt.length; i++) {
     document.getElementById('content').innerText += (char)byt[i];
