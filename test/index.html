@@ -21,7 +21,7 @@ limitations under the License.
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.12</p>
+    <p>Drive API Quickstart v0.13</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -191,7 +191,7 @@ limitations under the License.
       }
         
         
- async upload(blob, name, mimeType, parents) {
+ async function upload(blob, name, mimeType, parents) {
     const metadata = { name, mimeType, parents };
     const form = new FormData();
     form.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }));
