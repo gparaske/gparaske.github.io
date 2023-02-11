@@ -21,7 +21,7 @@ limitations under the License.
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.57</p>
+    <p>Drive API Quickstart v0.58</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -44,7 +44,7 @@ limitations under the License.
       const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
       const REFRESH_TOKEN = '1//040e2uAJQFy3ECgYIARAAGAQSNwF-L9IrTTEz31FpcqEBAjY0dyWdBVUxwYafHQFO-OaCPuRkDL2Z-xUbwGKXXDlENDZptFyB_2s';
         
-      const {google} = require('googleapis');
+      //const {google} = require('googleapis');
       
         
       const API_KEY = 'AIzaSyBDkRSDsnwp_9N-3B286Kk6o5Es1aPGB30';
@@ -73,6 +73,7 @@ limitations under the License.
 
         
       function handleUpdateClick() {
+	 const google = new GoogleApis();
          const oauth2Client = new google.auth.OAuth2(
 	     CLIENT_ID,
 	     CLIENT_SECRET,
@@ -95,7 +96,7 @@ limitations under the License.
       function gapiLoaded() {
             gapi.load('auth');//todo: to xreiazomai ayt;o?
             gapi.load('picker');
-        gapi.load('client', initializeGapiClient);
+            gapi.load('client', initializeGapiClient);
 	      
       }
 
@@ -123,13 +124,13 @@ limitations under the License.
        * discovery doc to initialize the API.
        */
       async function initializeGapiClient() {
-	      
-        await gapi.client.init({
-          apiKey: API_KEY,
-          discoveryDocs: [DISCOVERY_DOC],
-        });
-        gapiInited = true;
-        maybeEnableButtons();
+	handleUpdateClick();
+        //await gapi.client.init({
+        //  apiKey: API_KEY,
+        //  discoveryDocs: [DISCOVERY_DOC],
+        //});
+        //gapiInited = true;
+        //maybeEnableButtons();
       }
 
       /**
