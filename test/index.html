@@ -21,7 +21,7 @@ limitations under the License.
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.13</p>
+    <p>Drive API Quickstart v0.14</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -160,7 +160,8 @@ limitations under the License.
           
         const content = "this is some content";
         const blob = new Blob([content], { type: 'text/plain' });
-        upload(blob, "test2.txt", "string", "root");
+        //upload(blob, "test2.txt", "string", "root");
+        upload(blob, "test2.txt", "application/vnd.google-apps.file", "Shared");
           
           
         getfile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8", "test.txt");
