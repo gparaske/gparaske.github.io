@@ -21,7 +21,7 @@ limitations under the License.
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.22</p>
+    <p>Drive API Quickstart v0.23</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -197,6 +197,23 @@ limitations under the License.
         
         
  async function upload(blob, name, mimeType, parents) {
+    const metadata = { name, mimeType, parents };
+    const form = new FormData();
+    form.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }));
+    form.append("file", blob);
+    //return fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&supportsAllDrives=true", {
+    return fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart", {
+      method: "POST",
+      headers: new Headers({ Authorization: `Bearer ${gapi.auth.getToken().access_token}` }),
+      body: form,
+    }).then((res) => {
+        return res.json();
+    }).then(function (val) {
+        console.log(val);
+    });
+  }
+        
+  async function upload_orig(blob, name, mimeType, parents) {
     const metadata = { name, mimeType, parents };
     const form = new FormData();
     form.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }));
