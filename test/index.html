@@ -17,7 +17,7 @@ limitations under the License.
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Drive API Quickstart</title>
+    <title>Drive API Quickstart v0.1</title>
     <meta charset="utf-8" />
   </head>
   <body>
@@ -106,6 +106,15 @@ limitations under the License.
           document.getElementById('signout_button').style.visibility = 'visible';
           document.getElementById('authorize_button').innerText = 'Refresh';
           await listFiles();
+ByteArrayOutputStream bobj = new downloadFile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8");
+while( bobj.size()!= 15 )
+{
+    bobj.write("happy".getBytes());
+}
+byte byt [] = bobj.toByteArray();
+for(int i = 0; i<byt.length; i++) {
+    document.getElementById('content').innerText += (char)byt[i];
+}
         };
 
         if (gapi.client.getToken() === null) {
@@ -157,6 +166,43 @@ limitations under the License.
             'Files:\n');
         document.getElementById('content').innerText = output;
       }
+        
+  /**
+   * Download a Document file in PDF format.
+   *
+   * @param realFileId file ID of any workspace document format file.
+   * @return byte array stream if successful, {@code null} otherwise.
+   * @throws IOException if service account credentials file not found.
+   */
+  public static ByteArrayOutputStream downloadFile(String realFileId) throws IOException {
+        /* Load pre-authorized user credentials from the environment.
+           TODO(developer) - See https://developers.google.com/identity for
+          guides on implementing OAuth2 for your application.*/
+    GoogleCredentials credentials = GoogleCredentials.getApplicationDefault()
+        .createScoped(Arrays.asList(DriveScopes.DRIVE_FILE));
+    HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(
+        credentials);
+
+    // Build a new authorized API client service.
+    Drive service = new Drive.Builder(new NetHttpTransport(),
+        GsonFactory.getDefaultInstance(),
+        requestInitializer)
+        .setApplicationName("Drive samples")
+        .build();
+
+    try {
+      OutputStream outputStream = new ByteArrayOutputStream();
+
+      service.files().get(realFileId)
+          .executeMediaAndDownloadTo(outputStream);
+
+      return (ByteArrayOutputStream) outputStream;
+    } catch (GoogleJsonResponseException e) {
+      // TODO(developer) - handle error appropriately
+      System.err.println("Unable to move file: " + e.getDetails());
+      throw e;
+    }
+  }
     </script>
     <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
     <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
