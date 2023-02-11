@@ -21,7 +21,7 @@ limitations under the License.
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.45</p>
+    <p>Drive API Quickstart v0.46</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="authorize()">Authorize</button>
@@ -74,7 +74,7 @@ limitations under the License.
 
         function authorize() {
             gapi.auth.authorize({
-                client_id: clientId,
+                client_id: CLIENT_ID,
                 scope: ['https://www.googleapis.com/auth/drive.file'],
                 immediate: false
             },
