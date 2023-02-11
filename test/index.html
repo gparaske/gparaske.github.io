@@ -21,17 +21,17 @@ limitations under the License.
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.46</p>
+    <p>Drive API Quickstart v0.47</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
-    <button id="authorize_button" onclick="authorize()">Authorize</button>
+    <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
     <button id="signout_button" onclick="handleSignoutClick()">Sign Out</button>
     <input type="file" name="testfile" id="test" multiple>
       
     <pre id="content" style="white-space: pre-wrap;"></pre>
 
     <script type="text/javascript">
-    //<button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
+    //<button id="authorize_button" onclick="authorize()">Authorize</button>
       /* exported gapiLoaded */
       /* exported gisLoaded */
       /* exported handleAuthClick */
@@ -195,7 +195,7 @@ limitations under the License.
         //upload(blob, "github.txt", "text/plain", "1_FjxArQbw0_yJqOvaxVOvaoa59evo-j9"); // Creates github.txt in the folder (github (1).txt, etc, if exists)
           
         createPicker();
-        update(blob, "1-1sYLRqTpFv8yEaSbsIT5MN6Nx1prEbu", "text/plain", "1_FjxArQbw0_yJqOvaxVOvaoa59evo-j9")
+        
         //getfile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8", "test.txt");
           
           
@@ -244,6 +244,7 @@ limitations under the License.
                     const fileId = data.docs[0].id;
                     console.log('Picked. FileId: ' + fileId);
                     get(fileId);
+                    update(blob, "1-1sYLRqTpFv8yEaSbsIT5MN6Nx1prEbu", "text/plain", "1_FjxArQbw0_yJqOvaxVOvaoa59evo-j9");
                 }
             }
       }
