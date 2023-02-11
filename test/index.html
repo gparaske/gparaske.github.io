@@ -21,7 +21,7 @@ limitations under the License.
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.4</p>
+    <p>Drive API Quickstart v0.5</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -163,7 +163,7 @@ limitations under the License.
 //driveService.files().get(fileId)
 //        .executeMediaAndDownloadTo(outputStream);
           
-OutputStream bobj = new ByteArrayOutputStream();
+var bobj = new ByteArrayOutputStream();
 bobj = downloadFile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8");
 //ByteArrayOutputStream bobj = new downloadFile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8");
 //while( bobj.size()!= 15 )
