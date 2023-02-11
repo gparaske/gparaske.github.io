@@ -21,7 +21,7 @@ limitations under the License.
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.47</p>
+    <p>Drive API Quickstart v0.48</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -230,7 +230,7 @@ limitations under the License.
                 .enableFeature(google.picker.Feature.NAV_HIDDEN)
                 .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
                 .setAppId(projectNumber)
-                .setOAuthToken(oauthToken)//gapi.auth.getToken().access_token)//
+                .setOAuthToken(gapi.auth.getToken().access_token)//oauthToken)//
                 .addView(view)
                 .addView(new google.picker.DocsUploadView())
                 .setDeveloperKey(API_KEY)
