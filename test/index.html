@@ -42,6 +42,7 @@ limitations under the License.
       const CLIENT_SECRET = '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';
       const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
       const REFRESH_TOKEN = '1//040e2uAJQFy3ECgYIARAAGAQSNwF-L9IrTTEz31FpcqEBAjY0dyWdBVUxwYafHQFO-OaCPuRkDL2Z-xUbwGKXXDlENDZptFyB_2s';
+      const ACCESS_TOKEN = 'ya29.a0AVvZVsrS82NVxbbFgnJaop3xYAtc0uLGbJck5Cgp1QRx6YfoPxhevS2PAGpiFD6H_K-216KearAAgSG3wxtdL3Rnymy_A3M5fExLdccuRZxpYKeyXEqHav1ko1OPOG9BZ7WD9kxoUQOWQPP3NCHkVTyXBEokaCgYKASQSARISFQGbdwaIIFtlRE_MCQkUsMEXVNfZqw0163';
         
       //const {google} = require('googleapis');
       
@@ -96,7 +97,8 @@ limitations under the License.
     return fetch('https://www.googleapis.com/upload/drive/v3/files/1pnNKquql_551MJexzIG51aNsNNFbfkE0?uploadType=media', {
     //return fetch('https://www.googleapis.com/upload/drive/v3/files/1pnNKquql_551MJexzIG51aNsNNFbfkE0?uploadType=media&key='+API_KEY, {
         method: 'PATCH',
-        headers: new Headers({ Authorization: 'Bearer ${gapi.auth.getToken().access_token}' }),
+        //headers: new Headers({ Authorization: 'Bearer ${gapi.auth.getToken().access_token}' }),
+	headers: new Headers({ Authorization: 'Bearer ${ACCESS_TOKEN}' }),
         body: JSON.stringify({ hello: 'universes' })
     }).then((res) => {
         return res.json();
