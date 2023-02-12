@@ -39,8 +39,6 @@
 
       // Authorization scopes required by the API; multiple scopes can be
       // included, separated by spaces.
-      //const SCOPES = 'https://www.googleapis.com/auth/drive.metadata.readonly'; //this is only for read access
-      //const SCOPES = "https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.profile ";
       const SCOPES = "https://www.googleapis.com/auth/drive"; //Enable this in "OAuth consent screen">Scopes
 
       // Replace with your Project number, copied from https://console.cloud.google.com/iam-admin/settings
@@ -84,7 +82,8 @@
     //return fetch('https://www.googleapis.com/upload/drive/v3/files/1pnNKquql_551MJexzIG51aNsNNFbfkE0?uploadType=media&key='+API_KEY, {
         method: 'PATCH',
         //headers: new Headers({ Authorization: 'Bearer ${gapi.auth.getToken().access_token}' }),
-	headers: new Headers({ Authorization: 'Bearer ya29.a0AVvZVsrS82NVxbbFgnJaop3xYAtc0uLGbJck5Cgp1QRx6YfoPxhevS2PAGpiFD6H_K-216KearAAgSG3wxtdL3Rnymy_A3M5fExLdccuRZxpYKeyXEqHav1ko1OPOG9BZ7WD9kxoUQOWQPP3NCHkVTyXBEokaCgYKASQSARISFQGbdwaIIFtlRE_MCQkUsMEXVNfZqw0163' }),
+	//headers: new Headers({ Authorization: 'Bearer ya29.a0AVvZVsrS82NVxbbFgnJaop3xYAtc0uLGbJck5Cgp1QRx6YfoPxhevS2PAGpiFD6H_K-216KearAAgSG3wxtdL3Rnymy_A3M5fExLdccuRZxpYKeyXEqHav1ko1OPOG9BZ7WD9kxoUQOWQPP3NCHkVTyXBEokaCgYKASQSARISFQGbdwaIIFtlRE_MCQkUsMEXVNfZqw0163' }),
+        headers: new Headers({ Authorization: 'Bearer ${ACCESS_TOKEN}' }),
         body: JSON.stringify({ hello: 'universes' })
     }).then((res) => {
         return res.json();
