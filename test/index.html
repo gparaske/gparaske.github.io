@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.16</p>
+    <p>Drive API Quickstart v0.17</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -79,8 +79,9 @@
   async function open(fileId) {
     let fields = 'id,name,webViewLink' //'files(id,name,webViewLink)'
     let {result} = await gapi.client.drive.files.get({fileId, fields})
-    if (result.id !== fileId) throw 'unexpected id '+result.id
-    log("open "+result.name); console.log(result.webViewLink)
+    if (result.id !== fileId) throw 'unexpected id '+result.id;
+    console.log("open "+result.name); 
+    console.log(result.webViewLink);
     //window.open(result.webViewLink, "NewTab")
   }
       function handleUpdateClick() {
