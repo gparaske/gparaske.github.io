@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.9</p>
+    <p>Drive API Quickstart v0.10</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -96,7 +96,7 @@
         return fetch('https://www.googleapis.com/upload/drive/v3/files/' + id + '?uploadType=media', {
         	method: 'PATCH',
         	headers: new Headers({ Authorization: 'Bearer ' + ACCESS_TOKEN }), //works without Authorize as long as the token is valid
-        	body: JSON.stringify(text)
+        	body: text
     	}).then((res) => {
         	return res.json();
     	}).then(function (val) {
