@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.13</p>
+    <p>Drive API Quickstart v0.14</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -62,12 +62,18 @@
       document.getElementById('update_button').style.visibility = 'hidden';
 
         
+      function setObjStr(obj, str=obj.name) {
+         obj.toString = () => str  //used in display()
+         return obj
+      }
+	    
       async function getfile(id) {
          const file = await gapi.client.drive.files.get({
             fileId: id
          });
-         console.log(file);
-         document.getElementById('content').innerText += file;
+         console.log(file.name);
+         console.log(file.toString);
+         document.getElementById('content').innerText += file.toString;
       }
       function handleUpdateClick() {
 	      
