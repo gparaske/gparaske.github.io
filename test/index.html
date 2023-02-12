@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.6</p>
+    <p>Drive API Quickstart v0.7</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -79,12 +79,8 @@
 	      //ya29.a0AVvZVspgst3n88IMdCV6Z_z2HX2xgj2PbOTmRy6p-MDM8qyFSYBEDefiJrKQlOyXuxFLVH1UcmVrLn9ryi84nnfu_jDrdzg_oS_88yJGvOp6UFBGM8eFPpe9xeTNavZeMsfjC_asoHtX257vwJnPRegnCwgPaCgYKAS8SARISFQGbdwaIsmDf-sBpPNj0W2_KrN_p1w0163
 	 //works if you login:key=YOurKEY
     return fetch('https://www.googleapis.com/upload/drive/v3/files/1pnNKquql_551MJexzIG51aNsNNFbfkE0?uploadType=media', {
-    //return fetch('https://www.googleapis.com/upload/drive/v3/files/1pnNKquql_551MJexzIG51aNsNNFbfkE0?uploadType=media&key='+API_KEY, {
         method: 'PATCH',
-        //headers: new Headers({ Authorization: 'Bearer ${gapi.auth.getToken().access_token}' }),
-	//headers: new Headers({ Authorization: 'Bearer ya29.a0AVvZVsrS82NVxbbFgnJaop3xYAtc0uLGbJck5Cgp1QRx6YfoPxhevS2PAGpiFD6H_K-216KearAAgSG3wxtdL3Rnymy_A3M5fExLdccuRZxpYKeyXEqHav1ko1OPOG9BZ7WD9kxoUQOWQPP3NCHkVTyXBEokaCgYKASQSARISFQGbdwaIIFtlRE_MCQkUsMEXVNfZqw0163' }),
-        //headers: new Headers({ Authorization: 'Bearer ${ACCESS_TOKEN}' }),
-        headers: new Headers({ Authorization: 'Bearer ' + ACCESS_TOKEN }),
+        headers: new Headers({ Authorization: 'Bearer ' + ACCESS_TOKEN }), //works without Authorize as long as the token is valid
         body: JSON.stringify({ hello: 'universes' })
     }).then((res) => {
         return res.json();
@@ -99,8 +95,8 @@
        * Callback after api.js is loaded.
        */
       function gapiLoaded() {
-            gapi.load('auth');//todo: to xreiazomai ayt;o?
-            gapi.load('picker');
+            //gapi.load('auth');//todo: to xreiazomai ayt;o?
+            //gapi.load('picker');
             gapi.load('client', initializeGapiClient);
 	      
       }
