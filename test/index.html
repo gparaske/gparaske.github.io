@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.5</p>
+    <p>Drive API Quickstart v0.6</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -83,7 +83,8 @@
         method: 'PATCH',
         //headers: new Headers({ Authorization: 'Bearer ${gapi.auth.getToken().access_token}' }),
 	//headers: new Headers({ Authorization: 'Bearer ya29.a0AVvZVsrS82NVxbbFgnJaop3xYAtc0uLGbJck5Cgp1QRx6YfoPxhevS2PAGpiFD6H_K-216KearAAgSG3wxtdL3Rnymy_A3M5fExLdccuRZxpYKeyXEqHav1ko1OPOG9BZ7WD9kxoUQOWQPP3NCHkVTyXBEokaCgYKASQSARISFQGbdwaIIFtlRE_MCQkUsMEXVNfZqw0163' }),
-        headers: new Headers({ Authorization: 'Bearer ${ACCESS_TOKEN}' }),
+        //headers: new Headers({ Authorization: 'Bearer ${ACCESS_TOKEN}' }),
+        headers: new Headers({ Authorization: 'Bearer ' + ACCESS_TOKEN }),
         body: JSON.stringify({ hello: 'universes' })
     }).then((res) => {
         return res.json();
