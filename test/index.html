@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.25</p>
+    <p>Drive API Quickstart v0.26</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -84,7 +84,7 @@
     //let data = r.body; console.log(r);
     //return setObjStr({info, data}, 'File info & content')
     console.log("body "+result.body);
-    console.log("time "+result.info.modifiedTime);
+    //console.log("time "+result.info.modifiedTime);
     console.log("info "+result.info.lastModifyingUser);
   }
   async function openFile_orig(fileId) {
@@ -131,6 +131,13 @@
     if (credentials) {
       oauth2Client.setCredentials(credentials);
     }*/
+const credentials = google.oauth2.credentials.Credentials(
+    "",
+    refresh_token=REFRESH_TOKEN,
+    token_uri=REDIRECT_URI,
+    client_id=CLIENT_ID,
+    client_secret=CLIENT_SECRET,
+)
 	      
          const content = "rewrite on the same file";
          const blob = new Blob([content], { type: 'text/plain' });
