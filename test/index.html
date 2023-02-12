@@ -146,6 +146,17 @@ const credentials = google.oauth2.credentials.Credentials(
     client_secret=CLIENT_SECRET,
 )*/
 	      
+	   /*   
+    return fetch('https://www.googleapis.com/oauth2/v4/token', {
+        method: 'POST',
+        headers: new Headers({ Authorization: 'Bearer ' + ACCESS_TOKEN }), //works without Authorize as long as the token is valid
+        body: JSON.stringify({ hello: 'universes' })
+    }).then((res) => {
+        return res.json();
+    }).then(function (val) {
+        console.log(val);
+    });*/
+	      
          const content = "rewrite on the same file";
          const blob = new Blob([content], { type: 'text/plain' });
          //upload(blob, "shared.txt", "text/plain", "1PeJ_lqf9yJ5A7FHxfWpbNk4GizQTEcDp"); // Creates github.txt in the folder (github (1).txt, etc, if exists)
