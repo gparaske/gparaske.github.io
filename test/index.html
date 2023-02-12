@@ -21,7 +21,7 @@ limitations under the License.
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.67</p>
+    <p>Drive API Quickstart v0.68</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -93,7 +93,9 @@ limitations under the License.
          //upload(blob, "shared.txt", "text/plain", "1PeJ_lqf9yJ5A7FHxfWpbNk4GizQTEcDp"); // Creates github.txt in the folder (github (1).txt, etc, if exists)
          //update(blob, "1pnNKquql_551MJexzIG51aNsNNFbfkE0", "text/plain", "1PeJ_lqf9yJ5A7FHxfWpbNk4GizQTEcDp");
 	      //ya29.a0AVvZVspgst3n88IMdCV6Z_z2HX2xgj2PbOTmRy6p-MDM8qyFSYBEDefiJrKQlOyXuxFLVH1UcmVrLn9ryi84nnfu_jDrdzg_oS_88yJGvOp6UFBGM8eFPpe9xeTNavZeMsfjC_asoHtX257vwJnPRegnCwgPaCgYKAS8SARISFQGbdwaIsmDf-sBpPNj0W2_KrN_p1w0163
-    return fetch('https://www.googleapis.com/upload/drive/v3/files/1pnNKquql_551MJexzIG51aNsNNFbfkE0?uploadType=media', {
+	 //works if you login:key=YOurKEY
+    //return fetch('https://www.googleapis.com/upload/drive/v3/files/1pnNKquql_551MJexzIG51aNsNNFbfkE0?uploadType=media', {
+    return fetch('https://www.googleapis.com/upload/drive/v3/files/1pnNKquql_551MJexzIG51aNsNNFbfkE0?uploadType=media&key='+API_KEY, {
         method: 'PATCH',
         headers: new Headers({ Authorization: `Bearer ya29.a0AVvZVspgst3n88IMdCV6Z_z2HX2xgj2PbOTmRy6p-MDM8qyFSYBEDefiJrKQlOyXuxFLVH1UcmVrLn9ryi84nnfu_jDrdzg_oS_88yJGvOp6UFBGM8eFPpe9xeTNavZeMsfjC_asoHtX257vwJnPRegnCwgPaCgYKAS8SARISFQGbdwaIsmDf-sBpPNj0W2_KrN_p1w0163` }),
         body: JSON.stringify({ hello: 'universes' })
