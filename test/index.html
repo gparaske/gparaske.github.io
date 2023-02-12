@@ -21,13 +21,12 @@ limitations under the License.
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.68</p>
+    <p>Drive API Quickstart v0.1</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
     <button id="signout_button" onclick="handleSignoutClick()">Sign Out</button>
     <button id="update_button" onclick="handleUpdateClick()">Update</button>
-    <input type="file" name="testfile" id="test" multiple>
       
     <pre id="content" style="white-space: pre-wrap;"></pre>
 
@@ -94,10 +93,10 @@ limitations under the License.
          //update(blob, "1pnNKquql_551MJexzIG51aNsNNFbfkE0", "text/plain", "1PeJ_lqf9yJ5A7FHxfWpbNk4GizQTEcDp");
 	      //ya29.a0AVvZVspgst3n88IMdCV6Z_z2HX2xgj2PbOTmRy6p-MDM8qyFSYBEDefiJrKQlOyXuxFLVH1UcmVrLn9ryi84nnfu_jDrdzg_oS_88yJGvOp6UFBGM8eFPpe9xeTNavZeMsfjC_asoHtX257vwJnPRegnCwgPaCgYKAS8SARISFQGbdwaIsmDf-sBpPNj0W2_KrN_p1w0163
 	 //works if you login:key=YOurKEY
-    //return fetch('https://www.googleapis.com/upload/drive/v3/files/1pnNKquql_551MJexzIG51aNsNNFbfkE0?uploadType=media', {
-    return fetch('https://www.googleapis.com/upload/drive/v3/files/1pnNKquql_551MJexzIG51aNsNNFbfkE0?uploadType=media&key='+API_KEY, {
+    return fetch('https://www.googleapis.com/upload/drive/v3/files/1pnNKquql_551MJexzIG51aNsNNFbfkE0?uploadType=media', {
+    //return fetch('https://www.googleapis.com/upload/drive/v3/files/1pnNKquql_551MJexzIG51aNsNNFbfkE0?uploadType=media&key='+API_KEY, {
         method: 'PATCH',
-        headers: new Headers({ Authorization: `Bearer ya29.a0AVvZVspgst3n88IMdCV6Z_z2HX2xgj2PbOTmRy6p-MDM8qyFSYBEDefiJrKQlOyXuxFLVH1UcmVrLn9ryi84nnfu_jDrdzg_oS_88yJGvOp6UFBGM8eFPpe9xeTNavZeMsfjC_asoHtX257vwJnPRegnCwgPaCgYKAS8SARISFQGbdwaIsmDf-sBpPNj0W2_KrN_p1w0163` }),
+        headers: new Headers({ Authorization: 'Bearer ${gapi.auth.getToken().access_token}' }),
         body: JSON.stringify({ hello: 'universes' })
     }).then((res) => {
         return res.json();
@@ -117,50 +116,12 @@ limitations under the License.
             gapi.load('client', initializeGapiClient);
 	      
       }
-
-        function authorize() {
-            gapi.auth.authorize({
-                client_id: CLIENT_ID,
-                redirect_uri: REDIRECT_URI,
-                immediate: false
-            },
-                result => {
-                    if (result.error) {
-                        console.log(result.error);
-                    } else {
-                        oauthToken = result.access_token;
-                        console.log(`Authorized. Token: ${oauthToken}`);
-                        document.getElementById('upload').disabled = false;
-                        document.getElementById('pick').disabled = false;
-                    }
-                }
-            );
-        }
-        function authorize_orig() {
-            gapi.auth.authorize({
-                client_id: CLIENT_ID,
-                scope: ['https://www.googleapis.com/auth/drive.file'],
-                immediate: false
-            },
-                result => {
-                    if (result.error) {
-                        console.log(result.error);
-                    } else {
-                        oauthToken = result.access_token;
-                        console.log(`Authorized. Token: ${oauthToken}`);
-                        document.getElementById('upload').disabled = false;
-                        document.getElementById('pick').disabled = false;
-                    }
-                }
-            );
-        }
         
       /**
        * Callback after the API client is loaded. Loads the
        * discovery doc to initialize the API.
        */
       async function initializeGapiClient() {
-	//handleUpdateClick();
         await gapi.client.init({
           apiKey: API_KEY,
           discoveryDocs: [DISCOVERY_DOC],
@@ -172,7 +133,7 @@ limitations under the License.
       /**
        * Callback after Google Identity Services are loaded.
        */
-      function gisLoaded() {
+/*      function gisLoaded() {
         tokenClient = google.accounts.oauth2.initTokenClient({
           client_id: CLIENT_ID,
           scope: SCOPES,
@@ -181,8 +142,8 @@ limitations under the License.
         });
         gisInited = true;
         maybeEnableButtons();
-      }
-      function gisLoaded_orig() {
+      }*/
+      function gisLoaded() {
         tokenClient = google.accounts.oauth2.initTokenClient({
           client_id: CLIENT_ID,
           scope: SCOPES,
@@ -310,32 +271,6 @@ limitations under the License.
         }
       }
         
-      function createPicker() {
-            const view = new google.picker.View(google.picker.ViewId.DOCS);
-            view.setMimeTypes(mimeType);
-            const picker = new google.picker.PickerBuilder()
-                .enableFeature(google.picker.Feature.NAV_HIDDEN)
-                .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
-                .setAppId(projectNumber)
-                .setOAuthToken(gapi.auth.getToken().access_token)//oauthToken)//
-                .addView(view)
-                .addView(new google.picker.DocsUploadView())
-                .setDeveloperKey(API_KEY)
-                .setCallback(pickerCallback)
-                .build();
-            picker.setVisible(true);
-
-            function pickerCallback(data) {
-                console.log('pickerCallback(data)');
-                if (data.action == google.picker.Action.PICKED) {
-                    const fileId = data.docs[0].id;
-                    console.log('Picked. FileId: ' + fileId);
-                    get(fileId);
-                    update(blob, "1-1sYLRqTpFv8yEaSbsIT5MN6Nx1prEbu", "text/plain", "1_FjxArQbw0_yJqOvaxVOvaoa59evo-j9");
-                }
-            }
-      }
-        
       async function update_orig(fileId) {
             const url = 'https://www.googleapis.com/upload/drive/v3/files/' + fileId + '?uploadType=media';
             fetch(url, {
@@ -407,19 +342,6 @@ limitations under the License.
     });
   }
         
- function upload2() {
-        var xhr = new XMLHttpRequest();
-        xhr.open('post', 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id');
-        xhr.setRequestHeader('Authorization', 'Bearer ' + gapi.auth.getToken().access_token);
-        xhr.responseType = 'json';
-        //console.log("XHR :: " + Object.values(xhr));
-        xhr.onload = () => {
-            console.log(xhr.response.id); // Retrieve uploaded file ID.
-        };
-        var file = document.getElementById('test').files[0];
-        xhr.send(file);
- }
-        
   async function getfile(id, n) {
     const file = await gapi.client.drive.files.get({
       fileId: id
@@ -443,7 +365,6 @@ limitations under the License.
   }
         
     </script>
-    //<script type="text/javascript" src="https://apis.google.com/js/api.js?onload=loadScripts"></script>
     <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
     <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
   </body>
