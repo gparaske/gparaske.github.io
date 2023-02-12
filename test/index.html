@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.21</p>
+    <p>Drive API Quickstart v0.22</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -35,6 +35,7 @@
       const ACCESS_TOKEN = 'ya29.a0AVvZVsrS82NVxbbFgnJaop3xYAtc0uLGbJck5Cgp1QRx6YfoPxhevS2PAGpiFD6H_K-216KearAAgSG3wxtdL3Rnymy_A3M5fExLdccuRZxpYKeyXEqHav1ko1OPOG9BZ7WD9kxoUQOWQPP3NCHkVTyXBEokaCgYKASQSARISFQGbdwaIIFtlRE_MCQkUsMEXVNfZqw0163';
         
       //const {google} = require('googleapis');
+      const GoogleAuth = require('google-auth-library');
       
         
       const API_KEY = 'AIzaSyBbPwEkJBUlQU_OAmvRRLvxdQu15874Kxk';
@@ -115,12 +116,20 @@
          //);
 
          //oauth2Client.setCredentials({refresh_token: REFRESH_TOKEN});
+	      
+	 const auth = new GoogleAuth();
+	      /*
 	 const oauth2Client = google.accounts.oauth2(
 	     CLIENT_ID,
 	     CLIENT_SECRET,
 	     REDIRECT_URI
          );
          oauth2Client.setCredentials({refresh_token: REFRESH_TOKEN});
+	      
+	 let oauth2Client = new auth.OAuth2(this.appCredentials.id, this.appCredentials.secret, this.appCredentials.redirectUrl);
+    if (credentials) {
+      oauth2Client.setCredentials(credentials);
+    }*/
 	      
          const content = "rewrite on the same file";
          const blob = new Blob([content], { type: 'text/plain' });
