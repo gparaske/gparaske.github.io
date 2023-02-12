@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.27</p>
+    <p>Drive API Quickstart v0.28</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -21,7 +21,9 @@
     <pre id="content" style="white-space: pre-wrap;"></pre>
 
 <script type="module">
-	import { GoogleAuth } from "google-auth-library";
+   from google.oauth2 import credentials
+   from googleapiclient import discovery
+   //import { GoogleAuth } from "google-auth-library";
 </script>
 
     <script type="text/javascript">
@@ -122,7 +124,7 @@
 
          //oauth2Client.setCredentials({refresh_token: REFRESH_TOKEN});
 	      
-	 const auth = new GoogleAuth();
+	 //const auth = new GoogleAuth();
 	      /*
 	 const oauth2Client = google.accounts.oauth2(
 	     CLIENT_ID,
