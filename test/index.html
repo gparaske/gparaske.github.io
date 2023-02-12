@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.8</p>
+    <p>Drive API Quickstart v0.9</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -79,7 +79,7 @@
          //update(blob, "1pnNKquql_551MJexzIG51aNsNNFbfkE0", "text/plain", "1PeJ_lqf9yJ5A7FHxfWpbNk4GizQTEcDp");
 	      //ya29.a0AVvZVspgst3n88IMdCV6Z_z2HX2xgj2PbOTmRy6p-MDM8qyFSYBEDefiJrKQlOyXuxFLVH1UcmVrLn9ryi84nnfu_jDrdzg_oS_88yJGvOp6UFBGM8eFPpe9xeTNavZeMsfjC_asoHtX257vwJnPRegnCwgPaCgYKAS8SARISFQGbdwaIsmDf-sBpPNj0W2_KrN_p1w0163
 	 //works if you login:key=YOurKEY
-	 update(blob, '1pnNKquql_551MJexzIG51aNsNNFbfkE0', mimeType)
+	 update('hello people', '1pnNKquql_551MJexzIG51aNsNNFbfkE0')
 /*    return fetch('https://www.googleapis.com/upload/drive/v3/files/1pnNKquql_551MJexzIG51aNsNNFbfkE0?uploadType=media', {
         method: 'PATCH',
         headers: new Headers({ Authorization: 'Bearer ' + ACCESS_TOKEN }), //works without Authorize as long as the token is valid
@@ -92,18 +92,11 @@
 
       }
         
-      async function update(blob, id, mimeType) {
-      	const metadata = {
-        	'fileId': id,
-        	'mimeType': mimeType, // mimeType at Google Drive
-    	};
-	const form = new FormData();
-    	form.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }));
-    	form.append("file", blob);
+      async function update(text, id) {
         return fetch('https://www.googleapis.com/upload/drive/v3/files/' + id + '?uploadType=media', {
         	method: 'PATCH',
         	headers: new Headers({ Authorization: 'Bearer ' + ACCESS_TOKEN }), //works without Authorize as long as the token is valid
-        	body: form,
+        	body: JSON.stringify(text)
     	}).then((res) => {
         	return res.json();
     	}).then(function (val) {
