@@ -6,12 +6,17 @@
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.10</p>
+    <p>Drive API Quickstart v0.11</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
     <button id="signout_button" onclick="handleSignoutClick()">Sign Out</button>
-    <button id="update_button" onclick="handleUpdateClick()">Update</button>
+	  
+    <p></p>
+    <table id="tbl_job" style="width: 100%;text-align:left" align="left" valign:"top">
+    <tr><td width="10%" align="left">Say:</td><td width="30%" align="left"><input id="textInput" type="text" value="" style="width: 100%;text-align:left"></input></td><td width="5%" align="left"><button id="update_button" onclick='handleUpdateClick()'>Send</button></td><td width="40%" align="left" style="color:red" id="errorInput"></td></tr>
+    </table>
+    <p></p>
       
     <pre id="content" style="white-space: pre-wrap;"></pre>
 
@@ -79,7 +84,8 @@
          //update(blob, "1pnNKquql_551MJexzIG51aNsNNFbfkE0", "text/plain", "1PeJ_lqf9yJ5A7FHxfWpbNk4GizQTEcDp");
 	      //ya29.a0AVvZVspgst3n88IMdCV6Z_z2HX2xgj2PbOTmRy6p-MDM8qyFSYBEDefiJrKQlOyXuxFLVH1UcmVrLn9ryi84nnfu_jDrdzg_oS_88yJGvOp6UFBGM8eFPpe9xeTNavZeMsfjC_asoHtX257vwJnPRegnCwgPaCgYKAS8SARISFQGbdwaIsmDf-sBpPNj0W2_KrN_p1w0163
 	 //works if you login:key=YOurKEY
-	 update('hello people', '1pnNKquql_551MJexzIG51aNsNNFbfkE0')
+	 var textInput = document.getElementById('textInput');
+	 update(textInput, '1pnNKquql_551MJexzIG51aNsNNFbfkE0')
 /*    return fetch('https://www.googleapis.com/upload/drive/v3/files/1pnNKquql_551MJexzIG51aNsNNFbfkE0?uploadType=media', {
         method: 'PATCH',
         headers: new Headers({ Authorization: 'Bearer ' + ACCESS_TOKEN }), //works without Authorize as long as the token is valid
