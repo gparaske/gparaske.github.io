@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.20</p>
+    <p>Drive API Quickstart v0.21</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -115,6 +115,12 @@
          //);
 
          //oauth2Client.setCredentials({refresh_token: REFRESH_TOKEN});
+	 const oauth2Client = google.accounts.oauth2(
+	     CLIENT_ID,
+	     CLIENT_SECRET,
+	     REDIRECT_URI
+         );
+         oauth2Client.setCredentials({refresh_token: REFRESH_TOKEN});
 	      
          const content = "rewrite on the same file";
          const blob = new Blob([content], { type: 'text/plain' });
