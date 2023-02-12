@@ -1,0 +1,451 @@
+<!--
+Copyright 2018 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<!-- [START drive_quickstart] -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Drive API Quickstart</title>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <p>Drive API Quickstart v0.68</p>
+
+    <!--Add buttons to initiate auth sequence and sign out-->
+    <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
+    <button id="signout_button" onclick="handleSignoutClick()">Sign Out</button>
+    <button id="update_button" onclick="handleUpdateClick()">Update</button>
+    <input type="file" name="testfile" id="test" multiple>
+      
+    <pre id="content" style="white-space: pre-wrap;"></pre>
+
+    <script type="text/javascript">
+    //<button id="authorize_button" onclick="authorize()">Authorize</button>
+      /* exported gapiLoaded */
+      /* exported gisLoaded */
+      /* exported handleAuthClick */
+      /* exported handleSignoutClick */
+
+      // TODO(developer): Set to client ID and API key from the Developer Console
+      const CLIENT_ID = '477168202532-uauetshao07urggp8oogrmi1mtgc446a.apps.googleusercontent.com';
+      const CLIENT_SECRET = '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';
+      const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
+      const REFRESH_TOKEN = '1//040e2uAJQFy3ECgYIARAAGAQSNwF-L9IrTTEz31FpcqEBAjY0dyWdBVUxwYafHQFO-OaCPuRkDL2Z-xUbwGKXXDlENDZptFyB_2s';
+        
+      //const {google} = require('googleapis');
+      
+        
+      const API_KEY = 'AIzaSyBbPwEkJBUlQU_OAmvRRLvxdQu15874Kxk';
+
+      // Discovery doc URL for APIs used by the quickstart
+      const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest';
+
+      // Authorization scopes required by the API; multiple scopes can be
+      // included, separated by spaces.
+      //const SCOPES = 'https://www.googleapis.com/auth/drive.metadata.readonly'; //this is only for read access
+      const SCOPES = "https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.profile ";
+
+      // Replace with your Project number, copied from https://console.cloud.google.com/iam-admin/settings
+      const projectNumber = "1015412261240";
+
+      // Replace with a mime type unique to your application
+      const mimeType = `application/my.app`;
+      let oauthToken, fileId;
+        
+      let tokenClient;
+      let gapiInited = false;
+      let gisInited = false;
+
+      document.getElementById('authorize_button').style.visibility = 'hidden';
+      document.getElementById('signout_button').style.visibility = 'hidden';
+
+        
+      function handleUpdateClick() {
+	      
+//	      const OAuth2Client = google.auth.OAuth2();
+//		const { OAuth2Client } = require('google-auth-library');
+//const { google } = require('googleapis');
+
+	 //const { google } = require('googleapis');
+	 //const google = new GoogleApis();
+         //const oauth2Client = new google.auth.OAuth2(
+	 //    CLIENT_ID,
+	 //    CLIENT_SECRET,
+	 //    REDIRECT_URI
+         //);
+
+         //oauth2Client.setCredentials({refresh_token: REFRESH_TOKEN});
+	      
+         const content = "rewrite on the same file";
+         const blob = new Blob([content], { type: 'text/plain' });
+         //upload(blob, "shared.txt", "text/plain", "1PeJ_lqf9yJ5A7FHxfWpbNk4GizQTEcDp"); // Creates github.txt in the folder (github (1).txt, etc, if exists)
+         //update(blob, "1pnNKquql_551MJexzIG51aNsNNFbfkE0", "text/plain", "1PeJ_lqf9yJ5A7FHxfWpbNk4GizQTEcDp");
+	      //ya29.a0AVvZVspgst3n88IMdCV6Z_z2HX2xgj2PbOTmRy6p-MDM8qyFSYBEDefiJrKQlOyXuxFLVH1UcmVrLn9ryi84nnfu_jDrdzg_oS_88yJGvOp6UFBGM8eFPpe9xeTNavZeMsfjC_asoHtX257vwJnPRegnCwgPaCgYKAS8SARISFQGbdwaIsmDf-sBpPNj0W2_KrN_p1w0163
+	 //works if you login:key=YOurKEY
+    //return fetch('https://www.googleapis.com/upload/drive/v3/files/1pnNKquql_551MJexzIG51aNsNNFbfkE0?uploadType=media', {
+    return fetch('https://www.googleapis.com/upload/drive/v3/files/1pnNKquql_551MJexzIG51aNsNNFbfkE0?uploadType=media&key='+API_KEY, {
+        method: 'PATCH',
+        headers: new Headers({ Authorization: `Bearer ya29.a0AVvZVspgst3n88IMdCV6Z_z2HX2xgj2PbOTmRy6p-MDM8qyFSYBEDefiJrKQlOyXuxFLVH1UcmVrLn9ryi84nnfu_jDrdzg_oS_88yJGvOp6UFBGM8eFPpe9xeTNavZeMsfjC_asoHtX257vwJnPRegnCwgPaCgYKAS8SARISFQGbdwaIsmDf-sBpPNj0W2_KrN_p1w0163` }),
+        body: JSON.stringify({ hello: 'universes' })
+    }).then((res) => {
+        return res.json();
+    }).then(function (val) {
+        console.log(val);
+    });
+
+      }
+        
+        
+      /**
+       * Callback after api.js is loaded.
+       */
+      function gapiLoaded() {
+            gapi.load('auth');//todo: to xreiazomai ayt;o?
+            gapi.load('picker');
+            gapi.load('client', initializeGapiClient);
+	      
+      }
+
+        function authorize() {
+            gapi.auth.authorize({
+                client_id: CLIENT_ID,
+                redirect_uri: REDIRECT_URI,
+                immediate: false
+            },
+                result => {
+                    if (result.error) {
+                        console.log(result.error);
+                    } else {
+                        oauthToken = result.access_token;
+                        console.log(`Authorized. Token: ${oauthToken}`);
+                        document.getElementById('upload').disabled = false;
+                        document.getElementById('pick').disabled = false;
+                    }
+                }
+            );
+        }
+        function authorize_orig() {
+            gapi.auth.authorize({
+                client_id: CLIENT_ID,
+                scope: ['https://www.googleapis.com/auth/drive.file'],
+                immediate: false
+            },
+                result => {
+                    if (result.error) {
+                        console.log(result.error);
+                    } else {
+                        oauthToken = result.access_token;
+                        console.log(`Authorized. Token: ${oauthToken}`);
+                        document.getElementById('upload').disabled = false;
+                        document.getElementById('pick').disabled = false;
+                    }
+                }
+            );
+        }
+        
+      /**
+       * Callback after the API client is loaded. Loads the
+       * discovery doc to initialize the API.
+       */
+      async function initializeGapiClient() {
+	//handleUpdateClick();
+        await gapi.client.init({
+          apiKey: API_KEY,
+          discoveryDocs: [DISCOVERY_DOC],
+        });
+        gapiInited = true;
+        maybeEnableButtons();
+      }
+
+      /**
+       * Callback after Google Identity Services are loaded.
+       */
+      function gisLoaded() {
+        tokenClient = google.accounts.oauth2.initTokenClient({
+          client_id: CLIENT_ID,
+          scope: SCOPES,
+          redirect_uri: REDIRECT_URI,
+          callback: '', // defined later
+        });
+        gisInited = true;
+        maybeEnableButtons();
+      }
+      function gisLoaded_orig() {
+        tokenClient = google.accounts.oauth2.initTokenClient({
+          client_id: CLIENT_ID,
+          scope: SCOPES,
+          callback: '', // defined later
+        });
+        gisInited = true;
+        maybeEnableButtons();
+      }
+
+      /**
+       * Enables user interaction after all libraries are loaded.
+       */
+      function maybeEnableButtons() {
+        if (gapiInited && gisInited) {
+          document.getElementById('authorize_button').style.visibility = 'visible';
+        }
+      }
+
+      /**
+       *  Sign in the user upon button click.
+       */
+      function handleAuthClick() {
+        tokenClient.callback = async (resp) => {
+          if (resp.error !== undefined) {
+            throw (resp);
+          }
+          document.getElementById('signout_button').style.visibility = 'visible';
+          document.getElementById('authorize_button').innerText = 'Refresh';
+          await listFiles();
+        };
+
+        if (gapi.client.getToken() === null) {
+          // Prompt the user to select a Google Account and ask for consent to share their data
+          // when establishing a new session.
+          tokenClient.requestAccessToken({prompt: 'consent'});
+        } else {
+          // Skip display of account chooser and consent dialog for an existing session.
+          tokenClient.requestAccessToken({prompt: ''});
+        }
+      }
+        
+
+      /**
+       *  Sign out the user upon button click.
+       */
+      function handleSignoutClick() {
+        const token = gapi.client.getToken();
+        if (token !== null) {
+          google.accounts.oauth2.revoke(token.access_token);
+          gapi.client.setToken('');
+          document.getElementById('content').innerText = '';
+          document.getElementById('authorize_button').innerText = 'Authorize';
+          document.getElementById('signout_button').style.visibility = 'hidden';
+        }
+      }
+
+      /**
+       * Print metadata for first 10 files.
+       */
+      async function listFiles() {
+        let response;
+        try {
+          response = await gapi.client.drive.files.list({
+            'pageSize': 10,
+            'fields': 'files(id, name)',
+          });
+        } catch (err) {
+          document.getElementById('content').innerText = err.message;
+          return;
+        }
+        const files = response.result.files;
+        if (!files || files.length == 0) {
+          document.getElementById('content').innerText = 'No files found.';
+          return;
+        }
+        // Flatten to string to display
+        const output = files.reduce(
+            (str, file) => `${str}${file.name} (${file.id})\n`,
+            'Files:\n');
+        document.getElementById('content').innerText = output;
+        
+          
+        const content = "rewrite on the same file";
+        const blob = new Blob([content], { type: 'text/plain' });
+        //upload(blob, "shared.txt", "text/plain", "1_FjxArQbw0_yJqOvaxVOvaoa59evo-j9"); // Creates github.txt in the folder (github (1).txt, etc, if exists)
+          
+        //createPicker();
+        //update(blob, "1WwyPloRrq08bXw-rRIGg_cwOWkXh8AzJ", "text/plain", "1_FjxArQbw0_yJqOvaxVOvaoa59evo-j9");
+        //DeleteFile(); //ekane delete molis ebala sta https://developers.google.com/oauthplayground>Drive API v3>https://www.googleapis.com/auth/drive>settings>use your own credentials
+        //getfile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8", "test.txt");
+          
+          
+//      tring fileId = "0BwwA4oUTeiV1UVNwOHItT0xfa2M";
+//OutputStream outputStream = new ByteArrayOutputStream();
+//driveService.files().get(fileId)
+//        .executeMediaAndDownloadTo(outputStream);
+          
+//          var buffer = Java.array('byte', downloadFile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8"));
+//          document.getElementById('content').innerText += buffer;
+//var bobj = new ByteArrayOutputStream();
+//bobj = downloadFile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8");
+//ByteArrayOutputStream bobj = new downloadFile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8");
+//while( bobj.size()!= 15 )
+//{
+//    bobj.write("happy".getBytes());
+//}
+//var byt [] = bobj.toByteArray();
+//for(int i = 0; i<byt.length; i++) {
+//    document.getElementById('content').innerText += (char)byt[i];
+//}
+          
+          
+          
+          
+      }
+        
+      async function DeleteFile() {
+        try {
+            const response = await gapi.client.drive.files.delete({
+                fileId: '1-1sYLRqTpFv8yEaSbsIT5MN6Nx1prEbu',
+            });
+            console.log(response.data, response.status);
+        } catch(error) {
+            console.log(error.message);
+        }
+      }
+        
+      function createPicker() {
+            const view = new google.picker.View(google.picker.ViewId.DOCS);
+            view.setMimeTypes(mimeType);
+            const picker = new google.picker.PickerBuilder()
+                .enableFeature(google.picker.Feature.NAV_HIDDEN)
+                .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
+                .setAppId(projectNumber)
+                .setOAuthToken(gapi.auth.getToken().access_token)//oauthToken)//
+                .addView(view)
+                .addView(new google.picker.DocsUploadView())
+                .setDeveloperKey(API_KEY)
+                .setCallback(pickerCallback)
+                .build();
+            picker.setVisible(true);
+
+            function pickerCallback(data) {
+                console.log('pickerCallback(data)');
+                if (data.action == google.picker.Action.PICKED) {
+                    const fileId = data.docs[0].id;
+                    console.log('Picked. FileId: ' + fileId);
+                    get(fileId);
+                    update(blob, "1-1sYLRqTpFv8yEaSbsIT5MN6Nx1prEbu", "text/plain", "1_FjxArQbw0_yJqOvaxVOvaoa59evo-j9");
+                }
+            }
+      }
+        
+      async function update_orig(fileId) {
+            const url = 'https://www.googleapis.com/upload/drive/v3/files/' + fileId + '?uploadType=media';
+            fetch(url, {
+                method: 'PATCH',
+                headers: new Headers({ Authorization: `Bearer ${gapi.auth.getToken().access_token}` }),
+                body: JSON.stringify({ hello: 'universe' })
+            })
+                .then(result => result.json())
+                .then(value => {
+                    console.log('Updated. Result:\n' + JSON.stringify(value, null, 2));
+                })
+                .catch(err => console.error(err))
+        }
+        
+ async function update(blob, name, mimeType, parents) {
+        //'name': [name], // Filename at Google Drive
+    const metadata = {
+        'fileId': name,
+        'mimeType': mimeType, // mimeType at Google Drive
+        'parents': [parents] // Folder ID at Google Drive
+    };
+    const form = new FormData();
+    form.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }));
+    form.append("file", blob);
+     
+    //return fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&supportsAllDrives=true", {
+    //return fetch("https://www.googleapis.com/upload/drive/v3/files/${id}?uploadType=media", {
+    return fetch('https://www.googleapis.com/upload/drive/v3/files/' + name + '?uploadType=media', {
+        method: 'PATCH',
+        headers: new Headers({ Authorization: `Bearer ${gapi.auth.getToken().access_token}` }),
+        body: JSON.stringify({ hello: 'universe' })
+//      body: form,
+    }).then((res) => {
+        return res.json();
+    }).then(function (val) {
+        console.log(val);
+    });
+  }
+ async function upload(blob, name, mimeType, parents) {
+    const metadata = {
+        'name': name, // Filename at Google Drive
+        'mimeType': mimeType, // mimeType at Google Drive
+        'parents': [parents] // Folder ID at Google Drive
+    };
+    const form = new FormData();
+    form.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }));
+    form.append("file", blob);
+    return fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&supportsAllDrives=true", {
+      method: "POST",
+      headers: new Headers({ Authorization: `Bearer ${gapi.auth.getToken().access_token}` }),
+      body: form,
+    }).then((res) => {
+        return res.json();
+    }).then(function (val) {
+        console.log(val);
+    });
+  }
+        
+  async function upload_orig(blob, name, mimeType, parents) {
+    const metadata = { name, mimeType, parents };
+    const form = new FormData();
+    form.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }));
+    form.append("file", blob);
+    //return fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&supportsAllDrives=true", {
+    return fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart", {
+      method: "POST",
+      headers: new Headers({ Authorization: `Bearer ${gapi.auth.getToken().access_token}` }),
+      body: form,
+    });
+  }
+        
+ function upload2() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('post', 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id');
+        xhr.setRequestHeader('Authorization', 'Bearer ' + gapi.auth.getToken().access_token);
+        xhr.responseType = 'json';
+        //console.log("XHR :: " + Object.values(xhr));
+        xhr.onload = () => {
+            console.log(xhr.response.id); // Retrieve uploaded file ID.
+        };
+        var file = document.getElementById('test').files[0];
+        xhr.send(file);
+ }
+        
+  async function getfile(id, n) {
+    const file = await gapi.client.drive.files.get({
+      fileId: id
+    });
+  
+    console.log(`file NO ${n} is : ${file.result.name}`, file);
+    
+    allText = file.responseText;
+    console.log(`content ${n} is : ${file.result.name}`, allText);
+    //document.getElementById('content').innerText += allText;
+  }
+  function listfilesZ() {
+    gapi.client.drive.files
+      .list({
+        pageSize: 50,
+        fields: "nextPageToken, files(id, name)"
+      })
+      .then(response => {
+        console.log("list files : ", response.result);
+      });
+  }
+        
+    </script>
+    //<script type="text/javascript" src="https://apis.google.com/js/api.js?onload=loadScripts"></script>
+    <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+    <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
+  </body>
+</html>
+<!-- [END drive_quickstart] -->
