@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Google Drive API Basic Functions v0.1</p>
+    <p>Google Drive API Basic Functions v0.2</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -109,60 +109,8 @@
     //window.open(result.webViewLink, "NewTab")
   }
       function handleUpdateClick() {
-	      
-//	      const OAuth2Client = google.auth.OAuth2();
-//		const { OAuth2Client } = require('google-auth-library');
-//const { google } = require('googleapis');
-
-	 //const { google } = require('googleapis');
-	 //const google = new GoogleApis();
-         //const oauth2Client = new google.auth.OAuth2(
-	 //    CLIENT_ID,
-	 //    CLIENT_SECRET,
-	 //    REDIRECT_URI
-         //);
-
-         //oauth2Client.setCredentials({refresh_token: REFRESH_TOKEN});
-	      
-	 //const auth = new GoogleAuth();
-	      /*
-	 const oauth2Client = google.accounts.oauth2(
-	     CLIENT_ID,
-	     CLIENT_SECRET,
-	     REDIRECT_URI
-         );
-         oauth2Client.setCredentials({refresh_token: REFRESH_TOKEN});
-	      
-	 let oauth2Client = new auth.OAuth2(this.appCredentials.id, this.appCredentials.secret, this.appCredentials.redirectUrl);
-    if (credentials) {
-      oauth2Client.setCredentials(credentials);
-    }*/
-	      /*
-const credentials = google.oauth2.credentials.Credentials(
-    "",
-    refresh_token=REFRESH_TOKEN,
-    token_uri=REDIRECT_URI,
-    client_id=CLIENT_ID,
-    client_secret=CLIENT_SECRET,
-)*/
-	      
-	   /*   
-    return fetch('https://www.googleapis.com/oauth2/v4/token', {
-        method: 'POST',
-        headers: new Headers({ Authorization: 'Bearer ' + ACCESS_TOKEN }), //works without Authorize as long as the token is valid
-        body: JSON.stringify({ hello: 'universes' })
-    }).then((res) => {
-        return res.json();
-    }).then(function (val) {
-        console.log(val);
-    });*/
-	      
          const content = "rewrite on the same file";
          const blob = new Blob([content], { type: 'text/plain' });
-         //upload(blob, "shared.txt", "text/plain", "1PeJ_lqf9yJ5A7FHxfWpbNk4GizQTEcDp"); // Creates github.txt in the folder (github (1).txt, etc, if exists)
-         //update(blob, "1pnNKquql_551MJexzIG51aNsNNFbfkE0", "text/plain", "1PeJ_lqf9yJ5A7FHxfWpbNk4GizQTEcDp");
-	      //ya29.a0AVvZVspgst3n88IMdCV6Z_z2HX2xgj2PbOTmRy6p-MDM8qyFSYBEDefiJrKQlOyXuxFLVH1UcmVrLn9ryi84nnfu_jDrdzg_oS_88yJGvOp6UFBGM8eFPpe9xeTNavZeMsfjC_asoHtX257vwJnPRegnCwgPaCgYKAS8SARISFQGbdwaIsmDf-sBpPNj0W2_KrN_p1w0163
-	 //works if you login:key=YOurKEY
 	 var textInput = document.getElementById('textInput');
 	 write(textInput.value, '1pnNKquql_551MJexzIG51aNsNNFbfkE0');
 	      
@@ -261,6 +209,7 @@ const credentials = google.oauth2.credentials.Credentials(
           }
           document.getElementById('signout_button').style.visibility = 'visible';
           document.getElementById('authorize_button').innerText = 'Refresh';
+          ACCESS_TOKEN = gapi.auth.getToken().access_token;
           await listFiles();
         };
 
@@ -272,7 +221,6 @@ const credentials = google.oauth2.credentials.Credentials(
           // Skip display of account chooser and consent dialog for an existing session.
           tokenClient.requestAccessToken({prompt: ''});
         }
-	ACCESS_TOKEN = gapi.auth.getToken().access_token;
       }
         
 
