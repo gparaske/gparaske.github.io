@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Google Drive API REFRESH_TOKEN v0.9</p>
+    <p>Google Drive API REFRESH_TOKEN v0.10</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -196,6 +196,11 @@
           discoveryDocs: [DISCOVERY_DOC],
         });
         gapiInited = true;
+	if (gapi.client.getToken() === null) {
+          console.log("I dont have token");
+        } else {
+          console.log("I have token!");
+        }
         maybeEnableButtons();
       }
 
@@ -209,11 +214,6 @@
           callback: '', // defined later
         });
         gisInited = true;
-	if (gapi.client.getToken() === null) {
-          console.log("I dont have token");
-        } else {
-          console.log("I have token!");
-        }
 	//ACCESS_TOKEN = gapi.auth.getToken().access_token;
         //console.log("tokenClient="+tokenClient);
         maybeEnableButtons();
