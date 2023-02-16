@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Google Drive API REFRESH_TOKEN v0.7</p>
+    <p>Google Drive API REFRESH_TOKEN v0.8</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -69,7 +69,30 @@
       document.getElementById('signout_button').style.visibility = 'hidden';
       document.getElementById('update_button').style.visibility = 'hidden';
 
-        
+      function getGoogleRefreshToken() {
+        /*
+          POST https://www.googleapis.com/oauth2/v4/token
+          Content-Type: application/json
+
+         {
+            "client_id": "477168202532-uauetshao07urggp8oogrmi1mtgc446a.apps.googleusercontent.com",
+            "client_secret": "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",
+            "refresh_token": "1//04Kob4x11s5t0CgYIARAAGAQSNwF-L9IrT9pDxbLQZ4NOkJbNMEWvaeXhroCQ9ROC7VO4EyDFzr3s7Tcbp9K0KH2V2znHpO6ImGA",
+            "grant_type": "refresh_token"
+          }
+        */
+        var xhr = new XMLHttpRequest();
+        xhr.open('post', 'https://www.googleapis.com/oauth2/v4/token');
+	xhr.setRequestHeader("Content-Type", "application/json");
+        //xhr.responseType = 'json';//is it nessesery?
+        xhr.onload = () => {
+	   ACCESS_TOKEN = xhr.response.access_token;
+	   console.log("new ACCESS_TOKEN");
+        };
+	const file = '{"client_id": "477168202532-uauetshao07urggp8oogrmi1mtgc446a.apps.googleusercontent.com", "client_secret": "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", "refresh_token": "1//04Kob4x11s5t0CgYIARAAGAQSNwF-L9IrT9pDxbLQZ4NOkJbNMEWvaeXhroCQ9ROC7VO4EyDFzr3s7Tcbp9K0KH2V2znHpO6ImGA", "grant_type": "refresh_token"}';
+        xhr.send(file);
+      }
+	    
       function setObjStr(obj, str=obj.name) {
          obj.toString = () => str  //used in display()
          return obj
@@ -108,11 +131,12 @@
     //console.log("body "+result.body); 
     //window.open(result.webViewLink, "NewTab")
   }
+	    
       function handleUpdateClick() {
          const content = "rewrite on the same file";
          const blob = new Blob([content], { type: 'text/plain' });
-	       var textInput = document.getElementById('textInput');
-	       getGoogleRefreshToken();
+	 var textInput = document.getElementById('textInput');
+	 //getGoogleRefreshToken();
 	       //write(textInput.value, '1pnNKquql_551MJexzIG51aNsNNFbfkE0');
 	       //openFile('1pnNKquql_551MJexzIG51aNsNNFbfkE0');
 /*       return fetch('https://www.googleapis.com/upload/drive/v3/files/1pnNKquql_551MJexzIG51aNsNNFbfkE0?uploadType=media', {
@@ -137,30 +161,6 @@
         });
       }
 	    
-      function getGoogleRefreshToken() {
-        /*
-          POST https://www.googleapis.com/oauth2/v4/token
-          Content-Type: application/json
-
-	  {
-            "client_id": "477168202532-uauetshao07urggp8oogrmi1mtgc446a.apps.googleusercontent.com",
-            "client_secret": "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",
-            "refresh_token": "1//04Kob4x11s5t0CgYIARAAGAQSNwF-L9IrT9pDxbLQZ4NOkJbNMEWvaeXhroCQ9ROC7VO4EyDFzr3s7Tcbp9K0KH2V2znHpO6ImGA",
-            "grant_type": "refresh_token"
-          }
-        */
-        var xhr = new XMLHttpRequest();
-        xhr.open('post', 'https://www.googleapis.com/oauth2/v4/token');
-	xhr.setRequestHeader("Content-Type", "application/json");
-        //xhr.responseType = 'json';//is it nessesery?
-        xhr.onload = () => {
-	   ACCESS_TOKEN = xhr.response.access_token;
-	   console.log("new ACCESS_TOKEN");
-        };
-	const file = '{"client_id": "477168202532-uauetshao07urggp8oogrmi1mtgc446a.apps.googleusercontent.com", "client_secret": "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", "refresh_token": "1//04Kob4x11s5t0CgYIARAAGAQSNwF-L9IrT9pDxbLQZ4NOkJbNMEWvaeXhroCQ9ROC7VO4EyDFzr3s7Tcbp9K0KH2V2znHpO6ImGA", "grant_type": "refresh_token"}';
-        xhr.send(file);
-      }
-        
       async function write(text, id) {
         return fetch('https://www.googleapis.com/upload/drive/v3/files/' + id + '?uploadType=media', {
         	method: 'PATCH',
@@ -202,16 +202,6 @@
       /**
        * Callback after Google Identity Services are loaded.
        */
-/*      function gisLoaded() {
-        tokenClient = google.accounts.oauth2.initTokenClient({
-          client_id: CLIENT_ID,
-          scope: SCOPES,
-          redirect_uri: REDIRECT_URI,
-          callback: '', // defined later
-        });
-        gisInited = true;
-        maybeEnableButtons();
-      }*/
       function gisLoaded() {
         tokenClient = google.accounts.oauth2.initTokenClient({
           client_id: CLIENT_ID,
@@ -219,6 +209,7 @@
           callback: '', // defined later
         });
         gisInited = true;
+console.log("tokenClient="+tokenClient);
         maybeEnableButtons();
       }
 
@@ -436,7 +427,6 @@
       });
   }
         
-    //<script async defer src="https://accounts.google.com/o/oauth2/v2/auth" onload="authLoaded()"></script>
     </script>
     <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
     <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
