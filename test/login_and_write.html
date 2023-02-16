@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Drive API Quickstart v0.29</p>
+    <p>Google Drive API Basic Functions v0.1</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -272,6 +272,7 @@ const credentials = google.oauth2.credentials.Credentials(
           // Skip display of account chooser and consent dialog for an existing session.
           tokenClient.requestAccessToken({prompt: ''});
         }
+	ACCESS_TOKEN = gapi.auth.getToken().access_token;
       }
         
 
