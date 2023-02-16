@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Google Drive API REFRESH_TOKEN v0.20</p>
+    <p>Google Drive API REFRESH_TOKEN v0.21</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -134,7 +134,7 @@
 	const file = '{"client_id": "477168202532-uauetshao07urggp8oogrmi1mtgc446a.apps.googleusercontent.com", "client_secret": "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", "refresh_token": "1//04Kob4x11s5t0CgYIARAAGAQSNwF-L9IrT9pDxbLQZ4NOkJbNMEWvaeXhroCQ9ROC7VO4EyDFzr3s7Tcbp9K0KH2V2znHpO6ImGA", "grant_type": "refresh_token"}';
         xhr.send(file);
       }
-      function openFileWithApiKeyWithoutLogin(fileId, ApiKey) {
+      async function openFileWithApiKeyWithoutLogin(fileId, ApiKey) {
          arg = {fileId: fileId, alt: "media", key: ApiKey}
          let result = await gapi.client.drive.files.get(arg);
          return result.body;
