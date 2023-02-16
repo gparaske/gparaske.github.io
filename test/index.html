@@ -1,0 +1,423 @@
+<!-- [START drive_quickstart] -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Drive API Quickstart</title>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <p>Google Drive API REFRESH_TOKEN v0.1</p>
+
+    <!--Add buttons to initiate auth sequence and sign out-->
+    <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
+    <button id="signout_button" onclick="handleSignoutClick()">Sign Out</button>
+	  
+    <p></p>
+    <table id="tbl_job" style="width: 100%;text-align:left" align="left" valign:"top">
+    <tr><td width="10%" align="left">Say:</td><td width="30%" align="left"><input id="textInput" type="text" value="" style="width: 100%;text-align:left"></input></td><td width="5%" align="left"><button id="update_button" onclick='handleUpdateClick()'>Send</button></td><td width="40%" align="left" style="color:red" id="errorInput"></td></tr>
+    </table>
+    <p></p>
+      
+    <pre id="content" style="white-space: pre-wrap;"></pre>
+
+<script type="module">
+   //from google.oauth2 import credentials
+   //from googleapiclient import discovery
+   //import { GoogleAuth } from "google-auth-library";
+</script>
+
+    <script type="text/javascript">
+    //<button id="authorize_button" onclick="authorize()">Authorize</button>
+      /* exported gapiLoaded */
+      /* exported gisLoaded */
+      /* exported handleAuthClick */
+      /* exported handleSignoutClick */
+
+      // TODO(developer): Set to client ID and API key from the Developer Console
+      const CLIENT_ID = '477168202532-uauetshao07urggp8oogrmi1mtgc446a.apps.googleusercontent.com';
+      const CLIENT_SECRET = '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';
+      const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
+      const REFRESH_TOKEN = '1//040e2uAJQFy3ECgYIARAAGAQSNwF-L9IrTTEz31FpcqEBAjY0dyWdBVUxwYafHQFO-OaCPuRkDL2Z-xUbwGKXXDlENDZptFyB_2s';
+      let ACCESS_TOKEN = 'ya29.a0AVvZVso7itMUi2WK3TKgZZo79HZyXxIk8cvm_XUwby7BOlMbmjwK-fvWeCMhgL4JfCfa_TXIBNOMy_wkx1IwQ4a93gJUmjRenfLGswwYZVvYJnouiPfdCbmnWLu4bMZRMfpV5YGfIN2NOpvHTUsj41Sj9I18aCgYKARkSARISFQGbdwaIS-uKpRrdj3GrxkX9IEAAEw0163';
+	    
+      //const {google} = require('googleapis');
+      //const GoogleAuth = require('google-auth-library');
+      //import { GoogleAuth } from "google-auth-library";
+      
+        
+      const API_KEY = 'AIzaSyBbPwEkJBUlQU_OAmvRRLvxdQu15874Kxk';
+
+      // Discovery doc URL for APIs used by the quickstart
+      const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest';
+
+      // Authorization scopes required by the API; multiple scopes can be
+      // included, separated by spaces.
+      const SCOPES = "https://www.googleapis.com/auth/drive"; //Enable this in "OAuth consent screen">Scopes
+
+      // Replace with your Project number, copied from https://console.cloud.google.com/iam-admin/settings
+      const projectNumber = "1015412261240";
+
+      // Replace with a mime type unique to your application
+      const mimeType = `application/my.app`;
+      let oauthToken, fileId;
+        
+      let tokenClient;
+      let gapiInited = false;
+      let gisInited = false;
+
+      document.getElementById('authorize_button').style.visibility = 'hidden';
+      document.getElementById('signout_button').style.visibility = 'hidden';
+      document.getElementById('update_button').style.visibility = 'hidden';
+
+        
+      function setObjStr(obj, str=obj.name) {
+         obj.toString = () => str  //used in display()
+         return obj
+      }
+	    
+      async function getfile(id) {
+         const file = await gapi.client.drive.files.get({
+            fileId: id
+         });
+         console.log(file.name);
+         console.log(file.toString);
+         document.getElementById('content').innerText += file.toString;
+      }
+	    
+  async function openFile(fileId) {
+    arg = {fileId: fileId, alt: "media"}
+    let result = await gapi.client.drive.files.get(arg)
+    //let data = r.body; console.log(r);
+    //return setObjStr({info, data}, 'File info & content')
+    console.log("body "+result.body);
+    //console.log("time "+result.info.modifiedTime);
+    console.log("info "+result.info.lastModifyingUser);
+  }
+  async function openFile_orig(fileId) {
+    let arg = {fileId: fileId, fields: "*"}
+    let {result} = await gapi.client.drive.files.get(arg)
+    let info = result; setObjStr(info)
+    let name = info.name
+    arg = {fileId: fileId, alt: "media"}
+    let r = await gapi.client.drive.files.get(arg)
+    //result is false, body contains file contents
+    let data = r.body; console.log(r);
+    //return setObjStr({info, data}, 'File info & content')
+    console.log("body "+data);
+    console.log(setObjStr({info, data}, 'File info & content')); 
+    //console.log("body "+result.body); 
+    //window.open(result.webViewLink, "NewTab")
+  }
+      function handleUpdateClick() {
+         const content = "rewrite on the same file";
+         const blob = new Blob([content], { type: 'text/plain' });
+	       var textInput = document.getElementById('textInput');
+	       doPost();
+	       //write(textInput.value, '1pnNKquql_551MJexzIG51aNsNNFbfkE0');
+	       //openFile('1pnNKquql_551MJexzIG51aNsNNFbfkE0');
+/*       return fetch('https://www.googleapis.com/upload/drive/v3/files/1pnNKquql_551MJexzIG51aNsNNFbfkE0?uploadType=media', {
+            method: 'PATCH',
+            headers: new Headers({ Authorization: 'Bearer ' + ACCESS_TOKEN }), //works without Authorize as long as the token is valid
+            body: JSON.stringify({ hello: 'universes' })
+         }).then((res) => {
+            return res.json();
+         }).then(function (val) {
+            console.log(val);
+         });*/
+
+      }
+      function doPost() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('post', 'https://www.googleapis.com/oauth2/v4/token');
+        //xhr.setRequestHeader('Authorization', 'Bearer ' + gapi.auth.getToken().access_token);
+        xhr.responseType = 'json';
+        console.log("XHR post :: " + Object.values(xhr));
+        xhr.onload = () => {
+            //console.log(xhr.response.id); // Retrieve uploaded file ID.
+            console.log("XHR response :: " + Object.values(xhr));
+        };
+//        xhr.send(file);
+      }
+        
+      async function write(text, id) {
+        return fetch('https://www.googleapis.com/upload/drive/v3/files/' + id + '?uploadType=media', {
+        	method: 'PATCH',
+        	headers: new Headers({ Authorization: 'Bearer ' + ACCESS_TOKEN }), //works without Authorize as long as the token is valid
+        	body: text
+    	}).then((res) => {
+        	return res.json();
+    	}).then(function (val) {
+        	console.log(val);
+    	});
+      }
+
+      function authLoaded() {
+	      console.log("authLoaded SUCCESS!");
+      }
+        
+      /**
+       * Callback after api.js is loaded.
+       */
+      function gapiLoaded() {
+            //gapi.load('auth');//todo: to xreiazomai ayt;o?
+            //gapi.load('picker');
+            gapi.load('client', initializeGapiClient);
+      }
+        
+      /**
+       * Callback after the API client is loaded. Loads the
+       * discovery doc to initialize the API.
+       */
+      async function initializeGapiClient() {
+        await gapi.client.init({
+          apiKey: API_KEY,
+          discoveryDocs: [DISCOVERY_DOC],
+        });
+        gapiInited = true;
+        maybeEnableButtons();
+      }
+
+      /**
+       * Callback after Google Identity Services are loaded.
+       */
+/*      function gisLoaded() {
+        tokenClient = google.accounts.oauth2.initTokenClient({
+          client_id: CLIENT_ID,
+          scope: SCOPES,
+          redirect_uri: REDIRECT_URI,
+          callback: '', // defined later
+        });
+        gisInited = true;
+        maybeEnableButtons();
+      }*/
+      function gisLoaded() {
+        tokenClient = google.accounts.oauth2.initTokenClient({
+          client_id: CLIENT_ID,
+          scope: SCOPES,
+          callback: '', // defined later
+        });
+        gisInited = true;
+        maybeEnableButtons();
+      }
+
+      /**
+       * Enables user interaction after all libraries are loaded.
+       */
+      function maybeEnableButtons() {
+        if (gapiInited && gisInited) {
+          document.getElementById('authorize_button').style.visibility = 'visible';
+          document.getElementById('authorize_button').style.visibility = 'visible';
+          document.getElementById('update_button').style.visibility = 'visible';
+        }
+      }
+
+      /**
+       *  Sign in the user upon button click.
+       */
+      function handleAuthClick() {
+        tokenClient.callback = async (resp) => {
+          if (resp.error !== undefined) {
+            throw (resp);
+          }
+          document.getElementById('signout_button').style.visibility = 'visible';
+          document.getElementById('authorize_button').innerText = 'Refresh';
+          ACCESS_TOKEN = gapi.auth.getToken().access_token;
+          await listFiles();
+        };
+
+        if (gapi.client.getToken() === null) {
+          // Prompt the user to select a Google Account and ask for consent to share their data
+          // when establishing a new session.
+          tokenClient.requestAccessToken({prompt: 'consent'});
+        } else {
+          // Skip display of account chooser and consent dialog for an existing session.
+          tokenClient.requestAccessToken({prompt: ''});
+        }
+      }
+        
+
+      /**
+       *  Sign out the user upon button click.
+       */
+      function handleSignoutClick() {
+        const token = gapi.client.getToken();
+        if (token !== null) {
+          google.accounts.oauth2.revoke(token.access_token);
+          gapi.client.setToken('');
+          document.getElementById('content').innerText = '';
+          document.getElementById('authorize_button').innerText = 'Authorize';
+          document.getElementById('signout_button').style.visibility = 'hidden';
+        }
+      }
+
+      /**
+       * Print metadata for first 10 files.
+       */
+      async function listFiles() {
+        let response;
+        try {
+          response = await gapi.client.drive.files.list({
+            'pageSize': 10,
+            'fields': 'files(id, name)',
+          });
+        } catch (err) {
+          document.getElementById('content').innerText = err.message;
+          return;
+        }
+        const files = response.result.files;
+        if (!files || files.length == 0) {
+          document.getElementById('content').innerText = 'No files found.';
+          return;
+        }
+        // Flatten to string to display
+        const output = files.reduce(
+            (str, file) => `${str}${file.name} (${file.id})\n`,
+            'Files:\n');
+        document.getElementById('content').innerText = output;
+        
+          
+        const content = "rewrite on the same file";
+        const blob = new Blob([content], { type: 'text/plain' });
+        //upload(blob, "shared.txt", "text/plain", "1_FjxArQbw0_yJqOvaxVOvaoa59evo-j9"); // Creates github.txt in the folder (github (1).txt, etc, if exists)
+          
+        //createPicker();
+        //update(blob, "1WwyPloRrq08bXw-rRIGg_cwOWkXh8AzJ", "text/plain", "1_FjxArQbw0_yJqOvaxVOvaoa59evo-j9");
+        //DeleteFile(); //ekane delete molis ebala sta https://developers.google.com/oauthplayground>Drive API v3>https://www.googleapis.com/auth/drive>settings>use your own credentials
+        //getfile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8", "test.txt");
+          
+          
+//      tring fileId = "0BwwA4oUTeiV1UVNwOHItT0xfa2M";
+//OutputStream outputStream = new ByteArrayOutputStream();
+//driveService.files().get(fileId)
+//        .executeMediaAndDownloadTo(outputStream);
+          
+//          var buffer = Java.array('byte', downloadFile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8"));
+//          document.getElementById('content').innerText += buffer;
+//var bobj = new ByteArrayOutputStream();
+//bobj = downloadFile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8");
+//ByteArrayOutputStream bobj = new downloadFile("0Bw7tBWoTL9z1WHZJUl9tQUJ1bG8");
+//while( bobj.size()!= 15 )
+//{
+//    bobj.write("happy".getBytes());
+//}
+//var byt [] = bobj.toByteArray();
+//for(int i = 0; i<byt.length; i++) {
+//    document.getElementById('content').innerText += (char)byt[i];
+//}
+          
+          
+          
+          
+      }
+        
+      async function DeleteFile() {
+        try {
+            const response = await gapi.client.drive.files.delete({
+                fileId: '1-1sYLRqTpFv8yEaSbsIT5MN6Nx1prEbu',
+            });
+            console.log(response.data, response.status);
+        } catch(error) {
+            console.log(error.message);
+        }
+      }
+        
+      async function update_orig(fileId) {
+            const url = 'https://www.googleapis.com/upload/drive/v3/files/' + fileId + '?uploadType=media';
+            fetch(url, {
+                method: 'PATCH',
+                headers: new Headers({ Authorization: `Bearer ${gapi.auth.getToken().access_token}` }),
+                body: JSON.stringify({ hello: 'universe' })
+            })
+                .then(result => result.json())
+                .then(value => {
+                    console.log('Updated. Result:\n' + JSON.stringify(value, null, 2));
+                })
+                .catch(err => console.error(err))
+        }
+        
+ async function update_old(blob, name, mimeType, parents) {
+        //'name': [name], // Filename at Google Drive
+    const metadata = {
+        'fileId': name,
+        'mimeType': mimeType, // mimeType at Google Drive
+        'parents': [parents] // Folder ID at Google Drive
+    };
+    const form = new FormData();
+    form.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }));
+    form.append("file", blob);
+     
+    //return fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&supportsAllDrives=true", {
+    //return fetch("https://www.googleapis.com/upload/drive/v3/files/${id}?uploadType=media", {
+    return fetch('https://www.googleapis.com/upload/drive/v3/files/' + name + '?uploadType=media', {
+        method: 'PATCH',
+        headers: new Headers({ Authorization: `Bearer ${gapi.auth.getToken().access_token}` }),
+        body: JSON.stringify({ hello: 'universe' })
+//      body: form,
+    }).then((res) => {
+        return res.json();
+    }).then(function (val) {
+        console.log(val);
+    });
+  }
+ async function upload(blob, name, mimeType, parents) {
+    const metadata = {
+        'name': name, // Filename at Google Drive
+        'mimeType': mimeType, // mimeType at Google Drive
+        'parents': [parents] // Folder ID at Google Drive
+    };
+    const form = new FormData();
+    form.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }));
+    form.append("file", blob);
+    return fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&supportsAllDrives=true", {
+      method: "POST",
+      headers: new Headers({ Authorization: `Bearer ${gapi.auth.getToken().access_token}` }),
+      body: form,
+    }).then((res) => {
+        return res.json();
+    }).then(function (val) {
+        console.log(val);
+    });
+  }
+        
+  async function upload_orig(blob, name, mimeType, parents) {
+    const metadata = { name, mimeType, parents };
+    const form = new FormData();
+    form.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }));
+    form.append("file", blob);
+    //return fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&supportsAllDrives=true", {
+    return fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart", {
+      method: "POST",
+      headers: new Headers({ Authorization: `Bearer ${gapi.auth.getToken().access_token}` }),
+      body: form,
+    });
+  }
+        
+  async function getfile_orig(id, n) {
+    const file = await gapi.client.drive.files.get({
+      fileId: id
+    });
+  
+    console.log(`file NO ${n} is : ${file.result.name}`, file);
+    
+    allText = file.responseText;
+    console.log(`content ${n} is : ${file.result.name}`, allText);
+    //document.getElementById('content').innerText += allText;
+  }
+  function listfilesZ() {
+    gapi.client.drive.files
+      .list({
+        pageSize: 50,
+        fields: "nextPageToken, files(id, name)"
+      })
+      .then(response => {
+        console.log("list files : ", response.result);
+      });
+  }
+        
+    //<script async defer src="https://accounts.google.com/o/oauth2/v2/auth" onload="authLoaded()"></script>
+    </script>
+    <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+    <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
+  </body>
+</html>
+<!-- [END drive_quickstart] -->
