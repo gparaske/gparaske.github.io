@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Google Drive API REFRESH_TOKEN v0.12</p>
+    <p>Google Drive API REFRESH_TOKEN v0.13</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -274,7 +274,7 @@
        */
       function maybeEnableButtons() {
         if (gapiInited && gisInited) {
-	  ACCESS_TOKEN = gapi.auth.getToken().access_token;
+	  //ACCESS_TOKEN = gapi.auth.getToken().access_token;
 	  console.log("ACCESS_TOKEN="+ACCESS_TOKEN);
           document.getElementById('authorize_button').style.visibility = 'visible';
           document.getElementById('authorize_button').style.visibility = 'visible';
