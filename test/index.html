@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Google Drive API REFRESH_TOKEN v0.1</p>
+    <p>Google Drive API REFRESH_TOKEN v0.2</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -130,13 +130,26 @@
         var xhr = new XMLHttpRequest();
         xhr.open('post', 'https://www.googleapis.com/oauth2/v4/token');
         //xhr.setRequestHeader('Authorization', 'Bearer ' + gapi.auth.getToken().access_token);
-        xhr.responseType = 'json';
+	xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.responseType = 'json';//is nessesery?
         console.log("XHR post :: " + Object.values(xhr));
         xhr.onload = () => {
             //console.log(xhr.response.id); // Retrieve uploaded file ID.
             console.log("XHR response :: " + Object.values(xhr));
         };
+	xhr.send("client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&refresh_token="+REFRESH_TOKEN+"&grant_type=refresh_token");
 //        xhr.send(file);
+//	xhr.send("foo=bar&lorem=ipsum");
+/*	        "client_id": <client_id>,
+  "client_secret": <client_secret>,
+  "refresh_token": <refresh_token>,
+  "grant_type": "refresh_token"
+	            const CLIENT_ID = '477168202532-uauetshao07urggp8oogrmi1mtgc446a.apps.googleusercontent.com';
+      const CLIENT_SECRET = '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';
+      const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
+      const REFRESH_TOKEN = '1//040e2uAJQFy3ECgYIARAAGAQSNwF-L9IrTTEz31FpcqEBAjY0dyWdBVUxwYafHQFO-OaCPuRkDL2Z-xUbwGKXXDlENDZptFyB_2s';
+      let ACCESS_TOKEN = 'ya29.a0AVvZVso7itMUi2WK3TKgZZo79HZyXxIk8cvm_XUwby7BOlMbmjwK-fvWeCMhgL4JfCfa_TXIBNOMy_wkx1IwQ4a93gJUmjRenfLGswwYZVvYJnouiPfdCbmnWLu4bMZRMfpV5YGfIN2NOpvHTUsj41Sj9I18aCgYKARkSARISFQGbdwaIS-uKpRrdj3GrxkX9IEAAEw0163';
+*/
       }
         
       async function write(text, id) {
