@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Google Drive API REFRESH_TOKEN v0.5</p>
+    <p>Google Drive API REFRESH_TOKEN v0.6</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -147,10 +147,11 @@
 	//xhr.setRequestHeader("refresh_token", REFRESH_TOKEN);
 	//xhr.setRequestHeader("grant_type", "refresh_token");
         xhr.responseType = 'json';//is it nessesery?
-        console.log("XHR post :: " + Object.values(xhr));
+        //console.log("XHR post :: " + Object.values(xhr));
         xhr.onload = () => {
             //console.log(xhr.response.id); // Retrieve uploaded file ID.
-            console.log("XHR response :: " + Object.values(xhr));
+            //console.log("XHR response :: " + Object.values(xhr));
+	   console.log(xhr.response.access_token);
         };
 	//xhr.send("client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&refresh_token="+REFRESH_TOKEN+"&grant_type=refresh_token");//error 400
 	//xhr.send(null);
