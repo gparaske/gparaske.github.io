@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Google Drive API REFRESH_TOKEN v0.13</p>
+    <p>Google Drive API REFRESH_TOKEN v0.14</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -38,7 +38,7 @@
       const CLIENT_SECRET = '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';
       const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
       const REFRESH_TOKEN = '1//04Kob4x11s5t0CgYIARAAGAQSNwF-L9IrT9pDxbLQZ4NOkJbNMEWvaeXhroCQ9ROC7VO4EyDFzr3s7Tcbp9K0KH2V2znHpO6ImGA';
-      let ACCESS_TOKEN = 'ya29.a0AVvZVsoyQExpLZEWamOiHlSxjs3SkBorlg_Ure7rhhMt9T4mkJpCLnCxk8yEkQ0t1mtF0CwC24bZubNtqwbPwyU6reeyAF5Zqd3m5QUWZgTFvMcEaBIQhI_-C4nVzEUmuNNIt78aLgA-B_IJ-WX0JjeRA9HXaCgYKAacSARISFQGbdwaI338kfF4d1YO2EZYFb9q4xA0163';
+      let ACCESS_TOKEN = '';
 	    
       //const {google} = require('googleapis');
       //const GoogleAuth = require('google-auth-library');
@@ -125,10 +125,11 @@
         var xhr = new XMLHttpRequest();
         xhr.open('post', 'https://www.googleapis.com/oauth2/v4/token');
 	xhr.setRequestHeader("Content-Type", "application/json");
-        //xhr.responseType = 'json';//is it nessesery?
+        xhr.responseType = 'json';//is it nessesery?
         xhr.onload = () => {
 	   ACCESS_TOKEN = xhr.response.access_token;
-	   console.log("new ACCESS_TOKEN="+ACCESS_TOKEN);
+	   console.log("new ACCESS_TOKEN");
+	   console.log(ACCESS_TOKEN);
         };
 	const file = '{"client_id": "477168202532-uauetshao07urggp8oogrmi1mtgc446a.apps.googleusercontent.com", "client_secret": "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", "refresh_token": "1//04Kob4x11s5t0CgYIARAAGAQSNwF-L9IrT9pDxbLQZ4NOkJbNMEWvaeXhroCQ9ROC7VO4EyDFzr3s7Tcbp9K0KH2V2znHpO6ImGA", "grant_type": "refresh_token"}';
         xhr.send(file);
