@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Google Drive API REFRESH_TOKEN v0.16</p>
+    <p>Google Drive API REFRESH_TOKEN v0.17</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -158,6 +158,15 @@
     //console.log("time "+result.info.modifiedTime);
     console.log("info "+result.info.lastModifyingUser);
   }
+  async function openFileWithApiKey(fileId, ApiKey) {
+    arg = {fileId: fileId, alt: "media", key: '"'+ApiKey+'"'}
+    let result = await gapi.client.drive.files.get(arg)
+    //let data = r.body; console.log(r);
+    //return setObjStr({info, data}, 'File info & content')
+    console.log("body "+result.body);
+    //console.log("time "+result.info.modifiedTime);
+    console.log("info "+result.info.lastModifyingUser);
+  }
   async function openFile_orig(fileId) {
     let arg = {fileId: fileId, fields: "*"}
     let {result} = await gapi.client.drive.files.get(arg)
@@ -178,7 +187,8 @@
          const content = "rewrite on the same file";
          const blob = new Blob([content], { type: 'text/plain' });
 	 var textInput = document.getElementById('textInput');
-	 getGoogleRefreshToken();
+	 //getGoogleRefreshToken();
+	 openFileWithApiKey('1pnNKquql_551MJexzIG51aNsNNFbfkE0', API_KEY);
 	       //write(textInput.value, '1pnNKquql_551MJexzIG51aNsNNFbfkE0');
 	       //openFile('1pnNKquql_551MJexzIG51aNsNNFbfkE0');
 /*       return fetch('https://www.googleapis.com/upload/drive/v3/files/1pnNKquql_551MJexzIG51aNsNNFbfkE0?uploadType=media', {
