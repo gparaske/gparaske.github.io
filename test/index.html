@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Google Drive API REFRESH_TOKEN v0.14</p>
+    <p>Google Drive API REFRESH_TOKEN v0.15</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -125,7 +125,7 @@
         var xhr = new XMLHttpRequest();
         xhr.open('post', 'https://www.googleapis.com/oauth2/v4/token');
 	xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.responseType = 'json';//is it nessesery?
+        //xhr.responseType = 'json';//is it nessesery?
         xhr.onload = () => {
 	   ACCESS_TOKEN = xhr.response.access_token;
 	   console.log("new ACCESS_TOKEN");
