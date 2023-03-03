@@ -192,7 +192,7 @@
       function handleUpdateClick() {
          const content = "rewrite on the same file";
          const blob = new Blob([content], { type: 'text/plain' });
-	 //getGoogleRefreshToken();
+	 getGoogleRefreshToken();
 	 let fileText = openFileWithApiKeyWithoutLogin('1pnNKquql_551MJexzIG51aNsNNFbfkE0', API_KEY);
 	 var textInput = document.getElementById('textInput');
 	 fileText += textInput.value;
