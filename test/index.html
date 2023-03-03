@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
   </head>
   <body>
-    <p>Google Drive API REFRESH_TOKEN v0.26</p>
+    <p>Google Drive API REFRESH_TOKEN v0.27</p>
 
     <!--Add buttons to initiate auth sequence and sign out-->
     <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
@@ -198,8 +198,9 @@
 	 let fileText = openFileWithApiKeyWithoutLogin('1pnNKquql_551MJexzIG51aNsNNFbfkE0', API_KEY);
 	 var textInput = document.getElementById('textInput');
 	 fileText += textInput.value;
-	 writeFile(fileText, '1pnNKquql_551MJexzIG51aNsNNFbfkE0');
-	       //write(textInput.value, '1pnNKquql_551MJexzIG51aNsNNFbfkE0');
+	 console.log(fileText);
+	 //writeFile(fileText, '1pnNKquql_551MJexzIG51aNsNNFbfkE0');
+	       write(fileText, '1pnNKquql_551MJexzIG51aNsNNFbfkE0');
 	       //openFile('1pnNKquql_551MJexzIG51aNsNNFbfkE0');
 /*       return fetch('https://www.googleapis.com/upload/drive/v3/files/1pnNKquql_551MJexzIG51aNsNNFbfkE0?uploadType=media', {
             method: 'PATCH',
