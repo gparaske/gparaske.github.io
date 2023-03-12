@@ -8,7 +8,7 @@
     <div style="background-color:lightblue;color:darkgrey;padding:1px;text-align:center;background-image: url('css/pexels-photo-355423.jpeg');background-size: cover;background-position: center;">
         <p><h4>EDW</h4></p>
         <p></p>
-        <p><h4>JOB INFO v0.36</h4></p>
+        <p><h4>JOB INFO v0.37</h4></p>
     </div>
     
     <button class="collapsible">JOB DETAILS</button><div class="content">
@@ -41,7 +41,7 @@
         <script type="text/javascript">
     var jobdatalist = "./data/Convert Control M xml to CA7 Bat list.txt";
     var flatfilelist = "./data/Full FlatFileName S000013845.csv";
-    var schedultlist = "./data/Convert Control M xml to CA7 job list.txt";
+    var schedulelist = "./data/Convert Control M xml to CA7 job list.txt";
     var lines;
 
     var textJobName = document.getElementById('textJobName');
@@ -118,7 +118,7 @@
                         textBatFile.value = aResult[2];
                     }
                     searchFlatFile(textBatFile.value, flatfilelist);
-                    searchSchedultFile(textJobName.value, schedultlist);
+                    searchScheduleFile(textJobName.value, schedulelist);
                 }
             }
           }
@@ -167,7 +167,7 @@
                         textBatFile.value = aResult[2];
                     }
                     searchFlatFile(textBatFile.value, flatfilelist);
-                    searchSchedultFile(textJobName.value, schedultlist);
+                    searchScheduleFile(textJobName.value, schedulelist);
                 }
             }
           }
@@ -216,7 +216,7 @@
                         textBatFile.value = aResult[2];
                     }
                     searchFlatFile(textBatFile.value, flatfilelist);
-                    searchSchedultFile(textJobName.value, schedultlist);
+                    searchScheduleFile(textJobName.value, schedulelist);
                 }
             }
           }
@@ -266,7 +266,7 @@
                     if (aResult[3].length!=0) {
                         textOutputFile.value = aResult[3];
                     }
-                    searchSchedultFile(textJobName.value, schedultlist);
+                    searchScheduleFile(textJobName.value, schedulelist);
                 }
             }
           }
@@ -316,7 +316,7 @@
                     if (aResult[3].length!=0) {
                         textOutputFile.value = aResult[3];
                     }
-                    searchSchedultFile(textJobName.value, schedultlist);
+                    searchScheduleFile(textJobName.value, schedulelist);
                 }
             }
           }
@@ -340,12 +340,13 @@
                             if (sLine.substring(0, sBatFile.length)==sBatFile) {
                                 if(sResult==""){
                                     sResult = lines[i];
-                                    var aResult = sResult.split(",");
-                                    textSuccessors.value = aResult[1];
+                                    var aResult = sResult.split(";");
+                                    textInputFile.value = aResult[2];
+                                    textOutputFile.value = aResult[3];
                                 }
-                                //document.getElementById('textarea').value += lines[i]+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
-                                //j++;
-                                //if(j>49) {break;}
+                                document.getElementById('textarea').value += lines[i]+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
+                                j++;
+                                if(j>49) {break;}
                             }
                         }
                     }
@@ -355,7 +356,7 @@
         rawFile.send(null);
     }
 
-    function searchSchedultFile(sJobName, file) {
+    function searchScheduleFile(sJobName, file) {
         sJobName = sJobName.toUpperCase();
         var rawFile = new XMLHttpRequest();
         rawFile.open("GET", file, false);
@@ -371,13 +372,9 @@
                             if (sLine.substring(0, sJobName.length+1)==sJobName+",") {
                                 if(sResult==""){
                                     sResult = lines[i];
-                                    var aResult = sResult.split(";");
-                                    textInputFile.value = aResult[2];
-                                    textOutputFile.value = aResult[3];
+                                    var aResult = sResult.split(",");
+                                    textSuccessors.value = aResult[1];
                                 }
-                                document.getElementById('textarea').value += lines[i]+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
-                                j++;
-                                if(j>49) {break;}
                             }
                         }
                     }
