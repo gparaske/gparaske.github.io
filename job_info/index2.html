@@ -8,7 +8,7 @@
     <div style="background-color:lightblue;color:darkgrey;padding:1px;text-align:center;background-image: url('css/pexels-photo-355423.jpeg');background-size: cover;background-position: center;">
         <p><h4>EDW</h4></p>
         <p></p>
-        <p><h4>JOB INFO v0.41</h4></p>
+        <p><h4>JOB INFO v0.42</h4></p>
     </div>
     
     <button class="collapsible">JOB DETAILS</button><div class="content">
@@ -23,18 +23,18 @@
     <p></p>
     </div>
     
-    <button class="collapsible">LOG</button><div class="content">
-    <p></p>
-    <textarea id="textarea" name="textarea" style="width: 100%;text-align:left" align="center" valign:"top" rows="14" cols="150"></textarea>
-    <p></p>
-    </div>
-
     <button class="collapsible">SCHEDULE</button><div class="content">
     <p></p>
     <table id="tbl_schedule" style="width: 100%;text-align:left" align="left" valign:"top">
     <tr><td width="10%" align="left">Predecessors:</td><td width="90%" align="left"><input id="textPredecessors" type="text" value="" style="width: 100%;text-align:left"></input></td></tr>
     <tr><td width="10%" align="left">Successors:</td><td width="90%" align="left"><input id="textSuccessors" type="text" value="" style="width: 100%;text-align:left"></input></td></tr>
     </table>
+    <p></p>
+    </div>
+
+    <button class="collapsible">LOG</button><div class="content">
+    <p></p>
+    <textarea id="textarea" name="textarea" style="width: 100%;text-align:left" align="center" valign:"top" rows="14" cols="150"></textarea>
     <p></p>
     </div>
     
@@ -378,7 +378,7 @@
                                 var aResult = sResult.split(",");
                                 sSuccessors += aResult[1] + ", ";
                             }
-                            if(i=0){
+                            if(i==0){
                                 document.getElementById('textarea').value += sLine+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
                                 document.getElementById('textarea').value += sLine.substring(sLine.length-sJobName.length-1, sJobName.length+1)+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
                             }
