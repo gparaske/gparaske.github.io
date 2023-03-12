@@ -8,7 +8,7 @@
     <div style="background-color:lightblue;color:darkgrey;padding:1px;text-align:center;background-image: url('css/pexels-photo-355423.jpeg');background-size: cover;background-position: center;">
         <p><h4>EDW</h4></p>
         <p></p>
-        <p><h4>JOB INFO v0.43</h4></p>
+        <p><h4>JOB INFO v0.44</h4></p>
     </div>
     
     <button class="collapsible">JOB DETAILS</button><div class="content">
@@ -381,9 +381,9 @@
                             if(i==0){
                                 document.getElementById('textarea').value += sLine.length+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
                                 document.getElementById('textarea').value += sLine+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
-                                document.getElementById('textarea').value += sLine.substring(17-8-1, 9)+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
+                                document.getElementById('textarea').value += sLine.substring(17-8-1, 17)+"\n"; document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight;
                             }
-                            if (sLine.substring(sLine.length-sJobName.length-1, sJobName.length+1)==","+sJobName) {
+                            if (sLine.substring(sLine.length-sJobName.length-1, sLine.length)==","+sJobName) {
                                 sResult = lines[i];
                                 var aResult = sResult.split(",");
                                 sPredecessors += aResult[0] + ", ";
