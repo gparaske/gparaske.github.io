@@ -8,7 +8,7 @@
     <div style="background-color:lightblue;color:darkgrey;padding:1px;text-align:center;background-image: url('css/pexels-photo-355423.jpeg');background-size: cover;background-position: center;">
         <p><h4>EDW</h4></p>
         <p></p>
-        <p><h4>JOB INFO v0.56</h4></p>
+        <p><h4>JOB INFO v0.57</h4></p>
     </div>
     
     <button class="collapsible">JOB DETAILS</button><div class="content">
@@ -93,7 +93,9 @@
         var url = 'https://wiggly-charm-jury.glitch.me/post';
         var data = JSON.stringify({ job: 'EDWPD999' });
         xhr.open('POST', url);
-        xhr.setRequestHeader('Content-Type', 'application/json');//chat
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.responseType = 'json';
+        //xhr.setRequestHeader('Content-Type', 'application/json');//chat
 //xhr.setRequestHeader('Authorization', 'Bearer ' + token);
 xhr.onload = function () {
   if (xhr.status === 200) {
