@@ -8,7 +8,7 @@
     <div style="background-color:lightblue;color:darkgrey;padding:1px;text-align:center;background-image: url('css/pexels-photo-355423.jpeg');background-size: cover;background-position: center;">
         <p><h4>EDW</h4></p>
         <p></p>
-        <p><h4>JOB INFO v0.50</h4></p>
+        <p><h4>JOB INFO v0.51</h4></p>
     </div>
     
     <button class="collapsible">JOB DETAILS</button><div class="content">
@@ -26,7 +26,7 @@
     <button class="collapsible">SCHEDULE</button><div class="content">
     <p></p>
     <table id="tbl_schedule" style="width: 100%;text-align:left" align="left" valign:"top">
-    <tr><td width="10%" align="left">Predecessors:</td><td width="90%" align="left"><input id="textPredecessors" type="text" value="" style="width: 100%;text-align:left"></input></td></tr>
+    <tr><td width="10%" align="left">Predecessors:</td><td width="90%" align="left"><input id="textPredecessors" type="text" value="" style="width: 100%;text-align:left"></input></td><td width="5%" align="left"><button onclick='RunExe("SelectPredecessors"); return false;'>Select</button></td></tr>
     <tr><td width="10%" align="left">Successors:</td><td width="90%" align="left"><input id="textSuccessors" type="text" value="" style="width: 100%;text-align:left"></input></td></tr>
     </table>
     <p></p>
@@ -62,6 +62,9 @@
       case "SearchBatFile": SearchBatFile(); break;
       case "SearchInputFile": SearchInputFile(); break;
       case "SearchOutputFile": SearchOutputFile(); break;
+      case "SelectPredecessors":
+document.getElementById('textPredecessors').select();
+              break;
       }
     }
             
