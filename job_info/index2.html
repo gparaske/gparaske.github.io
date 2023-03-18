@@ -8,7 +8,7 @@
     <div style="background-color:lightblue;color:darkgrey;padding:1px;text-align:center;background-image: url('css/pexels-photo-355423.jpeg');background-size: cover;background-position: center;">
         <p><h4>EDW</h4></p>
         <p></p>
-        <p><h4>JOB INFO v0.52</h4></p>
+        <p><h4>JOB INFO v0.53</h4></p>
     </div>
     
     <button class="collapsible">JOB DETAILS</button><div class="content">
@@ -80,8 +80,36 @@
       }
     }
             
-    funtion SaveMailInfo(){
-        
+    function SaveMailInfo(){
+        upload2();
+    }
+            
+    function upload2() {
+//curl -i -X POST \
+//   -H "Content-Type:application/x-www-form-urlencoded" \
+//   -d "job=EDWPD999" \
+// 'https://wiggly-charm-jury.glitch.me/post'
+        var xhr = new XMLHttpRequest();
+        xhr.open('post', 'https://wiggly-charm-jury.glitch.me/post?job=EDWPD999');
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.responseType = 'json';
+        //console.log("XHR :: " + Object.values(xhr));
+        xhr.onload = () => {
+            console.log(xhr.response.MAIL_TO); // Retrieve uploaded file ID.
+        };
+        xhr.send();
+        //var file = document.getElementById('test').files[0];
+        //xhr.send(file);
+//        var xhr = new XMLHttpRequest();
+//        xhr.open('post', 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id');
+//        xhr.setRequestHeader('Authorization', 'Bearer ' + gapi.auth.getToken().access_token);
+//        xhr.responseType = 'json';
+//        //console.log("XHR :: " + Object.values(xhr));
+//        xhr.onload = () => {
+//            console.log(xhr.response.id); // Retrieve uploaded file ID.
+//        };
+//        var file = document.getElementById('test').files[0];
+//        xhr.send(file);
     }
             
     function ClearTextBoxes(){
