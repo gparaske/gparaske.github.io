@@ -26,6 +26,7 @@
     <button class="collapsible">SCHEDULE</button><div class="content">
     <p></p>
     <table id="tbl_schedule" style="width: 100%;text-align:left" align="left" valign:"top">
+    <tr><td width="10%" align="left">Folder:</td><td width="90%" align="left"><input id="textFolder" type="text" value="" style="width: 100%;text-align:left"></input></td></tr>
     <tr><td width="10%" align="left">Predecessors:</td><td width="90%" align="left"><input id="textPredecessors" type="text" value="" style="width: 100%;text-align:left"></input></td></tr>
     <tr><td width="10%" align="left">Successors:</td><td width="90%" align="left"><input id="textSuccessors" type="text" value="" style="width: 100%;text-align:left"></input></td></tr>
     </table>
@@ -71,6 +72,7 @@
       textBatFile.value = "";
       textInputFile.value = "";
       textOutputFile.value = "";
+      textFolder.value = "";
       textPredecessors.value = "";
       textSuccessors.value = "";
       textErrorJobName.innerHTML = "";
@@ -118,6 +120,9 @@
                     }
                     if (aResult[2].length!=0) {
                         textBatFile.value = aResult[2];
+                    }
+                    if (aResult[3].length!=0) {
+                        textFolder.value = aResult[3];
                     }
                     searchFlatFile(textBatFile.value, flatfilelist);
                 }
