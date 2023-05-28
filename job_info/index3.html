@@ -8,7 +8,7 @@
     <div style="background-color:lightblue;color:darkgrey;padding:1px;text-align:center;background-image: url('css/pexels-photo-355423.jpeg');background-size: cover;background-position: center;">
         <p><h4>EDW</h4></p>
         <p></p>
-        <p><h4>JOB INFO v0.39</h4></p>
+        <p><h4>JOB INFO v0.40</h4></p>
     </div>
     
     <button class="collapsible">JOB DETAILS</button><div class="content">
@@ -36,7 +36,7 @@
     <button class="collapsible">ASSISTANT</button><div class="content">
     <p></p>
         <form action="">
-            <input type="text" name="message" id="message">
+            <textarea id="message" name="message" style="width: 100%;text-align:left" align="center" valign:"top" rows="14" cols="150"></textarea>
             <button type="submit">Send</button>
         </form>
         <div id="chat-log"></div>
@@ -490,7 +490,7 @@
             messageElement.classList.add('message');
             messageElement.classList.add('message--sent');
             messageElement.innerHTML = `
-                <div class="message__text">${messageText}</div>
+                <div class="message__text">- ${messageText}</div>
             `;
             chatLog.appendChild(messageElement);
             chatLog.scrollTop = chatLog.scrollHeight;
