@@ -8,7 +8,7 @@
     <div style="background-color:lightblue;color:darkgrey;padding:1px;text-align:center;background-image: url('css/pexels-photo-355423.jpeg');background-size: cover;background-position: center;">
         <p><h4>EDW</h4></p>
         <p></p>
-        <p><h4>JOB INFO v0.47</h4></p>
+        <p><h4>JOB INFO v0.48</h4></p>
     </div>
     
     <button class="collapsible">JOB DETAILS</button><div class="content">
@@ -482,11 +482,10 @@
         const form = document.querySelector('form');
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-            const messageText = message.value;
-            const newMessage = {"role": "user", "content": `${messageText}`}
+            const newMessage = {"role": "user", "content": `${message.value}`}
             messages.push(newMessage);
+            const messageText = '- ' + message.value;
             message.value = '';
-            messageText = '- ' + messageText;
             const messageLines = messageText.split('\n');
             const messageElement = document.createElement('div');
             messageElement.classList.add('message');
