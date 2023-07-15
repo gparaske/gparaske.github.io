@@ -12,9 +12,13 @@
         <div style="background-color:lightblue;color:darkgrey;padding:1px;text-align:center;background-image: url('css/pexels-photo-355423.jpeg');background-size: cover;background-position: center;">
         <p><h4>EDW</h4></p>
         <p></p>
-        <p><h4>CALENDAR v0.1</h4></p>
+        <p><h4>CALENDAR v0.2</h4></p>
         </div>
 
+        <div id="loadingContainer" style="display: none;">
+            <img id="loadingImage" src="css/Loading_icon.gif" alt="Loading..." />
+        </div>
+          
         <input id="company_id" type="text" hidden="true"></input>
 
         <button class="collapsible" id="collapsible_login">LOGIN</button><div class="content">
@@ -289,6 +293,7 @@
             document.getElementById('errorPeriod').innerText = '';
             const messageLogin = {"username": `${username.value}`, "password": `${password.value}`};
             const messageOutgoing = {"user": "guest", "command": "login", "content": JSON.stringify(messageLogin)};
+            document.getElementById('loadingContainer').style.display = 'block'; rotateImage();
             messages.push(messageOutgoing);
             fetch('http://localhost:5000', {
                 method: 'POST',
@@ -300,7 +305,12 @@
                 })
             })
             .then(res => res.json())
+            .catch(error => {
+            cancelAnimationFrame(rotateImage); document.getElementById('loadingContainer').style.display = 'none';
+            console.error('Σφάλμα κατά την αποστολή του αιτήματος:', error);
+            })
             .then(data => {
+                cancelAnimationFrame(rotateImage); document.getElementById('loadingContainer').style.display = 'none';
                 const messageIncoming = {"user": "server", "command": "response", "content": `${data.completion.content}`}
                 let messageContent;
                 let product_name;
@@ -915,6 +925,23 @@
             return '' + y + (m<=9 ? '0' + m : m) + (d <= 9 ? '0' + d : d);
         }
 
+        function rotateImage() {
+            const loadingImage = document.getElementById('loadingImage');
+            let rotation = 0;
+
+            function rotate() {
+                rotation += 10; // Αυξήστε ή μειώστε την τιμή για να προσαρμόσετε την ταχύτητα περιστροφής.
+                loadingImage.style.transform = `rotate(${rotation}deg)`;
+                if (rotation < 360) {
+                requestAnimationFrame(rotate);
+                } else {
+                rotation = 0;
+                requestAnimationFrame(rotate);
+                }
+            }
+
+            requestAnimationFrame(rotate);
+        }
 
         function main() {
             var coll = document.getElementsByClassName("collapsible");
