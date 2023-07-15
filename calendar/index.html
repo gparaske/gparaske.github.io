@@ -12,7 +12,7 @@
         <div style="background-color:lightblue;color:darkgrey;padding:1px;text-align:center;background-image: url('css/pexels-photo-355423.jpeg');background-size: cover;background-position: center;">
         <p><h4>EDW</h4></p>
         <p></p>
-        <p><h4>CALENDAR v0.1</h4></p>
+        <p><h4>CALENDAR v0.2</h4></p>
         </div>
 
         <!-- Προσθέστε ένα div που θα περιέχει την εικόνα και θα το κάνουμε αόρατο -->
@@ -407,6 +407,7 @@
         function Logout() {
             const username = document.getElementById('username');
             const messageOutgoing = {"user": username.value, "command": "logout", "content": ""};
+            document.getElementById('loadingContainer').style.display = 'block'; rotateImage();
             messages.push(messageOutgoing);
             fetch('https://gparaske.ddns.net', {
                 method: 'POST',
@@ -418,7 +419,13 @@
                 })
             })
             .then(res => res.json())
+            .catch(error => {
+                cancelAnimationFrame(rotateImage); document.getElementById('loadingContainer').style.display = 'none';
+                console.error('Σφάλμα κατά την αποστολή του αιτήματος:', error);
+                alert('Η αίτηση έχει κάνει timeout. Παρακαλώ, προσπαθήστε ξανά.');
+            })
             .then(data => {
+                cancelAnimationFrame(rotateImage); document.getElementById('loadingContainer').style.display = 'none';
                 const messageIncoming = {"user": "server", "command": "response", "content": `${data.completion.content}`}
                 let messageContent;
                 let companyId;
@@ -454,6 +461,7 @@
                     // Ο χρήστης φαίνεται συνδεδεμένος. Μάζεψε τα στοιχεία και στείλε το αίτημα.
                     const messagePeriodSubmit = {"company_id": `${company_id}`, "product_name": `${document.getElementById('product_name').value}`, "period": `${document.getElementById('monthPicker').value}`};
                     const messageOutgoing = {"user": `${username.value}`, "command": "PeriodSubmit", "content": JSON.stringify(messagePeriodSubmit)};
+                    document.getElementById('loadingContainer').style.display = 'block'; rotateImage();
                     messages.push(messageOutgoing);
                     fetch('https://gparaske.ddns.net', {
                         method: 'POST',
@@ -465,7 +473,13 @@
                         })
                     })
                     .then(res => res.json())
+                    .catch(error => {
+                        cancelAnimationFrame(rotateImage); document.getElementById('loadingContainer').style.display = 'none';
+                        console.error('Σφάλμα κατά την αποστολή του αιτήματος:', error);
+                        alert('Η αίτηση έχει κάνει timeout. Παρακαλώ, προσπαθήστε ξανά.');
+                    })
                     .then(data => {
+                        cancelAnimationFrame(rotateImage); document.getElementById('loadingContainer').style.display = 'none';
                         const messageIncoming = {"user": "server", "command": "response", "content": `${data.completion.content}`}
                         let messageContent;
                         //messageContent = data.completion.content;
@@ -550,6 +564,7 @@
                 // Ο χρήστης φαίνεται συνδεδεμένος. Μάζεψε τα στοιχεία και στείλε το αίτημα.
                 const messageContent = {"username": `${calendar_user}`, "product_id": `${product_id}`, "period": `${document.getElementById('monthPicker').value}`, "choice": `${choice}`};
                 const messageOutgoing = {"user": `${username.value}`, "command": "CalendarSubmit", "content": JSON.stringify(messageContent)};
+                document.getElementById('loadingContainer').style.display = 'block'; rotateImage();
                 messages.push(messageOutgoing);
                 fetch('https://gparaske.ddns.net', {
                     method: 'POST',
@@ -561,7 +576,13 @@
                     })
                 })
                 .then(res => res.json())
+                .catch(error => {
+                    cancelAnimationFrame(rotateImage); document.getElementById('loadingContainer').style.display = 'none';
+                    console.error('Σφάλμα κατά την αποστολή του αιτήματος:', error);
+                    alert('Η αίτηση έχει κάνει timeout. Παρακαλώ, προσπαθήστε ξανά.');
+                })
                 .then(data => {
+                    cancelAnimationFrame(rotateImage); document.getElementById('loadingContainer').style.display = 'none';
                     const messageIncoming = {"user": "server", "command": "response", "content": `${data.completion.content}`}
                     let messageContent;
                     if (IsJSONObject(data.completion.content)) {
@@ -591,11 +612,25 @@
                 // Ο χρήστης φαίνεται συνδεδεμένος. Μάζεψε τα στοιχεία και στείλε το αίτημα.
                 const messageContent = {"product_id": `${product_id}`, "period": `${document.getElementById('monthPicker').value}`};
                 const messageOutgoing = {"user": `${username.value}`, "command": "Send Mail", "content": JSON.stringify(messageContent)};
+                document.getElementById('loadingContainer').style.display = 'block'; rotateImage();
                 messages.push(messageOutgoing);
-
-                fetch('https://gparaske.ddns.net', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({messages})})
+                fetch('https://gparaske.ddns.net', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        messages
+                    })
+                })
                 .then(res => res.json())
+                .catch(error => {
+                    cancelAnimationFrame(rotateImage); document.getElementById('loadingContainer').style.display = 'none';
+                    console.error('Σφάλμα κατά την αποστολή του αιτήματος:', error);
+                    alert('Η αίτηση έχει κάνει timeout. Παρακαλώ, προσπαθήστε ξανά.');
+                })
                 .then(data => {
+                    cancelAnimationFrame(rotateImage); document.getElementById('loadingContainer').style.display = 'none';
                     const messageIncoming = {"user": "server", "command": "response", "content": `${data.completion.content}`}
                     let messageContent;
                     if (IsJSONObject(data.completion.content)) {
@@ -633,10 +668,25 @@
                 // Ο χρήστης φαίνεται συνδεδεμένος. Μάζεψε τα στοιχεία και στείλε το αίτημα.
                 const messageContent = {"product_id": `${product_id}`, "period": `${document.getElementById('monthPicker').value}`};
                 const messageOutgoing = {"user": `${username.value}`, "command": "Initialize", "content": JSON.stringify(messageContent)};
+                document.getElementById('loadingContainer').style.display = 'block'; rotateImage();
                 messages.push(messageOutgoing);
-                fetch('https://gparaske.ddns.net', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({messages})})
+                fetch('https://gparaske.ddns.net', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        messages
+                    })
+                })
                 .then(res => res.json())
+                .catch(error => {
+                    cancelAnimationFrame(rotateImage); document.getElementById('loadingContainer').style.display = 'none';
+                    console.error('Σφάλμα κατά την αποστολή του αιτήματος:', error);
+                    alert('Η αίτηση έχει κάνει timeout. Παρακαλώ, προσπαθήστε ξανά.');
+                })
                 .then(data => {
+                    cancelAnimationFrame(rotateImage); document.getElementById('loadingContainer').style.display = 'none';
                     const messageIncoming = {"user": "server", "command": "response", "content": `${data.completion.content}`}
                     let messageContent;
                     if (IsJSONObject(data.completion.content)) {
@@ -696,10 +746,25 @@
                 // Ο χρήστης φαίνεται συνδεδεμένος. Μάζεψε τα στοιχεία και στείλε το αίτημα.
                 const messageContent = {"product_id": `${product_id}`, "period": `${document.getElementById('monthPicker').value}`};
                 const messageOutgoing = {"user": `${username.value}`, "command": "ShowInitialize", "content": JSON.stringify(messageContent)};
+                document.getElementById('loadingContainer').style.display = 'block'; rotateImage();
                 messages.push(messageOutgoing);
-                fetch('https://gparaske.ddns.net', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({messages})})
+                fetch('https://gparaske.ddns.net', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        messages
+                    })
+                })
                 .then(res => res.json())
+                .catch(error => {
+                    cancelAnimationFrame(rotateImage); document.getElementById('loadingContainer').style.display = 'none';
+                    console.error('Σφάλμα κατά την αποστολή του αιτήματος:', error);
+                    alert('Η αίτηση έχει κάνει timeout. Παρακαλώ, προσπαθήστε ξανά.');
+                })
                 .then(data => {
+                    cancelAnimationFrame(rotateImage); document.getElementById('loadingContainer').style.display = 'none';
                     const messageIncoming = {"user": "server", "command": "response", "content": `${data.completion.content}`}
                     let messageContent;
                     if (IsJSONObject(data.completion.content)) {
@@ -759,10 +824,25 @@
                 // Ο χρήστης φαίνεται συνδεδεμένος. Μάζεψε τα στοιχεία και στείλε το αίτημα.
                 const messageContent = {"product_id": `${product_id}`, "period": `${document.getElementById('monthPicker').value}`};
                 const messageOutgoing = {"user": `${username.value}`, "command": "Calculate", "content": JSON.stringify(messageContent)};
+                document.getElementById('loadingContainer').style.display = 'block'; rotateImage();
                 messages.push(messageOutgoing);
-                fetch('https://gparaske.ddns.net', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({messages})})
+                fetch('https://gparaske.ddns.net', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        messages
+                    })
+                })
                 .then(res => res.json())
+                .catch(error => {
+                    cancelAnimationFrame(rotateImage); document.getElementById('loadingContainer').style.display = 'none';
+                    console.error('Σφάλμα κατά την αποστολή του αιτήματος:', error);
+                    alert('Η αίτηση έχει κάνει timeout. Παρακαλώ, προσπαθήστε ξανά.');
+                })
                 .then(data => {
+                    cancelAnimationFrame(rotateImage); document.getElementById('loadingContainer').style.display = 'none';
                     const messageIncoming = {"user": "server", "command": "response", "content": `${data.completion.content}`}
                     let messageContent;
                     if (IsJSONObject(data.completion.content)) {
