@@ -5,6 +5,8 @@
     th {background-color:lightblue;color:white;border-collapse: collapse;}
     th, td {padding: 10px;}
     #monthPicker {font-family: Arial, sans-serif;}
+    #tbl_calendar td { width: 150px; height: 50px; border: 1px solid #dddddd; }
+    #tbl_calendar th { width: 150px; height: 50px; text-align: center; }
     </style><title>Calendar</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     </head><body>
@@ -12,8 +14,10 @@
         <div style="background-color:lightblue;color:darkgrey;padding:1px;text-align:center;background-image: url('css/pexels-photo-355423.jpeg');background-size: cover;background-position: center;">
         <p><h4>EDW</h4></p>
         <p></p>
-        <p><h4>CALENDAR v0.3</h4></p>
+        <p><h4>CALENDAR v0.1</h4></p>
         </div>
+
+        <!-- Για το gitHub αλλάζεις το https://gparaske.ddns.net σε https://gparaske.ddns.net -->
 
         <!-- Προσθέστε ένα div που θα περιέχει την εικόνα και θα το κάνουμε αόρατο -->
         <div id="loadingContainer" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 999;">
@@ -88,29 +92,18 @@
         </div>
 
         <button class="collapsible" id="collapsible_calendar">CALENDAR</button><div class="content">
+            <p></p>
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12">
-                        <table id="tbl_calendar_main" class="table table-bordered" style="text-align:center;">
-                            <tr>
-                                <td>
-                                    <table id="tbl_calendar" class="table table-bordered" style="text-align:center;">
-                                        <tr>
-                                            <td width="100" align="left"></td>
-                                            <td width="200" align="left"></td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align="right">
-                                    <button id="commit" class="btn btn-primary" hidden="true" onclick='RunExe("Commit"); return false;'>Commit</button>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
+                        <div class="table-responsive">
+            <table id="tbl_calendar_main" style="width: 1000;text-align:center" align="left" valign:"top"><tr><td>
+                <table id="tbl_calendar" style="width: 1000;text-align:center" align="left" valign:"top">
+                <tr><td width="100" align="left"></td><td width="200" align="left"></td></tr>
+                </table>
+            </td></tr><tr><td align="right"><button id="commit" class="btn btn-primary" hidden="true" onclick='RunExe("Commit"); return false;'>Commit</button></td></tr></table>
+            </div></div></div></div>
+            <p></p>
             
         </div>
 
@@ -703,6 +696,9 @@
                     if(messageContent!=''){
                         switch(messageContent) {
                         case `The user ${username.value} is not logged in.`:
+                            alert(messageContent);
+                        break;
+                        case `The Max value of users needs to be increased.`:
                             alert(messageContent);
                         break;
                         default:
