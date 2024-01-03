@@ -17,7 +17,7 @@
         <p><h4>CALENDAR v0.1</h4></p>
         </div>
 
-        <!-- Για το gitHub αλλάζεις το http://localhost:5000 σε https://gparaske.ddns.net -->
+        <!-- Για το gitHub αλλάζεις το https://gparaske.ddns.net σε https://gparaske.ddns.net -->
 
         <!-- Προσθέστε ένα div που θα περιέχει την εικόνα και θα το κάνουμε αόρατο -->
         <div id="loadingContainer" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 999;">
@@ -277,7 +277,7 @@
         //     `;
         //     chatLog.appendChild(messageElement);
         //     chatLog.scrollTop = chatLog.scrollHeight;
-        //     fetch('http://localhost:5000', {
+        //     fetch('https://gparaske.ddns.net', {
         //         method: 'POST',
         //         headers: {
         //             'Content-Type': 'application/json'
@@ -311,7 +311,7 @@
             const messageOutgoing = {"user": "guest", "command": "login", "content": JSON.stringify(messageLogin)};
             document.getElementById('loadingContainer').style.display = 'block'; rotateImage();
             messages.push(messageOutgoing);
-            fetch('http://localhost:5000', {
+            fetch('https://gparaske.ddns.net', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -421,7 +421,7 @@
             const messageOutgoing = {"user": username.value, "command": "logout", "content": ""};
             document.getElementById('loadingContainer').style.display = 'block'; rotateImage();
             messages.push(messageOutgoing);
-            fetch('http://localhost:5000', {
+            fetch('https://gparaske.ddns.net', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -475,7 +475,7 @@
                     const messageOutgoing = {"user": `${username.value}`, "command": "PeriodSubmit", "content": JSON.stringify(messagePeriodSubmit)};
                     document.getElementById('loadingContainer').style.display = 'block'; rotateImage();
                     messages.push(messageOutgoing);
-                    fetch('http://localhost:5000', {
+                    fetch('https://gparaske.ddns.net', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -623,7 +623,7 @@
                 const messageOutgoing = {"user": `${username.value}`, "command": "CalendarSubmit", "content": JSON.stringify(messageContent)};
                 document.getElementById('loadingContainer').style.display = 'block'; rotateImage();
                 messages.push(messageOutgoing);
-                fetch('http://localhost:5000', {
+                fetch('https://gparaske.ddns.net', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -673,7 +673,7 @@
                 const messageOutgoing = {"user": `${username.value}`, "command": "sendMail", "content": JSON.stringify(messageContent)};
                 document.getElementById('loadingContainer').style.display = 'block'; rotateImage();
                 messages.push(messageOutgoing);
-                fetch('http://localhost:5000', {
+                fetch('https://gparaske.ddns.net', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -729,7 +729,7 @@
                 const messageOutgoing = {"user": `${username.value}`, "command": "Initialize", "content": JSON.stringify(messageContent)};
                 document.getElementById('loadingContainer').style.display = 'block'; rotateImage();
                 messages.push(messageOutgoing);
-                fetch('http://localhost:5000', {
+                fetch('https://gparaske.ddns.net', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -814,7 +814,7 @@
                 const messageOutgoing = {"user": `${username.value}`, "command": "ShowInitialize", "content": JSON.stringify(messageContent)};
                 document.getElementById('loadingContainer').style.display = 'block'; rotateImage();
                 messages.push(messageOutgoing);
-                fetch('http://localhost:5000', {
+                fetch('https://gparaske.ddns.net', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -892,7 +892,7 @@
                 const messageOutgoing = {"user": `${username.value}`, "command": "ShowResults", "content": JSON.stringify(messageContent)};
                 document.getElementById('loadingContainer').style.display = 'block'; rotateImage();
                 messages.push(messageOutgoing);
-                fetch('http://localhost:5000', {
+                fetch('https://gparaske.ddns.net', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -973,7 +973,7 @@
                 const messageOutgoing = {"user": `${username.value}`, "command": "Calculate", "content": JSON.stringify(messageContent)};
                 document.getElementById('loadingContainer').style.display = 'block'; rotateImage();
                 messages.push(messageOutgoing);
-                fetch('http://localhost:5000', {
+                fetch('https://gparaske.ddns.net', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -1089,7 +1089,7 @@
                 const messageOutgoing = {"user": `${username.value}`, "command": "SaveResults", "content": JSON.stringify(messageContent)};
                 document.getElementById('loadingContainer').style.display = 'block'; rotateImage();
                 messages.push(messageOutgoing);
-                fetch('http://localhost:5000', {
+                fetch('https://gparaske.ddns.net', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -1147,7 +1147,7 @@
                 const messageOutgoing = {"user": `${username.value}`, "command": "Transfer", "content": JSON.stringify(messageContent)};
                 document.getElementById('loadingContainer').style.display = 'block'; rotateImage();
                 messages.push(messageOutgoing);
-                fetch('http://localhost:5000', {
+                fetch('https://gparaske.ddns.net', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -1200,7 +1200,7 @@
                 const messageOutgoing = {"user": `${username.value}`, "command": "HeavyDuty", "content": JSON.stringify(messageContent)};
                 document.getElementById('loadingContainer').style.display = 'block'; rotateImage();
                 messages.push(messageOutgoing);
-                fetch('http://localhost:5000', {
+                fetch('https://gparaske.ddns.net', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
