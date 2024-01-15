@@ -54,7 +54,6 @@
         </div>
                 
         <button class="collapsible" id="collapsible_period">TYPE & PERIOD</button><div class="content">
-            <p></p>
             <div class="container">
                 <form>
                     <div class="form-group row">
@@ -94,7 +93,10 @@
 
         <button class="collapsible" id="collapsible_calendar">CALENDAR</button><div class="content">
             <p></p>
-            <div class="container"><div class="row"><div class="col-xs-12"><div class="table-responsive">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="table-responsive">
             <table id="tbl_calendar_main" style="width: 1000;text-align:center" align="left" valign:"top"><tr><td>
                 <table id="tbl_calendar" style="width: 1000;text-align:center" align="left" valign:"top">
                 <tr><td width="100" align="left"></td><td width="200" align="left"></td></tr>
@@ -102,6 +104,7 @@
             </td></tr><tr><td align="right"><button id="commit" class="btn btn-primary" hidden="true" onclick='RunExe("Commit"); return false;'>Commit</button></td></tr></table>
             </div></div></div></div>
             <p></p>
+            
         </div>
 
         <button class="collapsible" id="collapsible_console" hidden="true">CONSOLE</button><div class="content">
@@ -113,7 +116,7 @@
                     </div>
                     <div class="col-md-6">
                         <button class="btn btn-primary" id="Initialize" onclick='RunExe("Initialize"); return false;'>Initialize</button>
-                        Distribute the days among the population based on the calendar. It does not try to fill the Max of user.
+                        Distribute the days among the population based on the calendar.
                     </div>
                 </div>
                 <div class="row">
@@ -133,41 +136,13 @@
                     </div>
                 </div>
                 <div class="row">
-                    <!-- <div class="col-md-6">
-                        <button class="btn btn-primary" id="InitCalcAlgorithm" onclick='RunExe("InitCalcAlgorithm"); return false;'>Initial Calculation</button>
-                        Calculate the allocation of days to the population based on the initialization table. With Algorithm.
-                    </div> -->
-                    <div class="col-md-6">
-                        <button class="btn btn-primary" id="InitCalculation" onclick='RunExe("InitCalculation"); return false;'>Initial Calculation (Genetic)</button>
-                        Calculate the allocation of days to the population based on the initialization table. With Genetic Algorithm.
-                    </div>
                     <div class="col-md-6">
                         <button class="btn btn-primary" id="Calculate" onclick='RunExe("Calculate"); return false;'>Calculate</button>
-                        Calculate the allocation of days to the population based on minimum and maximum. It ignores the initialization and is recommended for months with many vacations.
-                    </div>
-                    <div class="col-md-6">
-                        <button class="btn btn-primary" id="Transfer" onclick='RunExe("Transfer"); return false;'>Transfer</button>
-                        Transfer the results to the next product to be taken into account in the calculation.
+                        Calculate the allocation of days to the population based on the initialization table.
                     </div>
                     <div class="col-md-6">
                         <button class="btn btn-primary" id="Heavy Duty" onclick='RunExe("Heavy Duty"); return false;'>Heavy Duty</button>
                         Creation of the upcoming heavy-duty services and sending an email.
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <button class="btn btn-primary" id="Show Results" onclick='RunExe("Show Results"); return false;'>Show Results List</button>
-                        Show the results table.
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <table id="tbl_results" class="table table-bordered" style="text-align:center;">
-                            <tr>
-                                <td width="100" align="left"></td>
-                                <td width="200" align="left"></td>
-                            </tr>
-                        </table>
                     </div>
                 </div>
             </div>
@@ -225,14 +200,14 @@
 
 
             
-        <!-- <h1>Welcome to My Website</h1>
+        <h1>Welcome to My Website</h1>
         <form action="">
             <p>
                 <input type="text" name="message" id="message">
                 <button type="submit">Send</button>
             </p>
         </form>
-        <div id="chat-log"> -->
+        <div id="chat-log">
 
 
     </main>
@@ -250,55 +225,61 @@
         let product_id;
 
         const changedRows = {};
-        const colorSelected = "lightblue";
-
-        let mins = []
-        let maxs = []
-        let sums = []
 
         let messages = []
-        // const chatLog = document.getElementById('chat-log');
-        // const message = document.getElementById('message');
-        // const loginButton = document.getElementById('login');
-        // const form = document.querySelector('form');
-        // form.addEventListener('submit', (e) => {
+        const chatLog = document.getElementById('chat-log');
+        const message = document.getElementById('message');
+        const loginButton = document.getElementById('login');
+        const form = document.querySelector('form');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username');
+            const user = username.value;
+            const messageText = message.value;
+            const newMessage = {"user": user, "command": "message", "content": `${messageText}`}
+            messages.push(newMessage);
+            message.value = '';
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message');
+            messageElement.classList.add('message--sent');
+            messageElement.innerHTML = `
+                <div class="message__text">${messageText}</div>
+            `;
+            chatLog.appendChild(messageElement);
+            chatLog.scrollTop = chatLog.scrollHeight;
+            fetch('https://gparaske.ddns.net', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    messages
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                let newAssistantMessage = {"user": "server", "command": "response", "content": `${data.completion.content}`}
+                messages.push(newAssistantMessage)
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message');
+                messageElement.classList.add('message--received');
+                messageElement.innerHTML = `
+                    <div class="message__text">${data.completion.content}</div>
+                `;
+                chatLog.appendChild(messageElement);
+                chatLog.scrollTop = chatLog.scrollHeight;
+            })
+        })
+        // //const loginButton = document.querySelector('button[type="login"]');
+        // loginButton.addEventListener('click', (e) => {
+        // //form.addEventListener('login', (e) => {
         //     e.preventDefault();
-        //     const username = document.getElementById('username');
-        //     const user = username.value;
-        //     const messageText = message.value;
-        //     const newMessage = {"user": user, "command": "message", "content": `${messageText}`}
-        //     messages.push(newMessage);
-        //     message.value = '';
-        //     const messageElement = document.createElement('div');
-        //     messageElement.classList.add('message');
-        //     messageElement.classList.add('message--sent');
-        //     messageElement.innerHTML = `
-        //         <div class="message__text">${messageText}</div>
-        //     `;
-        //     chatLog.appendChild(messageElement);
-        //     chatLog.scrollTop = chatLog.scrollHeight;
-        //     fetch('https://gparaske.ddns.net', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json'
-        //         },
-        //         body: JSON.stringify({
-        //             messages
-        //         })
-        //     })
-        //     .then(res => res.json())
-        //     .then(data => {
-        //         let newAssistantMessage = {"user": "server", "command": "response", "content": `${data.completion.content}`}
-        //         messages.push(newAssistantMessage)
-        //         const messageElement = document.createElement('div');
-        //         messageElement.classList.add('message');
-        //         messageElement.classList.add('message--received');
-        //         messageElement.innerHTML = `
-        //             <div class="message__text">${data.completion.content}</div>
-        //         `;
-        //         chatLog.appendChild(messageElement);
-        //         chatLog.scrollTop = chatLog.scrollHeight;
-        //     })
+        //     // const messageLogin = {"command": "login", "arg1": "1", "arg2": "2"};
+        //     // const newMessage2 = {"role": "user", "content": JSON.stringify(messageLogin)};
+        //     // const parsedData2 = JSON.parse(newMessage2.content);
+        //     // alert(parsedData2.command);
+
+        //     //const newMessage = {"role": "user", "content": 'login(`${username.value}`,`${password.value}`)'}
         // })
 
         function Login() {
@@ -514,8 +495,6 @@
                         var coll_calendar = document.getElementById('collapsible_calendar');
                         if (coll_calendar.nextElementSibling.style.display != "block") { coll_calendar.click(); }
                         document.getElementById('commit').hidden = 0;
-                        // Επανέφερε το λεκτικό στο commit σε περίπτωση που είχε αλλάξει
-                        document.getElementById('commit').innerHTML = 'Commit';
                         // Calendar Table
                         const tbl_calendar = document.getElementById('tbl_calendar');
                         while (tbl_calendar.rows.length > 0) {
@@ -529,11 +508,7 @@
                         for (var k = 1; k <= line[2].length; k++) {
                             tbl_calendar_row.innerHTML += '<th>' + k + '</th>';
                         }
-                        if(document.getElementById('collapsible_console').hidden==''){
-                            tbl_calendar_row.innerHTML += '<th>min</th><th>sum</th><th>max</th>';
-                        }
                         tbl_calendar_row.innerHTML += '</tr>';
-                        let bCalculated = 0;
                         // Χτίζει τις λεπτομέρειες του πίνακα
                         for (var k = 1; k < lines.length; k++) {
                             if(lines[k]!=''){
@@ -541,16 +516,12 @@
                                 tbl_calendar_row = tbl_calendar.insertRow();
                                 tbl_calendar_row_cell = tbl_calendar_row.insertCell();
                                 tbl_calendar_row_cell.innerHTML="<td>"+calendar_row[0]+"</td>";
-                                //changedRows[calendar_row[0]] = '';
-                                //alert(calendar_row[0]);
-
                                 if(k % 2 == 0) {tbl_calendar_row_cell.style.backgroundColor = "white";}
                                 else {tbl_calendar_row_cell.style.backgroundColor = "aliceblue";}
                                 tbl_calendar_row_cell = tbl_calendar_row.insertCell();
                                 tbl_calendar_row_cell.innerHTML="<td>"+calendar_row[1]+"</td>";
                                 if(k % 2 == 0) {tbl_calendar_row_cell.style.backgroundColor = "white";}
                                 else {tbl_calendar_row_cell.style.backgroundColor = "aliceblue";}
-                                let cntSelected = 0;
                                 for (var m = 0; m < calendar_row[2].length; m+=1) {
                                     tbl_calendar_row_cell = tbl_calendar_row.insertCell();
                                     if(calendar_row[2].substr(m,1)=='H'){
@@ -559,53 +530,18 @@
                                         if(k % 2 == 0) {tbl_calendar_row_cell.style.backgroundColor = "white";}
                                         else {tbl_calendar_row_cell.style.backgroundColor = "aliceblue";}
                                         switch(calendar_row[2].substr(m,1)) {
-                                            case "R": sBorder = "red"; break;
-                                            case "G": sBorder = "green"; break;
-                                            case "B": sBorder = "blue"; break;
+                                            case "R": sBorder = "red"; //reds[i-1] += aUserDetails[1]+";"; 
+                                            break;
+                                            case "G": sBorder = "green"; //greens[i-1] += aUserDetails[1]+";"; 
+                                            break;
+                                            case "B": sBorder = "blue"; //blues[i-1] += aUserDetails[1]+";"; 
+                                            break;
                                             case "-": sBorder = tbl_calendar_row_cell.style.backgroundColor; break;
-                                            case "J": sBorder = "green"; tbl_calendar_row_cell.style.backgroundColor = colorSelected; cntSelected++; break;
-                                            case "P": sBorder = "blue"; tbl_calendar_row_cell.style.backgroundColor = colorSelected; cntSelected++; break;
-                                            case "_": sBorder = tbl_calendar_row_cell.style.backgroundColor; tbl_calendar_row_cell.style.backgroundColor = colorSelected; cntSelected++; break;
                                         }
                                         j = k * 100 + m
                                         tbl_calendar_row_cell.innerHTML="<td><input type='submit' id='submit"+j.toString()+"' value=' ' onClick='RunExe("+j.toString()+"); return false;' style='border: none;background-color: "+sBorder+";'></td>";
-                                        if (cntSelected != 0 ) { bCalculated = 1; }
                                     }
                                 }
-                                if(document.getElementById('collapsible_console').hidden==''){
-                                    tbl_calendar_row_cell = tbl_calendar_row.insertCell();
-                                    tbl_calendar_row_cell.innerHTML = '<td>'+calendar_row[3]+'</td>';
-                                    if(k % 2 == 0) {tbl_calendar_row_cell.style.backgroundColor = "white";}
-                                    else {tbl_calendar_row_cell.style.backgroundColor = "aliceblue";}
-                                    tbl_calendar_row_cell = tbl_calendar_row.insertCell();
-                                    tbl_calendar_row_cell.innerHTML = `<td>${cntSelected}</td>`;
-                                    if(k % 2 == 0) {tbl_calendar_row_cell.style.backgroundColor = "white";}
-                                    else {tbl_calendar_row_cell.style.backgroundColor = "aliceblue";}
-                                    tbl_calendar_row_cell = tbl_calendar_row.insertCell();
-                                    tbl_calendar_row_cell.innerHTML = '<td>'+calendar_row[4]+'</td>';
-                                    if(k % 2 == 0) {tbl_calendar_row_cell.style.backgroundColor = "white";}
-                                    else {tbl_calendar_row_cell.style.backgroundColor = "aliceblue";}
-                                    tbl_calendarUpdateColorRow(tbl_calendar_row);
-                                    // Φυλάει τις τιμές ώστε κάθε φορά που πατάει Calculate να τις ενημερώνει όπως θέλουμε
-                                    mins.push(calendar_row[3]);
-                                    maxs.push(calendar_row[4]);
-                                    sums.push(calendar_row[5]);
-                                }
-                            }
-                        }
-                        if(document.getElementById('collapsible_console').hidden==''){
-                            if (bCalculated==1) {
-                                let extra_columns = 3;
-                                for (var m = 2; m < tbl_calendar_row.cells.length - extra_columns; m+=1) {
-                                    var tbl_calendar_cell = tbl_calendar_row.cells[m];
-                                    if(tbl_calendar_cell.innerHTML!=''){
-                                        var button = tbl_calendar_cell.querySelector("input[type='submit']"); // Εντοπίζει το πρώτο κουμπί μέσα στο κελί
-                                        if (button != null) {
-                                            tbl_calendarUpdateColorColumn(m);
-                                        }
-                                    }
-                                }
-                                document.getElementById('commit').innerHTML = 'Save';
                             }
                         }
                     })
@@ -667,10 +603,8 @@
                 alert('Try to connect first.');
             } else {
                 // Ο χρήστης φαίνεται συνδεδεμένος. Μάζεψε τα στοιχεία και στείλε το αίτημα.
-                // const messageContent = {"product_id": `${product_id}`, "period": `${document.getElementById('monthPicker').value}`};
-                // const messageOutgoing = {"user": `${username.value}`, "command": "Calendar Mail", "content": JSON.stringify(messageContent)};
-                const messageContent = {"from": "gtparas@yahoo.gr", "to": "gtparas@gmail.com", "cc": "", "subject": "this is a test", "body": "This is a test\n"};
-                const messageOutgoing = {"user": `${username.value}`, "command": "sendMail", "content": JSON.stringify(messageContent)};
+                const messageContent = {"product_id": `${product_id}`, "period": `${document.getElementById('monthPicker').value}`};
+                const messageOutgoing = {"user": `${username.value}`, "command": "Send Mail", "content": JSON.stringify(messageContent)};
                 document.getElementById('loadingContainer').style.display = 'block'; rotateImage();
                 messages.push(messageOutgoing);
                 fetch('https://gparaske.ddns.net', {
@@ -764,38 +698,34 @@
                         case `The user ${username.value} is not logged in.`:
                             alert(messageContent);
                         break;
-                        case `Less than 6 months remain for the heavy duty. Press the button and inform the users.`:
+                        case `The Max value of users needs to be increased.`:
                             alert(messageContent);
                         break;
                         default:
-                            if(messageContent.indexOf(`The Max value of users needs to be increased.`)>=0){
-                                alert(messageContent);
-                            } else {
-                                //alert(messageContent);
-                                let lines = messageContent.split('$');
-                                // for (var k = 0; k < lines.length; k++) {
-                                //     //alert(lines[k]);
-                                // }
-                                // Init Table
-                                const tbl_init = document.getElementById('tbl_init');
-                                while (tbl_init.rows.length > 0) {
-                                    tbl_init.deleteRow(0);
-                                }
-                                // Χτίζει τον header του πίνακα
-                                var tbl_init_row = tbl_init.insertRow();
-                                tbl_init_row.innerHTML = '<tr><th>USER</th><th>NAME</th><th>MIN</th><th>MAX</th><th>ASSIGN</th><th>SCORE</th><th>COUNT</th></tr>';
-                                //let line = lines[0].split('$');
-                                // Χτίζει τις λεπτομέρειες του πίνακα
-                                for (var k = 0; k < lines.length; k++) {
-                                    if(lines[k]!=''){
-                                        let init_row = lines[k].split(';');
-                                        tbl_init_row = tbl_init.insertRow();
-                                        for (var m = 0; m < init_row.length; m+=1) {
-                                            tbl_init_row_cell = tbl_init_row.insertCell();
-                                            tbl_init_row_cell.innerHTML="<td>"+init_row[m]+"</td>";
-                                            if(k % 2 == 0) {tbl_init_row_cell.style.backgroundColor = "white";}
-                                            else {tbl_init_row_cell.style.backgroundColor = "aliceblue";}
-                                        }
+                            //alert(messageContent);
+                            let lines = messageContent.split('$');
+                            // for (var k = 0; k < lines.length; k++) {
+                            //     //alert(lines[k]);
+                            // }
+                            // Init Table
+                            const tbl_init = document.getElementById('tbl_init');
+                            while (tbl_init.rows.length > 0) {
+                                tbl_init.deleteRow(0);
+                            }
+                            // Χτίζει τον header του πίνακα
+                            var tbl_init_row = tbl_init.insertRow();
+                            tbl_init_row.innerHTML = '<tr><th>USER</th><th>NAME</th><th>MIN</th><th>MAX</th><th>ASSIGN</th><th>SCORE</th><th>COUNT</th></tr>';
+                            //let line = lines[0].split('$');
+                            // Χτίζει τις λεπτομέρειες του πίνακα
+                            for (var k = 0; k < lines.length; k++) {
+                                if(lines[k]!=''){
+                                    let init_row = lines[k].split(';');
+                                    tbl_init_row = tbl_init.insertRow();
+                                    for (var m = 0; m < init_row.length; m+=1) {
+                                        tbl_init_row_cell = tbl_init_row.insertCell();
+                                        tbl_init_row_cell.innerHTML="<td>"+init_row[m]+"</td>";
+                                        if(k % 2 == 0) {tbl_init_row_cell.style.backgroundColor = "white";}
+                                        else {tbl_init_row_cell.style.backgroundColor = "aliceblue";}
                                     }
                                 }
                             }
@@ -882,94 +812,13 @@
                 })
             }
         }
-        function ShowResults(){
+        function Calculate(){
             // Έλεγχος αν ο χρήστης είναι συνδεδεμένος.
             if (document.getElementById('login').innerText=='Login') {
                 alert('Try to connect first.');
             } else {
                 // Ο χρήστης φαίνεται συνδεδεμένος. Μάζεψε τα στοιχεία και στείλε το αίτημα.
                 const messageContent = {"product_id": `${product_id}`, "period": `${document.getElementById('monthPicker').value}`};
-                const messageOutgoing = {"user": `${username.value}`, "command": "ShowResults", "content": JSON.stringify(messageContent)};
-                document.getElementById('loadingContainer').style.display = 'block'; rotateImage();
-                messages.push(messageOutgoing);
-                fetch('https://gparaske.ddns.net', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        messages
-                    })
-                })
-                .then(res => res.json())
-                .catch(error => {
-                    cancelAnimationFrame(rotateImage); document.getElementById('loadingContainer').style.display = 'none';
-                    console.error('Σφάλμα κατά την αποστολή του αιτήματος:', error);
-                    alert('Η αίτηση έχει κάνει timeout. Παρακαλώ, προσπαθήστε ξανά.');
-                })
-                .then(data => {
-                    cancelAnimationFrame(rotateImage); document.getElementById('loadingContainer').style.display = 'none';
-                    const messageIncoming = {"user": "server", "command": "response", "content": `${data.completion.content}`}
-                    let messageContent;
-                    if (IsJSONObject(data.completion.content)) {
-                        const messageObject = JSON.parse(data.completion.content);
-                        if (IsJSONObject(messageObject)){
-                            const messageContentObject = JSON.parse(messageObject);
-                            messageContent = messageContentObject.message;
-                        } else {
-                            messageContent = messageObject;
-                        }
-                    } else {
-                        messageContent = data.completion.content;
-                    }
-                    if(messageContent!=''){
-                        switch(messageContent) {
-                            case `The user ${username.value} is not logged in.`:
-                            alert(messageContent);
-                        break;
-                        case `First, you need to press Calculate and then Save.`:
-                            alert(messageContent);
-                        break;
-                        default:
-                            //alert(messageContent);
-                            let lines = messageContent.split('$');
-                            // for (var k = 0; k < lines.length; k++) {
-                            //     //alert(lines[k]);
-                            // }
-                            // Init Table
-                            const tbl_init = document.getElementById('tbl_results');
-                            while (tbl_init.rows.length > 0) {
-                                tbl_init.deleteRow(0);
-                            }
-                            // Χτίζει τον header του πίνακα
-                            var tbl_init_row = tbl_init.insertRow();
-                            tbl_init_row.innerHTML = '<tr><th>DATE</th><th>USER</th><th>NAME</th></tr>';
-                            //let line = lines[0].split('$');
-                            // Χτίζει τις λεπτομέρειες του πίνακα
-                            for (var k = 0; k < lines.length; k++) {
-                                if(lines[k]!=''){
-                                    let init_row = lines[k].split(';');
-                                    tbl_init_row = tbl_init.insertRow();
-                                    for (var m = 0; m < init_row.length; m+=1) {
-                                        tbl_init_row_cell = tbl_init_row.insertCell();
-                                        tbl_init_row_cell.innerHTML="<td>"+init_row[m]+"</td>";
-                                        if(k % 2 == 0) {tbl_init_row_cell.style.backgroundColor = "white";}
-                                        else {tbl_init_row_cell.style.backgroundColor = "aliceblue";}
-                                    }
-                                }
-                            }
-                        }
-                    }
-                })
-            }
-        }
-        function Calculate(bInitCalculation){
-            // Έλεγχος αν ο χρήστης είναι συνδεδεμένος.
-            if (document.getElementById('login').innerText=='Login') {
-                alert('Try to connect first.');
-            } else {
-                // Ο χρήστης φαίνεται συνδεδεμένος. Μάζεψε τα στοιχεία και στείλε το αίτημα.
-                const messageContent = {"product_id": `${product_id}`, "period": `${document.getElementById('monthPicker').value}`, "InitCalculation": `${bInitCalculation}`};
                 const messageOutgoing = {"user": `${username.value}`, "command": "Calculate", "content": JSON.stringify(messageContent)};
                 document.getElementById('loadingContainer').style.display = 'block'; rotateImage();
                 messages.push(messageOutgoing);
@@ -1008,235 +857,31 @@
                         case `The user ${username.value} is not logged in.`:
                             alert(messageContent);
                         break;
-                        case `The calculation of this month has already been completed.`:
-                            alert(messageContent);
-                        break;
-                        case `You must first press Initialize.`:
-                            alert(messageContent);
-                        break;
-                        default:
-                            //alert(messageContent);
-                            let lines = messageContent.split(';');
-                            //todo: edw den prepei na leei Genetic an exei timi bInitCalculation=2
-                            alert(`Genetic Algorythm Score : ${lines[0]}`);
-                            const tbl_calendar = document.getElementById('tbl_calendar');
-                            const colorsWorkingDay = `.white.aliceblue.${colorSelected}.`;
-                            for (let i = 1; i < tbl_calendar.rows.length; i++) {
-                                // Κάθε φορά που πατάει Calculate βάλε τις σωστές τιμές στα min/max.
-                                if (bInitCalculation==1){
-                                    // tbl_calendar.rows[i].cells[tbl_calendar.rows[0].cells.length-1].innerHTML = sums[i-1];
-                                    // tbl_calendar.rows[i].cells[tbl_calendar.rows[0].cells.length-3].innerHTML = sums[i-1];
-                                    tbl_calendar.rows[i].cells[tbl_calendar.rows[0].cells.length-1].innerHTML = maxs[i-1];
-                                    tbl_calendar.rows[i].cells[tbl_calendar.rows[0].cells.length-3].innerHTML = mins[i-1];
-                                } else {
-                                    tbl_calendar.rows[i].cells[tbl_calendar.rows[0].cells.length-1].innerHTML = maxs[i-1];
-                                    tbl_calendar.rows[i].cells[tbl_calendar.rows[0].cells.length-3].innerHTML = mins[i-1];
-                                }
-                                // Καθάρισε τα χρώματα από πιθανό προηγούμενο τρέξιμο.
-                                for (let j = 2; j < tbl_calendar.rows[i].cells.length; j++) {
-                                    if(tbl_calendar.rows[i].cells[j].style.backgroundColor==colorSelected){
-                                        tbl_calendar.rows[i].cells[j].style.backgroundColor = tbl_calendar.rows[i].cells[0].style.backgroundColor;
-                                    }
-                                }
-                                //alert(`Search for ${tbl_calendar.rows[i].cells[0].innerHTML}`);
-                                let cntUser = 0;
-                                for (let k = 1; k < lines.length; k++) {
-                                    if(tbl_calendar.rows[i].cells[0].innerHTML==lines[k]){
-                                        // if(tbl_calendar.rows[i].cells[0].innerHTML=='e36138'){
-                                        //     alert(k);
-                                        // }
-                                        cntUser++;
-                                        let findColumnIndex = k;
-                                        let findColumn = 2;
-                                        while (findColumnIndex>0) {
-                                            // if(tbl_calendar.rows[i].cells[0].innerHTML=='e30666'){
-                                            //      alert(`Θέση ${findColumn} χρώμα ${colorsWorkingDay.indexOf(tbl_calendar.rows[i].cells[findColumn].style.backgroundColor)}`);
-                                            // }
-                                            if(colorsWorkingDay.indexOf(tbl_calendar.rows[i].cells[findColumn].style.backgroundColor)>0){
-                                            //if(tbl_calendar.rows[i].cells[findColumn].style.backgroundColor=="white" || tbl_calendar.rows[i].cells[findColumn].style.backgroundColor == "aliceblue"){
-                                                findColumnIndex--;
-                                                //alert(`${findColumn} is a working day`);
-                                            }
-                                            findColumn++;
-                                        }
-                                        findColumn--;
-                                        tbl_calendar.rows[i].cells[findColumn].style.backgroundColor = colorSelected;
-                                    }
-                                    //alert(k);
-                                }
-                                //alert(tbl_calendar.rows[0].cells.length);
-                                tbl_calendar.rows[i].cells[tbl_calendar.rows[0].cells.length-2].innerHTML = cntUser;
-                                tbl_calendarUpdateColorRow(tbl_calendar.rows[i]);
-                                // if(tbl_calendar.rows[i].cells[tbl_calendar.rows[0].cells.length-2].innerHTML < tbl_calendar.rows[i].cells[tbl_calendar.rows[0].cells.length-3].innerHTML || tbl_calendar.rows[i].cells[tbl_calendar.rows[0].cells.length-2].innerHTML > tbl_calendar.rows[i].cells[tbl_calendar.rows[0].cells.length-1].innerHTML) {
-                                //     tbl_calendar.rows[i].cells[tbl_calendar.rows[0].cells.length-2].style.color = "red";
-                                // } else {
-                                //     tbl_calendar.rows[i].cells[tbl_calendar.rows[0].cells.length-2].style.color = "black";
-                                // }
-                            }
-                            document.getElementById('commit').innerHTML = 'Save';
-                        }
-                    }
-                })
-            }
-        }
-        function SaveResults(results){
-            // Έλεγχος αν ο χρήστης είναι συνδεδεμένος.
-            if (document.getElementById('login').innerText=='Login') {
-                alert('Try to connect first.');
-            } else {
-                // Ο χρήστης φαίνεται συνδεδεμένος. Μάζεψε τα στοιχεία και στείλε το αίτημα.
-                const messageContent = {"product_id": `${product_id}`, "period": `${document.getElementById('monthPicker').value}`, "results": `${results}`};
-                const messageOutgoing = {"user": `${username.value}`, "command": "SaveResults", "content": JSON.stringify(messageContent)};
-                document.getElementById('loadingContainer').style.display = 'block'; rotateImage();
-                messages.push(messageOutgoing);
-                fetch('https://gparaske.ddns.net', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        messages
-                    })
-                })
-                .then(res => res.json())
-                .catch(error => {
-                    cancelAnimationFrame(rotateImage); document.getElementById('loadingContainer').style.display = 'none';
-                    console.error('Σφάλμα κατά την αποστολή του αιτήματος:', error);
-                    alert('Η αίτηση έχει κάνει timeout. Παρακαλώ, προσπαθήστε ξανά.');
-                })
-                .then(data => {
-                    cancelAnimationFrame(rotateImage); document.getElementById('loadingContainer').style.display = 'none';
-                    const messageIncoming = {"user": "server", "command": "response", "content": `${data.completion.content}`}
-                    let messageContent;
-                    if (IsJSONObject(data.completion.content)) {
-                        const messageObject = JSON.parse(data.completion.content);
-                        if (IsJSONObject(messageObject)){
-                            const messageContentObject = JSON.parse(messageObject);
-                            messageContent = messageContentObject.message;
-                        } else {
-                            messageContent = messageObject;
-                        }
-                    } else {
-                        messageContent = data.completion.content;
-                    }
-                    if(messageContent!=''){
-                        switch(messageContent) {
-                        case `The user ${username.value} is not logged in.`:
-                            alert(messageContent);
-                        break;
-                        // case `The calculation of this month has already been completed.`:
-                        //     alert(messageContent);
-                        // break;
                         default:
                             alert(messageContent);
-                            // let lines = messageContent.split(';');
-                            // alert(`Genetic Algorythm Score : ${lines[0]}`);
-                            // const tbl_calendar = document.getElementById('tbl_calendar');
-                        }
-                    }
-                })
-            }
-        }
-        function Transfer(){
-            // Έλεγχος αν ο χρήστης είναι συνδεδεμένος.
-            if (document.getElementById('login').innerText=='Login') {
-                alert('Try to connect first.');
-            } else {
-                // Ο χρήστης φαίνεται συνδεδεμένος. Μάζεψε τα στοιχεία και στείλε το αίτημα.
-                const messageContent = {"product_id": `${product_id}`, "period": `${document.getElementById('monthPicker').value}`};
-                const messageOutgoing = {"user": `${username.value}`, "command": "Transfer", "content": JSON.stringify(messageContent)};
-                document.getElementById('loadingContainer').style.display = 'block'; rotateImage();
-                messages.push(messageOutgoing);
-                fetch('https://gparaske.ddns.net', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        messages
-                    })
-                })
-                .then(res => res.json())
-                .catch(error => {
-                    cancelAnimationFrame(rotateImage); document.getElementById('loadingContainer').style.display = 'none';
-                    console.error('Σφάλμα κατά την αποστολή του αιτήματος:', error);
-                    alert('Η αίτηση έχει κάνει timeout. Παρακαλώ, προσπαθήστε ξανά.');
-                })
-                .then(data => {
-                    cancelAnimationFrame(rotateImage); document.getElementById('loadingContainer').style.display = 'none';
-                    const messageIncoming = {"user": "server", "command": "response", "content": `${data.completion.content}`}
-                    let messageContent;
-                    if (IsJSONObject(data.completion.content)) {
-                        const messageObject = JSON.parse(data.completion.content);
-                        if (IsJSONObject(messageObject)){
-                            const messageContentObject = JSON.parse(messageObject);
-                            messageContent = messageContentObject.message;
-                        } else {
-                            messageContent = messageObject;
-                        }
-                    } else {
-                        messageContent = data.completion.content;
-                    }
-                    if(messageContent!=''){
-                        switch(messageContent) {
-                        case `The user ${username.value} is not logged in.`:
-                            alert(messageContent);
-                        break;
-                        default:
-                            alert(messageContent);
-                        }
-                    }
-                })
-            }
-        }
-
-        function HeavyDuty(){
-            // Έλεγχος αν ο χρήστης είναι συνδεδεμένος.
-            if (document.getElementById('login').innerText=='Login') {
-                alert('Try to connect first.');
-            } else {
-                // Ο χρήστης φαίνεται συνδεδεμένος. Μάζεψε τα στοιχεία και στείλε το αίτημα.
-                const messageContent = {"company_id": `${company_id}`, "period": `${document.getElementById('monthPicker').value}`};
-                const messageOutgoing = {"user": `${username.value}`, "command": "HeavyDuty", "content": JSON.stringify(messageContent)};
-                document.getElementById('loadingContainer').style.display = 'block'; rotateImage();
-                messages.push(messageOutgoing);
-                fetch('https://gparaske.ddns.net', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        messages
-                    })
-                })
-                .then(res => res.json())
-                .catch(error => {
-                    cancelAnimationFrame(rotateImage); document.getElementById('loadingContainer').style.display = 'none';
-                    console.error('Σφάλμα κατά την αποστολή του αιτήματος:', error);
-                    alert('Η αίτηση έχει κάνει timeout. Παρακαλώ, προσπαθήστε ξανά.');
-                })
-                .then(data => {
-                    cancelAnimationFrame(rotateImage); document.getElementById('loadingContainer').style.display = 'none';
-                    const messageIncoming = {"user": "server", "command": "response", "content": `${data.completion.content}`}
-                    let messageContent;
-                    if (IsJSONObject(data.completion.content)) {
-                        const messageObject = JSON.parse(data.completion.content);
-                        if (IsJSONObject(messageObject)){
-                            const messageContentObject = JSON.parse(messageObject);
-                            messageContent = messageContentObject.message;
-                        } else {
-                            messageContent = messageObject;
-                        }
-                    } else {
-                        messageContent = data.completion.content;
-                    }
-                    if(messageContent!=''){
-                        switch(messageContent) {
-                        case `The user ${username.value} is not logged in.`:
-                            alert(messageContent);
-                        break;
-                        default:
-                            alert(messageContent);
+                            // let lines = messageContent.split('$');
+                            // // Init Table
+                            // const tbl_init = document.getElementById('tbl_init');
+                            // while (tbl_init.rows.length > 0) {
+                            //     tbl_init.deleteRow(0);
+                            // }
+                            // // Χτίζει τον header του πίνακα
+                            // var tbl_init_row = tbl_init.insertRow();
+                            // tbl_init_row.innerHTML = '<tr><th>USER</th><th>NAME</th><th>MIN</th><th>MAX</th><th>ASSIGN</th><th>SCORE</th><th>COUNT</th></tr>';
+                            // //let line = lines[0].split('$');
+                            // // Χτίζει τις λεπτομέρειες του πίνακα
+                            // for (var k = 0; k < lines.length; k++) {
+                            //     if(lines[k]!=''){
+                            //         let init_row = lines[k].split(';');
+                            //         tbl_init_row = tbl_init.insertRow();
+                            //         for (var m = 0; m < init_row.length; m+=1) {
+                            //             tbl_init_row_cell = tbl_init_row.insertCell();
+                            //             tbl_init_row_cell.innerHTML="<td>"+init_row[m]+"</td>";
+                            //             if(k % 2 == 0) {tbl_init_row_cell.style.backgroundColor = "white";}
+                            //             else {tbl_init_row_cell.style.backgroundColor = "aliceblue";}
+                            //         }
+                            //     }
+                            // }
                         }
                     }
                 })
@@ -1258,36 +903,24 @@
                 case "Commit":
                     //alert(changedRows['e30666']);
                     const tbl_calendar = document.getElementById('tbl_calendar');
-                    let sResults = ""; // Σε περίπτωση Save results παίρνει τα τελικά αποτελέσματα που θα αποθηκευτούν στους χρήστες
-                    let extra_columns = 0;
-                    if(document.getElementById('collapsible_console').hidden==''){ extra_columns = 3; }
-                    for (var k = 1; k < tbl_calendar.rows.length; k++) {
+                    for (var k = 0; k < tbl_calendar.rows.length; k++) {
                         var tbl_calendar_row = tbl_calendar.rows[k];
                         var tbl_calendar_cell = tbl_calendar_row.cells[0];
-                        if (changedRows[tbl_calendar_row.cells[0].innerHTML] || document.getElementById('commit').innerHTML != 'Commit') {
-                            if(tbl_calendar_row.cells[0].innerHTML!=document.getElementById('username').value && document.getElementById('commit').innerHTML == 'Commit'){
+                        if (changedRows[tbl_calendar_row.cells[0].innerHTML]) {
+                            if(tbl_calendar_row.cells[0].innerHTML!=document.getElementById('username').value){
                                 alert(`You have made changes to the user ${tbl_calendar_row.cells[0].innerHTML}. If you don't want to continue, you can refresh the page.`);
                             }
                             var choice = '';
-                            for (var m = 2; m < tbl_calendar_row.cells.length - extra_columns; m++) {
+                            for (var m = 2; m < tbl_calendar_row.cells.length; m++) {
                                 tbl_calendar_cell = tbl_calendar_row.cells[m];
                                 if(tbl_calendar_cell.innerHTML!=''){
                                     var button = tbl_calendar_cell.querySelector("input[type='submit']"); // Εντοπίζει το πρώτο κουμπί μέσα στο κελί
                                     if (button != null) {
                                         switch(button.style.backgroundColor) {
                                         case "red": choice += 'R'; break;
-                                        case "green": 
-                                            if(tbl_calendar_cell.style.backgroundColor == colorSelected) { choice += 'J'; }
-                                            else { choice += 'G'; }
-                                        break;
-                                        case "blue": 
-                                            if(tbl_calendar_cell.style.backgroundColor == colorSelected) { choice += 'P'; }
-                                            else { choice += 'B'; }
-                                            break;
-                                        default:
-                                            if(tbl_calendar_cell.style.backgroundColor == colorSelected) { choice += '_'; }
-                                            else { choice += '-'; }
-                                        break;
+                                        case "green": choice += 'G'; break;
+                                        case "blue": choice += 'B'; break;
+                                        default: choice += '-'; break;
                                         }
                                     } else {
                                         choice += '-';
@@ -1296,14 +929,9 @@
                                     choice += 'H';
                                 }
                             }
-                            if (document.getElementById('commit').innerHTML != 'Commit') { 
-                                sResults += tbl_calendar_row.cells[0].innerHTML + ';' + choice + '$'
-                            } else {
-                                CalendarSubmit(tbl_calendar_row.cells[0].innerHTML, choice);
-                            }
+                            CalendarSubmit(tbl_calendar_row.cells[0].innerHTML, choice);
                         }
                     }
-                    if (document.getElementById('commit').innerHTML != 'Commit') { SaveResults(sResults); }
                 break;
                 case "Send Mail":
                     SendMail();
@@ -1314,81 +942,37 @@
                 case "Show Initialize":
                     ShowInitialize();
                 break;
-                case "InitCalculation":
-                    Calculate(1);
-                break;
-                case "InitCalcAlgorithm":
-                    Calculate(2);
-                break;
                 case "Calculate": 
-                    Calculate(0);
-                break;
-                case "Transfer":
-                    Transfer();
-                break;
-                case "Heavy Duty":
-                    HeavyDuty();
-                break;
-                case "Show Results":
-                    ShowResults();
+                    Calculate();
                 break;
                 default:
-                    if(index>=100) {
+                    if(index>100) {
                         var curButton = document.getElementById('submit'+index);
+                        if (curButton.style.backgroundColor=="aliceblue" || curButton.style.backgroundColor=="white") {
+                            curButton.style.backgroundColor = "red";
+                        } else {
+                            if (curButton.style.backgroundColor=="red") {
+                            curButton.style.backgroundColor = "green";
+                            } else {
+                                if (curButton.style.backgroundColor=="green") {
+                                    curButton.style.backgroundColor = "blue";
+                                } else {
+                                    if(Math.floor(index/100) % 2 == 0) {curButton.style.backgroundColor = "white";}
+                                    else {curButton.style.backgroundColor = "aliceblue";}
+                                }
+                            }
+                        }
                         const tbl_calendar = document.getElementById('tbl_calendar');
                         var tbl_calendar_row = tbl_calendar.rows[Math.floor(index/100)];
                         var tbl_calendar_cell = tbl_calendar_row.cells[0];
-                        if (document.getElementById('commit').innerHTML == 'Save') {
-                            tbl_calendar_cell = tbl_calendar_row.cells[index-(Math.floor(index/100)*100)+2];
-                            if (tbl_calendar_cell.style.backgroundColor==colorSelected) {
-                                if(Math.floor(index/100) % 2 == 0) {tbl_calendar_cell.style.backgroundColor = "white";}
-                                else {tbl_calendar_cell.style.backgroundColor = "aliceblue";}
-                                tbl_calendar_row.cells[tbl_calendar_row.cells.length-2].innerHTML = parseInt(tbl_calendar_row.cells[tbl_calendar_row.cells.length-2].innerHTML, 10) - 1;
-                            } else {
-                                tbl_calendar_cell.style.backgroundColor = colorSelected;
-                                tbl_calendar_row.cells[tbl_calendar_row.cells.length-2].innerHTML = parseInt(tbl_calendar_row.cells[tbl_calendar_row.cells.length-2].innerHTML, 10) + 1;
-                            }
-                            tbl_calendarUpdateColorRow(tbl_calendar_row);
-                            tbl_calendarUpdateColorColumn(index-(Math.floor(index/100)*100)+2);
-                        } else {
-                            if (curButton.style.backgroundColor=="aliceblue" || curButton.style.backgroundColor=="white") {
-                                curButton.style.backgroundColor = "red";
-                            } else {
-                                if (curButton.style.backgroundColor=="red") {
-                                curButton.style.backgroundColor = "green";
-                                } else {
-                                    if (curButton.style.backgroundColor=="green") {
-                                        curButton.style.backgroundColor = "blue";
-                                    } else {
-                                        if(Math.floor(index/100) % 2 == 0) {curButton.style.backgroundColor = "white";}
-                                        else {curButton.style.backgroundColor = "aliceblue";}
-                                    }
-                                }
-                            }
-                            changedRows[tbl_calendar_row.cells[0].innerHTML] = true;
-                        }
+                        changedRows[tbl_calendar_row.cells[0].innerHTML] = true;
+                        //alert(tbl_calendar_row.cells[0].innerHTML);
+                        // if(tbl_calendar_cell.innerHTML!=document.getElementById('username').value){
+                        //     changedRows[tbl_calendar_cell.innerHTML] = true;
+                        //     alert(tbl_calendar_cell.innerHTML);
+                        // }
                     }
                     break;
-            }
-        }
-
-        function tbl_calendarUpdateColorRow(tbl_calendar_row) {
-            if(tbl_calendar_row.cells[tbl_calendar.rows[0].cells.length-2].innerHTML < tbl_calendar_row.cells[tbl_calendar.rows[0].cells.length-3].innerHTML || tbl_calendar_row.cells[tbl_calendar.rows[0].cells.length-2].innerHTML > tbl_calendar_row.cells[tbl_calendar.rows[0].cells.length-1].innerHTML) {
-                tbl_calendar_row.cells[tbl_calendar.rows[0].cells.length-2].style.color = "red";
-            } else {
-                tbl_calendar_row.cells[tbl_calendar.rows[0].cells.length-2].style.color = "black";
-            }
-        }
-
-        function tbl_calendarUpdateColorColumn(iColumn) {
-            let cntSelected = 0;
-            for (let i = 1; i < tbl_calendar.rows.length; i++) {
-                if (tbl_calendar.rows[i].cells[iColumn].style.backgroundColor == colorSelected) cntSelected++;
-            }
-            if(cntSelected!=1) {
-                tbl_calendar.rows[0].cells[iColumn].style.color = "red";
-            } else {
-                tbl_calendar.rows[0].cells[iColumn].style.color = "white";
             }
         }
 
