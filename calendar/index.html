@@ -36,7 +36,7 @@
                         <p></p>
                         <div class="form-group">
                             <label for="username">User Name:</label>
-                            <input id="username" type="text" value="e38536" class="form-control" style="text-align:left;">
+                            <input id="username" type="text" value="" class="form-control" style="text-align:left;">
                             <p style="color:red" id="errorUserName"></p>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                         <p></p>
                         <div class="form-group">
                             <label for="password">Password:</label>
-                            <input id="password" type="password" value="123456" class="form-control" style="text-align:left;" onkeydown="checkKeyPress(event)">
+                            <input id="password" type="password" value="" class="form-control" style="text-align:left;" onkeydown="checkKeyPress(event)">
                             <p style="color:red" id="errorPassword"></p>
                         </div>
                         <button id="login" class="btn btn-primary" onclick='RunExe("Login"); return false;'>Login</button>
@@ -506,7 +506,7 @@
                         } else {
                             messageContent = data.completion.content;
                         }
-                        let lines = messageContent.split(';');
+                        let lines = messageContent.split('$');
                         // Κλείσε το πλαίσιο του Login
                         document.getElementById('collapsible_period').innerText = `TYPE & PERIOD (${document.getElementById('product_name').value}, ${document.getElementById('monthPicker').value})`;
                         document.getElementById('collapsible_period').click();
@@ -524,7 +524,7 @@
                         // Χτίζει τον header του πίνακα
                         var tbl_calendar_row = tbl_calendar.insertRow();
                         tbl_calendar_row.innerHTML = '<tr><th>USER</th><th>NAME</th>';
-                        let line = lines[0].split('$');
+                        let line = lines[0].split(';');
                         product_id = line[0];
                         for (var k = 1; k <= line[2].length; k++) {
                             tbl_calendar_row.innerHTML += '<th>' + k + '</th>';
@@ -537,7 +537,7 @@
                         // Χτίζει τις λεπτομέρειες του πίνακα
                         for (var k = 1; k < lines.length; k++) {
                             if(lines[k]!=''){
-                                let calendar_row = lines[k].split('$');
+                                let calendar_row = lines[k].split(';');
                                 tbl_calendar_row = tbl_calendar.insertRow();
                                 tbl_calendar_row_cell = tbl_calendar_row.insertCell();
                                 tbl_calendar_row_cell.innerHTML="<td>"+calendar_row[0]+"</td>";
