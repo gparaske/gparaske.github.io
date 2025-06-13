@@ -8,7 +8,7 @@
     <div style="background-color:lightblue;color:darkgrey;padding:1px;text-align:center;background-image: url('css/pexels-photo-355423.jpeg');background-size: cover;background-position: center;">
         <p><h4>EDW</h4></p>
         <p></p>
-        <p><h4>JOB INFO v0.48</h4></p>
+        <p><h4>JOB INFO v0.49</h4></p>
     </div>
     
     <button class="collapsible">JOB DETAILS</button><div class="content">
@@ -401,15 +401,19 @@
                         if (lines[i]!="") {
                             //var sLine = lines[i].toUpperCase(); //sLine has an additional char for some reason
                             var sLine = lines[i].toUpperCase().trim();
+                            var fields = sLine.split(",");
                             if (sLine.substring(0, sJobName.length+1)==sJobName+",") {
                                 sResult = lines[i];
                                 var aResult = sResult.split(",");
                                 sSuccessors += aResult[1] + ", ";
                             }
-                            if(sLine.substring(sLine.length-sJobName.length-2, sLine.length-1).localeCompare(","+sJobName)==0) {
-                                sResult = lines[i];
-                                var aResult = sResult.split(",");
-                                sPredecessors += aResult[0] + ", ";
+                            //if(sLine.substring(sLine.length-sJobName.length-2, sLine.length-1).localeCompare(","+sJobName)==0) {
+                            //    sResult = lines[i];
+                            //    var aResult = sResult.split(",");
+                            //    sPredecessors += aResult[0] + ", ";
+                            //}
+                            if (fields[fields.length - 1] === sJobName) {
+                                sPredecessors += fields[0] + ", ";
                             }
                         }
                     }
