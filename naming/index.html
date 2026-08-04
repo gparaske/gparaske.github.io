@@ -1,0 +1,251 @@
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"><style>
+    .collapsible {background-color:lightblue;color:white;cursor:pointer;padding:18px;width:100%;border:none;text-align:left;font-family: times new roman;font-size: 16px;font-weight:bold;}
+    .active, .collapsible:hover {background-color:#3E9FB0;}
+    .content {padding: 0 18px;display: none;overflow: hidden;background-color: #f1f1f1;}
+    th {background-color:lightblue;color:white;border-collapse: collapse;}
+    th, td {padding: 10px;}
+    select, input[type="text"] {padding:4px;}
+    .result-value {font-family:monospace;font-size:15px;padding:6px;background:#fff;border:1px solid #ccc;cursor:pointer;}
+    .hidden {display:none;}
+    </style></head><body>
+    <div style="background-color:lightblue;color:darkgrey;padding:1px;text-align:center;background-image: url('css/pexels-photo-355423.jpeg');background-size: cover;background-position: center;">
+        <p><h4>EDW</h4></p>
+        <p></p>
+        <p><h4>CLOUD NAMING TOOL v1.0</h4></p>
+    </div>
+
+    <button class="collapsible">JOB NAMING</button><div class="content">
+    <p></p>
+    <table style="width: 100%;text-align:left" align="left">
+    <tr><td width="15%" align="left">Job Type:</td><td width="35%" align="left">
+        <select id="selJobType" onchange="onJobTypeChange()" style="width: 100%">
+            <option value="">-- Select --</option>
+            <option value="JW">Windows Job</option>
+            <option value="FT">File Transfer</option>
+            <option value="EW">File Watcher</option>
+        </select>
+    </td><td width="50%" align="left" style="color:red" id="errorMsg"></td></tr>
+    <tr><td align="left">Winsched Folder:</td><td align="left"><input id="txtWinsched" type="text" value="EDO" style="width: 100%;text-align:left"></td><td style="color:grey;font-size:12px">EDW, EDO, DDW, ...</td></tr>
+    <tr id="rowPlatform" class="hidden"><td align="left">Platform:</td><td align="left">
+        <select id="selPlatform" style="width: 100%">
+            <option value="ADX">Azure Databricks</option>
+            <option value="AFB">Azure Fabric</option>
+        </select>
+    </td><td></td></tr>
+    <tr id="rowZos" class="hidden"><td align="left">z/OS Condition:</td><td align="left">
+        <select id="selZos" style="width: 100%">
+            <option value="n">No</option>
+            <option value="y">Yes</option>
+        </select>
+    </td><td></td></tr>
+    <tr id="rowFrequency" class="hidden"><td align="left">Frequency:</td><td align="left">
+        <select id="selFrequency" style="width: 100%">
+            <option value="D">Daily</option>
+            <option value="W">Weekly</option>
+            <option value="M">Monthly</option>
+            <option value="Q">Quarterly</option>
+            <option value="S">Semester</option>
+            <option value="Y">Yearly</option>
+            <option value="V">Various</option>
+        </select>
+    </td><td></td></tr>
+    <tr><td align="left">Application:</td><td align="left"><input id="txtAppName" type="text" value="" placeholder="COC, MYHOUSE, ..." style="width: 100%;text-align:left"></td><td></td></tr>
+    <tr id="rowFunctionJW" class="hidden"><td align="left">Function Type:</td><td align="left">
+        <select id="selFunctionJW" style="width: 100%">
+            <option value="E">Extract</option>
+            <option value="T">Transform</option>
+            <option value="L">Load</option>
+            <option value="TL">Transform & Load</option>
+            <option value="E_F">Export to File</option>
+            <option value="E_O">Export to Database</option>
+        </select>
+    </td><td></td></tr>
+    <tr id="rowFunctionFT" class="hidden"><td align="left">File Transfer:</td><td align="left">
+        <select id="selFunctionFT" onchange="onFTTypeChange()" style="width: 100%">
+            <option value="2">Multiple files</option>
+            <option value="1">Single file</option>
+        </select>
+    </td><td></td></tr>
+    <tr id="rowFTSingle" class="hidden"><td align="left">Receiver Job Suffix:</td><td align="left"><input id="txtFTSingle" type="text" value="" style="width: 100%;text-align:left"></td><td style="color:grey;font-size:12px">Last part of the receiving job name</td></tr>
+    <tr id="rowFTDirection" class="hidden"><td align="left">Direction:</td><td align="left">
+        <select id="selFTDirection" style="width: 100%">
+            <option value="1">INBOUND</option>
+            <option value="2">OUTBOUND</option>
+        </select>
+    </td><td></td></tr>
+    <tr id="rowDescription"><td align="left">Description:</td><td align="left"><input id="txtDescription" type="text" value="" placeholder="table name, process, ..." style="width: 100%;text-align:left"></td><td></td></tr>
+    <tr><td></td><td align="left"><button onclick="generate()" style="padding:8px 24px;background-color:#3E9FB0;color:white;border:none;cursor:pointer;font-weight:bold;font-size:14px;">Generate</button></td><td></td></tr>
+    </table>
+    <p></p>
+    </div>
+
+    <button class="collapsible">RESULT</button><div class="content">
+    <p></p>
+    <table style="width: 100%;text-align:left" align="left">
+    <tr><td width="15%" align="left" style="font-weight:bold;color:#3E9FB0">Job Name:</td><td width="85%" align="left" class="result-value" id="resultJobName"></td></tr>
+    <tr><td align="left" style="font-weight:bold;color:#3E9FB0">Folder Name:</td><td align="left" class="result-value" id="resultFolder"></td></tr>
+    <tr><td align="left" style="font-weight:bold;color:#3E9FB0">Application:</td><td align="left" class="result-value" id="resultApp"></td></tr>
+    <tr><td align="left" style="font-weight:bold;color:#3E9FB0">SubApplication:</td><td align="left" class="result-value" id="resultSubApp"></td></tr>
+    <tr id="rowZosNote" class="hidden"><td align="left" style="font-weight:bold;color:#3E9FB0">Note:</td><td align="left" style="color:orange" id="resultNote"></td></tr>
+    </table>
+    <p></p>
+    </div>
+
+    <button class="collapsible">LOG</button><div class="content">
+    <p></p>
+    <textarea id="textarea" name="textarea" style="width: 100%;text-align:left" align="center" rows="10" cols="150" readonly></textarea>
+    <p></p>
+    </div>
+
+    <script type="text/javascript">
+    function onJobTypeChange() {
+        var jt = document.getElementById('selJobType').value;
+        toggle('rowPlatform', jt === 'JW' || jt === 'FT');
+        toggle('rowZos', jt === 'JW' || jt === 'FT');
+        toggle('rowFrequency', jt === 'JW' || jt === 'FT');
+        toggle('rowFunctionJW', jt === 'JW');
+        toggle('rowFunctionFT', jt === 'FT');
+        toggle('rowFTSingle', false);
+        toggle('rowFTDirection', false);
+        toggle('rowDescription', jt !== 'FT' && jt !== '');
+        if (jt === 'FT') onFTTypeChange();
+    }
+
+    function onFTTypeChange() {
+        var v = document.getElementById('selFunctionFT').value;
+        toggle('rowFTSingle', v === '1');
+        toggle('rowFTDirection', v === '2');
+    }
+
+    function toggle(id, show) {
+        var el = document.getElementById(id);
+        if (show) { el.classList.remove('hidden'); } else { el.classList.add('hidden'); }
+    }
+
+    function log(msg) {
+        var ta = document.getElementById('textarea');
+        ta.value += msg + "\n";
+        ta.scrollTop = ta.scrollHeight;
+    }
+
+    function generate() {
+        var errorMsg = document.getElementById('errorMsg');
+        errorMsg.innerHTML = '';
+        document.getElementById('textarea').value = '';
+
+        var jobType = document.getElementById('selJobType').value;
+        if (!jobType) { errorMsg.innerHTML = 'Select Job Type'; return; }
+
+        var winsched = document.getElementById('txtWinsched').value.trim().toUpperCase() || 'EDW';
+        var appName = document.getElementById('txtAppName').value.trim().toUpperCase() || 'EDW';
+
+        log('Job Type: ' + jobType);
+        log('Winsched Folder: ' + winsched);
+        log('Application: ' + appName);
+
+        var platform, subapp;
+        if (jobType === 'FT') {
+            platform = document.getElementById('selPlatform').value;
+            subapp = platform === 'ADX' ? 'EDW.DATABRICKS' : 'EDW.FABRIC';
+        } else if (jobType === 'EW') {
+            platform = 'EDW'; subapp = 'EDW';
+        } else {
+            platform = document.getElementById('selPlatform').value;
+            subapp = platform === 'ADX' ? 'EDW.DATABRICKS' : 'EDW.FABRIC';
+        }
+        log('Platform: ' + platform + '  SubApp: ' + subapp);
+
+        var zos = false;
+        if (jobType !== 'EW') {
+            zos = document.getElementById('selZos').value === 'y';
+        }
+
+        var frequency, folderFrequency;
+        if (jobType === 'EW') {
+            frequency = 'D'; folderFrequency = 'DLY';
+        } else {
+            frequency = document.getElementById('selFrequency').value;
+            folderFrequency = {D:'DLY', W:'SOW', M:'SOM', Q:'VAR', S:'EOS', Y:'EOY', V:'MAN'}[frequency];
+        }
+        log('Frequency: ' + frequency + '  Folder Frequency: ' + folderFrequency);
+
+        var functionType;
+        if (jobType === 'EW') {
+            functionType = 'FW';
+        } else if (jobType === 'FT') {
+            var ftType = document.getElementById('selFunctionFT').value;
+            if (ftType === '1') {
+                functionType = document.getElementById('txtFTSingle').value.trim().toUpperCase();
+                if (!functionType) { errorMsg.innerHTML = 'Fill in Receiver Job Suffix'; return; }
+            } else {
+                var dir = document.getElementById('selFTDirection').value;
+                functionType = dir === '1' ? 'FTP_INBOUND' : 'FTP_OUTBOUND';
+            }
+        } else {
+            functionType = document.getElementById('selFunctionJW').value;
+        }
+        log('Function Type: ' + functionType);
+
+        var description = '';
+        if (jobType !== 'FT') {
+            description = document.getElementById('txtDescription').value.trim().toUpperCase();
+        }
+
+        var parts = ['P', jobType, 'GR', winsched];
+        if (jobType === 'JW' || jobType === 'FT') parts.push(platform);
+        if (zos) parts.push(platform + '.Z');
+        parts.push(frequency === 'V' ? 'D' : frequency);
+        var jobName = parts.join('.') + '.' + functionType + '_' + appName;
+        if (description) jobName += '_' + description;
+        if (frequency === 'V') jobName += '_V';
+
+        var folder = 'P.FL.GR.' + winsched + '.' + folderFrequency + '.BATCH2.' + appName;
+
+        log('');
+        log('Job Name:       ' + jobName);
+        log('Folder:         ' + folder);
+        log('Application:    EDW');
+        log('SubApplication: ' + subapp);
+        if (zos) log('Note: Max free field: 22 chars (z/OS condition limit)');
+
+        document.getElementById('resultJobName').textContent = jobName;
+        document.getElementById('resultFolder').textContent = folder;
+        document.getElementById('resultApp').textContent = 'EDW';
+        document.getElementById('resultSubApp').textContent = subapp;
+
+        if (zos) {
+            document.getElementById('resultNote').textContent = 'Max free field: 22 chars (z/OS condition limit)';
+            toggle('rowZosNote', true);
+        } else {
+            toggle('rowZosNote', false);
+        }
+
+        var resultBtn = document.querySelectorAll('.collapsible')[1];
+        var resultContent = resultBtn.nextElementSibling;
+        if (resultContent.style.display !== 'block') {
+            resultBtn.click();
+        }
+    }
+
+    function main() {
+        var coll = document.getElementsByClassName("collapsible"); var k;
+        for (k = 0; k < coll.length; k++) {
+            coll[k].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {content.style.display = "none";} else {content.style.display = "block";}
+            });
+        }
+        coll[0].classList.add('active');
+        coll[0].nextElementSibling.style.display = 'block';
+    }
+
+    main();
+    </script>
+
+    <div style='background-color:lightblue;color:white;padding:1px;text-align:right;font-weight:bold'>
+    <p></p>
+    </div>
+
+    </body>
+    </html>
