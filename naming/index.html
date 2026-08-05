@@ -11,7 +11,7 @@
     <div style="background-color:lightblue;color:darkgrey;padding:1px;text-align:center;background-image: url('css/pexels-photo-355423.jpeg');background-size: cover;background-position: center;">
         <p><h4>EDW</h4></p>
         <p></p>
-        <p><h4>CLOUD NAMING TOOL v1.0</h4></p>
+        <p><h4>CLOUD NAMING TOOL v2.0</h4></p>
     </div>
 
     <button class="collapsible">JOB NAMING</button><div class="content">
@@ -20,18 +20,14 @@
     <tr><td width="15%" align="left">Job Type:</td><td width="35%" align="left">
         <select id="selJobType" onchange="onJobTypeChange()" style="width: 100%">
             <option value="">-- Select --</option>
-            <option value="JW">Windows Job</option>
-            <option value="FT">File Transfer</option>
+            <option value="ADX">Azure Databricks</option>
+            <option value="AFB">Azure Fabric</option>
+            <option value="FTI">File Transfer Inbound</option>
+            <option value="FTO">File Transfer Outbound</option>
             <option value="EW">File Watcher</option>
         </select>
     </td><td width="50%" align="left" style="color:red" id="errorMsg"></td></tr>
-    <tr><td align="left">Winsched Folder:</td><td align="left"><input id="txtWinsched" type="text" value="EDO" style="width: 100%;text-align:left"></td><td style="color:grey;font-size:12px">EDW, EDO, DDW, ...</td></tr>
-    <tr id="rowPlatform" class="hidden"><td align="left">Platform:</td><td align="left">
-        <select id="selPlatform" style="width: 100%">
-            <option value="ADX">Azure Databricks</option>
-            <option value="AFB">Azure Fabric</option>
-        </select>
-    </td><td></td></tr>
+    <tr><td align="left">Winsched Folder:</td><td align="left"><input id="txtWinsched" type="text" value="EDW" style="width: 100%;text-align:left"></td><td style="color:grey;font-size:12px">EDW, EDO, DDW, ...</td></tr>
     <tr id="rowZos" class="hidden"><td align="left">z/OS Condition:</td><td align="left">
         <select id="selZos" style="width: 100%">
             <option value="n">No</option>
@@ -60,20 +56,9 @@
             <option value="E_O">Export to Database</option>
         </select>
     </td><td></td></tr>
-    <tr id="rowFunctionFT" class="hidden"><td align="left">File Transfer:</td><td align="left">
-        <select id="selFunctionFT" onchange="onFTTypeChange()" style="width: 100%">
-            <option value="2">Multiple files</option>
-            <option value="1">Single file</option>
-        </select>
-    </td><td></td></tr>
-    <tr id="rowFTSingle" class="hidden"><td align="left">Receiver Job Suffix:</td><td align="left"><input id="txtFTSingle" type="text" value="" style="width: 100%;text-align:left"></td><td style="color:grey;font-size:12px">Last part of the receiving job name</td></tr>
-    <tr id="rowFTDirection" class="hidden"><td align="left">Direction:</td><td align="left">
-        <select id="selFTDirection" style="width: 100%">
-            <option value="1">INBOUND</option>
-            <option value="2">OUTBOUND</option>
-        </select>
-    </td><td></td></tr>
-    <tr id="rowDescription"><td align="left">Description:</td><td align="left"><input id="txtDescription" type="text" value="" placeholder="table name, process, ..." style="width: 100%;text-align:left"></td><td></td></tr>
+    <tr id="rowFTName" class="hidden"><td align="left" id="lblFTName">Related Job:</td><td align="left"><input id="txtFTName" type="text" value="" style="width: 100%;text-align:left"></td><td style="color:grey;font-size:12px" id="hintFTName"></td></tr>
+    <tr id="rowNotebook" class="hidden"><td align="left" id="lblNotebook">Notebook Name:</td><td align="left"><input id="txtNotebook" type="text" value="" style="width: 100%;text-align:left"></td><td style="color:grey;font-size:12px" id="hintNotebook"></td></tr>
+    <tr id="rowDescription" class="hidden"><td align="left">Description:</td><td align="left"><input id="txtDescription" type="text" value="" placeholder="table name, process, ..." style="width: 100%;text-align:left"></td><td></td></tr>
     <tr><td></td><td align="left"><button onclick="generate()" style="padding:8px 24px;background-color:#3E9FB0;color:white;border:none;cursor:pointer;font-weight:bold;font-size:14px;">Generate</button></td><td></td></tr>
     </table>
     <p></p>
@@ -87,6 +72,7 @@
     <tr><td align="left" style="font-weight:bold;color:#3E9FB0">Application:</td><td align="left" class="result-value" id="resultApp"></td></tr>
     <tr><td align="left" style="font-weight:bold;color:#3E9FB0">SubApplication:</td><td align="left" class="result-value" id="resultSubApp"></td></tr>
     <tr id="rowZosNote" class="hidden"><td align="left" style="font-weight:bold;color:#3E9FB0">Note:</td><td align="left" style="color:orange" id="resultNote"></td></tr>
+    <tr id="rowFtpConfig" class="hidden"><td align="left" style="font-weight:bold;color:#3E9FB0;vertical-align:top">FTP Config:</td><td align="left"><pre id="resultFtpConfig" style="margin:0;font-size:13px;background:#fff;border:1px solid #ccc;padding:8px;white-space:pre-wrap;"></pre></td></tr>
     </table>
     <p></p>
     </div>
@@ -98,23 +84,39 @@
     </div>
 
     <script type="text/javascript">
-    function onJobTypeChange() {
-        var jt = document.getElementById('selJobType').value;
-        toggle('rowPlatform', jt === 'JW' || jt === 'FT');
-        toggle('rowZos', jt === 'JW' || jt === 'FT');
-        toggle('rowFrequency', jt === 'JW' || jt === 'FT');
-        toggle('rowFunctionJW', jt === 'JW');
-        toggle('rowFunctionFT', jt === 'FT');
-        toggle('rowFTSingle', false);
-        toggle('rowFTDirection', false);
-        toggle('rowDescription', jt !== 'FT' && jt !== '');
-        if (jt === 'FT') onFTTypeChange();
-    }
+    var TYPE_MAP = {
+        'ADX': {jobType:'JW', platform:'ADX', subapp:'EDW.DATABRICKS', ftDefault:null},
+        'AFB': {jobType:'JW', platform:'AFB', subapp:'EDW.FABRIC',     ftDefault:null},
+        'FTI': {jobType:'FT', platform:'ADX', subapp:'EDW.DATABRICKS', ftDefault:'FTP_INBOUND'},
+        'FTO': {jobType:'FT', platform:'ADX', subapp:'EDW.DATABRICKS', ftDefault:'FTP_OUTBOUND'},
+        'EW':  {jobType:'EW', platform:'EDW', subapp:'EDW',            ftDefault:null}
+    };
 
-    function onFTTypeChange() {
-        var v = document.getElementById('selFunctionFT').value;
-        toggle('rowFTSingle', v === '1');
-        toggle('rowFTDirection', v === '2');
+    function onJobTypeChange() {
+        var sel = document.getElementById('selJobType').value;
+        var info = TYPE_MAP[sel];
+        var isJW = info && info.jobType === 'JW';
+        var isFT = info && info.jobType === 'FT';
+        var isEW = info && info.jobType === 'EW';
+
+        toggle('rowZos', isJW || isFT);
+        toggle('rowFrequency', isJW || isFT);
+        toggle('rowFunctionJW', isJW);
+        toggle('rowFTName', isFT);
+        toggle('rowNotebook', isFT);
+        toggle('rowDescription', isJW || isEW);
+
+        if (sel === 'FTI') {
+            document.getElementById('lblFTName').textContent = 'Receiving Job:';
+            document.getElementById('hintFTName').textContent = 'Last part of receiving job name (empty = FTP_INBOUND)';
+            document.getElementById('lblNotebook').textContent = 'Notebook Name:';
+            document.getElementById('hintNotebook').textContent = 'Notebook of the job that consumes the file';
+        } else if (sel === 'FTO') {
+            document.getElementById('lblFTName').textContent = 'Producing Job:';
+            document.getElementById('hintFTName').textContent = 'Last part of producing job name (empty = FTP_OUTBOUND)';
+            document.getElementById('lblNotebook').textContent = 'Notebook Name:';
+            document.getElementById('hintNotebook').textContent = 'Notebook of the job that produces the file';
+        }
     }
 
     function toggle(id, show) {
@@ -133,27 +135,21 @@
         errorMsg.innerHTML = '';
         document.getElementById('textarea').value = '';
 
-        var jobType = document.getElementById('selJobType').value;
-        if (!jobType) { errorMsg.innerHTML = 'Select Job Type'; return; }
+        var sel = document.getElementById('selJobType').value;
+        if (!sel) { errorMsg.innerHTML = 'Select Job Type'; return; }
+
+        var info = TYPE_MAP[sel];
+        var jobType = info.jobType;
+        var platform = info.platform;
+        var subapp = info.subapp;
 
         var winsched = document.getElementById('txtWinsched').value.trim().toUpperCase() || 'EDW';
         var appName = document.getElementById('txtAppName').value.trim().toUpperCase() || 'EDW';
 
-        log('Job Type: ' + jobType);
+        log('Job Type: ' + sel + ' (' + jobType + ')');
         log('Winsched Folder: ' + winsched);
-        log('Application: ' + appName);
-
-        var platform, subapp;
-        if (jobType === 'FT') {
-            platform = document.getElementById('selPlatform').value;
-            subapp = platform === 'ADX' ? 'EDW.DATABRICKS' : 'EDW.FABRIC';
-        } else if (jobType === 'EW') {
-            platform = 'EDW'; subapp = 'EDW';
-        } else {
-            platform = document.getElementById('selPlatform').value;
-            subapp = platform === 'ADX' ? 'EDW.DATABRICKS' : 'EDW.FABRIC';
-        }
         log('Platform: ' + platform + '  SubApp: ' + subapp);
+        log('Application: ' + appName);
 
         var zos = false;
         if (jobType !== 'EW') {
@@ -173,14 +169,8 @@
         if (jobType === 'EW') {
             functionType = 'FW';
         } else if (jobType === 'FT') {
-            var ftType = document.getElementById('selFunctionFT').value;
-            if (ftType === '1') {
-                functionType = document.getElementById('txtFTSingle').value.trim().toUpperCase();
-                if (!functionType) { errorMsg.innerHTML = 'Fill in Receiver Job Suffix'; return; }
-            } else {
-                var dir = document.getElementById('selFTDirection').value;
-                functionType = dir === '1' ? 'FTP_INBOUND' : 'FTP_OUTBOUND';
-            }
+            var ftName = document.getElementById('txtFTName').value.trim().toUpperCase();
+            functionType = ftName || info.ftDefault;
         } else {
             functionType = document.getElementById('selFunctionJW').value;
         }
@@ -195,7 +185,8 @@
         if (jobType === 'JW' || jobType === 'FT') parts.push(platform);
         if (zos) parts.push(platform + '.Z');
         parts.push(frequency === 'V' ? 'D' : frequency);
-        var jobName = parts.join('.') + '.' + functionType + '_' + appName;
+        var skipAppName = (jobType === 'FT' && functionType !== info.ftDefault);
+        var jobName = parts.join('.') + '.' + functionType + (skipAppName ? '' : '_' + appName);
         if (description) jobName += '_' + description;
         if (frequency === 'V') jobName += '_V';
 
@@ -218,6 +209,41 @@
             toggle('rowZosNote', true);
         } else {
             toggle('rowZosNote', false);
+        }
+
+        var notebook = (jobType === 'FT') ? document.getElementById('txtNotebook').value.trim() : '';
+        if (jobType === 'FT' && notebook) {
+            var ftpText = '';
+            if (sel === 'FTI') {
+                var jwName = jobName.replace('P.FT.', 'P.JW.');
+                ftpText = 'DESTINATION:\n';
+                ftpText += '  NAME:      BLB_EDW\n';
+                ftpText += '  PLATFORM:  WINDOWS\n';
+                ftpText += '  FILE:      container: edwftp /' + winsched + '/Files/' + appName + '/' + notebook + '/INBOUND/\n';
+                ftpText += '  MOVE/COPY: MOVE & OVERWRITE\n';
+                ftpText += '  FORMAT:    BINARY\n';
+                ftpText += '\nBLB-TO-LKH JOB:  ' + jwName;
+            } else {
+                var jwName = jobName.replace('P.FT.', 'P.JW.');
+                ftpText = 'SOURCE:\n';
+                ftpText += '  NAME:      BLB_EDW\n';
+                ftpText += '  PLATFORM:  WINDOWS\n';
+                ftpText += '  FILE:      container: edwftp /' + winsched + '/Files/' + appName + '/' + notebook + '/OUTBOUND/*.*\n';
+                ftpText += '\nDESTINATION:\n';
+                ftpText += '  NAME:      AZR_EDW\n';
+                ftpText += '  IP:        az0a000010120.central.nbg.gr\n';
+                ftpText += '  PLATFORM:  WINDOWS\n';
+                ftpText += '  FILE:      \\D_WINSCHED\\' + winsched + '\\Files\\' + appName + '\\' + notebook + '\\OUTBOUND\\\n';
+                ftpText += '  MOVE/COPY: MOVE & OVERWRITE\n';
+                ftpText += '  FORMAT:    BINARY\n';
+                ftpText += '\nLKH-TO-BLB JOB:  ' + jwName;
+            }
+            document.getElementById('resultFtpConfig').textContent = ftpText;
+            toggle('rowFtpConfig', true);
+            log('');
+            log(ftpText);
+        } else {
+            toggle('rowFtpConfig', false);
         }
 
         var resultBtn = document.querySelectorAll('.collapsible')[1];
