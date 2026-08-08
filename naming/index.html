@@ -188,7 +188,8 @@
         var skipAppName = (jobType === 'FT' && functionType !== info.ftDefault);
         var jobName = parts.join('.') + '.' + functionType + (skipAppName ? '' : '_' + appName);
         if (description) jobName += '_' + description;
-        if (frequency === 'V') jobName += '_V';
+        var freqSuffix = (frequency === 'V') ? '_V' : '_' + frequency;
+        if (!jobName.endsWith(freqSuffix)) jobName += freqSuffix;
 
         var folder = 'P.FL.GR.' + winsched + '.' + folderFrequency + '.BATCH2.' + appName;
 
