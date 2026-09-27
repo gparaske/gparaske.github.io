@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Σύνδεση</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 400px; margin: 60px auto; padding: 0 20px; }
+  h2 { text-align: center; }
+  label { display: block; margin-top: 15px; font-weight: bold; }
+  input { width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; }
+  button { margin-top: 20px; width: 100%; padding: 10px; font-size: 16px; cursor: pointer; }
+  .error { color: red; margin-top: 10px; min-height: 20px; }
+  .success { color: green; margin-top: 10px; min-height: 20px; }
+</style>
+</head>
+<body>
+
+<!-- Για το gitHub αλλάζεις το http://localhost:5000 σε https://gparaske.casacam.net -->
+
+<h2>Σύνδεση</h2>
+
+<label for="username">Username</label>
+<input type="text" id="username" autocomplete="username">
+
+<label for="password">Password</label>
+<input type="password" id="password" autocomplete="current-password">
+
+<button id="loginBtn">Σύνδεση</button>
+<button id="logoutBtn" style="background:#eee;">Αποσύνδεση</button>
+
+<div class="error" id="errorMsg"></div>
+<div class="success" id="successMsg"></div>
+<div id="statusMsg" style="margin-top:15px; font-style:italic; color:#555;"></div>
+
+<script>
+function updateStatus() {
+    const statusMsg = document.getElementById('statusMsg');
+    const token = localStorage.getItem('token');
+    statusMsg.innerText = token ? 'Είστε συνδεδεμένος.' : 'Δεν είστε συνδεδεμένος.';
+}
+
+document.getElementById('logoutBtn').addEventListener('click', () => {
+    localStorage.removeItem('token');
+    document.getElementById('errorMsg').innerText = '';
+    document.getElementById('successMsg').innerText = 'Αποσυνδεθήκατε.';
+    updateStatus();
+});
+
+updateStatus();
+
+document.getElementById('loginBtn').addEventListener('click', async () => {
+    const username = document.getElementById('username');
+    const password = document.getElementById('password');
+    const errorMsg = document.getElementById('errorMsg');
+    const successMsg = document.getElementById('successMsg');
+
+    errorMsg.innerText = '';
+    successMsg.innerText = '';
+
+    if (!username.value || !password.value) {
+        errorMsg.innerText = 'Συμπληρώστε username και password.';
+        return;
+    }
+
+    try {
+        const res = await fetch('https://gparaske.casacam.net/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: username.value,
+                password: password.value
+            })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            errorMsg.innerText = data.error || 'Κάτι πήγε στραβά.';
+            return;
+        }
+
+        // Αποθήκευση του token τοπικά, για χρήση σε επόμενα requests (π.χ. /data)
+        localStorage.setItem('token', data.token);
+
+        successMsg.innerText = 'Επιτυχής σύνδεση!';
+        password.value = '';
+        updateStatus();
+
+    } catch (err) {
+        console.error('Σφάλμα κατά τη σύνδεση:', err);
+        errorMsg.innerText = 'Η αίτηση απέτυχε. Παρακαλώ, προσπαθήστε ξανά.';
+    }
+});
+</script>
+
+</body>
+</html>
