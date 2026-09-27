@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Εγγραφή</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 400px; margin: 60px auto; padding: 0 20px; }
+  h2 { text-align: center; }
+  label { display: block; margin-top: 15px; font-weight: bold; }
+  input { width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; }
+  button { margin-top: 20px; width: 100%; padding: 10px; font-size: 16px; cursor: pointer; }
+  .error { color: red; margin-top: 10px; min-height: 20px; }
+  .success { color: green; margin-top: 10px; min-height: 20px; }
+</style>
+</head>
+<body>
+
+<!-- Για το gitHub αλλάζεις το http://localhost:5000 σε https://gparaske.casacam.net -->
+
+<h2>Εγγραφή Χρήστη</h2>
+
+<label for="username">Username</label>
+<input type="text" id="username" autocomplete="username">
+
+<label for="password">Password</label>
+<input type="password" id="password" autocomplete="new-password">
+
+<label for="email">E-Mail</label>
+<input type="text" id="email" autocomplete="email">
+
+<button id="registerBtn">Εγγραφή</button>
+
+<div class="error" id="errorMsg"></div>
+<div class="success" id="successMsg"></div>
+
+<script>
+document.getElementById('registerBtn').addEventListener('click', async () => {
+    const username = document.getElementById('username');
+    const password = document.getElementById('password');
+    const email = document.getElementById('email');
+    const errorMsg = document.getElementById('errorMsg');
+    const successMsg = document.getElementById('successMsg');
+
+    errorMsg.innerText = '';
+    successMsg.innerText = '';
+
+    if (!username.value || !password.value || !email.value) {
+        errorMsg.innerText = 'Συμπληρώστε username, password και e-mail.';
+        return;
+    }
+
+    try {
+        const res = await fetch('https://gparaske.casacam.net/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: username.value,
+                password: password.value,
+                email: email.value
+            })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            errorMsg.innerText = data.error || 'Κάτι πήγε στραβά.';
+            return;
+        }
+
+        successMsg.innerText = 'Επιτυχής εγγραφή! Μπορείτε τώρα να συνδεθείτε.';
+        username.value = '';
+        password.value = '';
+        email.value = '';
+
+    } catch (err) {
+        console.error('Σφάλμα κατά την εγγραφή:', err);
+        errorMsg.innerText = 'Η αίτηση απέτυχε. Παρακαλώ, προσπαθήστε ξανά.';
+    }
+});
+</script>
+
+</body>
+</html>
